@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-    <title>Laravel</title>
+    <title>Bitrix Lead Form</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -641,9 +641,9 @@
         }
 
 
-        input[type="radio"]:checked + label + .radio_div {
-        border-color: blue;
-    }
+        input[type="radio"]:checked+label+.radio_div {
+            border-color: blue;
+        }
     </style>
 </head>
 
@@ -729,12 +729,12 @@
                                 <input type="radio" id="male" name="gender" value="male" required>
                                 <label for="male">Male</label>
                             </div>
-                        
+
                             <div class="radio_div">
                                 <input type="radio" id="female" name="gender" value="female" required>
                                 <label for="female">Female</label>
                             </div>
-                        
+
                         </div>
 
 
@@ -771,7 +771,7 @@
                                     <option>Islamabad-Rawalpindi</option>
                                     <option>Faisalabad</option>
                                     <option>Multan</option>
-                                    
+
                                 </select>
                             </div>
                         </div>
@@ -810,7 +810,7 @@
                                     <option>2 month</option>
                                     <option>3 months - 10% off</option>
                                     <option>6 months - 20% off</option>
-                                  
+
                                 </select>
                             </div>
                         </div>
@@ -880,7 +880,7 @@
 
 
                             </table>
-                          
+
                         </div>
                         <div class="buttons button_space">
                             <button class="back_button">Back</button>
@@ -989,6 +989,8 @@
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         var next_click = document.querySelectorAll(".next_button");
         var main_form = document.querySelectorAll(".main");
@@ -999,6 +1001,12 @@
         next_click.forEach(function(next_click_form) {
             next_click_form.addEventListener('click', function() {
                 if (!validateform()) {
+                    Swal.fire({
+                        title: 'Warning!',
+                        text: 'Please fill in all required fields.',
+                        icon: 'warning',
+                        confirmButtonText: 'OK'
+                    });
                     return false
                 }
                 formnumber++;
@@ -1031,16 +1039,7 @@
             });
         });
 
-        var heart = document.querySelector(".fa-heart");
-        heart.addEventListener('click', function() {
-            heart.classList.toggle('heart');
-        });
 
-
-        var share = document.querySelector(".fa-share-alt");
-        share.addEventListener('click', function() {
-            share.classList.toggle('share');
-        });
 
 
 
@@ -1067,11 +1066,15 @@
         var step_num_content = document.querySelectorAll(".step-number-content");
 
         function contentchange() {
-            step_num_content.forEach(function(content) {
-                content.classList.remove('active');
-                content.classList.add('d-none');
-            });
-            step_num_content[formnumber].classList.add('active');
+            if (step_num_content.length > 0) {
+                step_num_content.forEach(function(content) {
+                    content.classList.remove('active');
+                    content.classList.add('d-none');
+                });
+                step_num_content[formnumber].classList.add('active');
+            } else {
+                console.error("step_num_content is empty or not found.");
+            }
         }
 
 
