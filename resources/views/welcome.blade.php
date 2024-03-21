@@ -684,18 +684,18 @@
                             </div>
 
                             <div class="input-div">
-                                <input type="text" required>
+                                <input type="text" name="email" required>
                                 <span>E-mail Address</span>
                             </div>
                         </div>
                         <div class="input-text">
 
                             <div class="input-div">
-                                <input type="text" required>
+                                <input type="text" name="cnic_number" maxlength="15" minlength="15" required>
                                 <span>CNIC Number</span>
                             </div>
                             <div class="input-div">
-                                <input type="text" required>
+                                <input type="text" name="whatsapp_number" maxlength="11" minlength="11" required>
                                 <span>WhatsApp Number</span>
                             </div>
 
@@ -706,7 +706,7 @@
 
 
                             <div class="input-div">
-                                <input type="text" required>
+                                <input type="text" name="facebook_profile" required>
                                 <span>FaceBook Profile </span>
                             </div>
 
@@ -754,6 +754,7 @@
                             <button class="next_button">Next Step</button>
                         </div>
                     </div>
+                    <div class="step-number-content"></div>
                     <div class="main">
 
                         <div class="text">
@@ -890,7 +891,8 @@
 
 
 
-
+                    
+                    <div class="step-number-content"></div>
                     <div class="main">
 
 
@@ -961,6 +963,7 @@
                             <button class="submit_button">Submit</button>
                         </div>
                     </div>
+                    <div class="step-number-content"></div>
                     <div class="main">
                         <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
                             <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
@@ -973,7 +976,7 @@
                                 successfully for the future reference we will contact you soon.</p>
                         </div>
                     </div>
-
+                    <div class="step-number-content"></div>
 
 
 
@@ -997,17 +1000,12 @@
         var step_list = document.querySelectorAll(".progress-bar1 li");
         var num = document.querySelector(".step-number");
         let formnumber = 0;
-
+    
         next_click.forEach(function(next_click_form) {
             next_click_form.addEventListener('click', function() {
-                if (!validateform()) {
-                    Swal.fire({
-                        title: 'Warning!',
-                        text: 'Please fill in all required fields.',
-                        icon: 'warning',
-                        confirmButtonText: 'OK'
-                    });
-                    return false
+                var valid = validateform();
+                if (!valid) {
+                    return;
                 }
                 formnumber++;
                 updateform();
@@ -1015,7 +1013,7 @@
                 contentchange();
             });
         });
-
+    
         var back_click = document.querySelectorAll(".back_button");
         back_click.forEach(function(back_click_form) {
             back_click_form.addEventListener('click', function() {
@@ -1025,11 +1023,10 @@
                 contentchange();
             });
         });
-
+    
         var username = document.querySelector("#user_name");
         var shownname = document.querySelector(".shown_name");
-
-
+    
         var submit_click = document.querySelectorAll(".submit_button");
         submit_click.forEach(function(submit_click_form) {
             submit_click_form.addEventListener('click', function() {
@@ -1038,62 +1035,61 @@
                 updateform();
             });
         });
-
-
-
-
-
+    
         function updateform() {
             main_form.forEach(function(mainform_number) {
                 mainform_number.classList.remove('active');
-            })
+            });
             main_form[formnumber].classList.add('active');
         }
-
+    
         function progress_forward() {
-
-
             num.innerHTML = formnumber + 1;
             step_list[formnumber].classList.add('active');
         }
-
+    
         function progress_backward() {
             var form_num = formnumber + 1;
             step_list[form_num].classList.remove('active');
             num.innerHTML = form_num;
         }
-
+    
         var step_num_content = document.querySelectorAll(".step-number-content");
-
+    
         function contentchange() {
-            if (step_num_content.length > 0) {
-                step_num_content.forEach(function(content) {
-                    content.classList.remove('active');
-                    content.classList.add('d-none');
-                });
-                step_num_content[formnumber].classList.add('active');
-            } else {
-                console.error("step_num_content is empty or not found.");
-            }
+            step_num_content.forEach(function(content) {
+                content.classList.remove('active');
+                content.classList.add('d-none');
+            });
+            step_num_content[formnumber].classList.add('active');
         }
-
-
+    
         function validateform() {
-            validate = true;
-            var validate_inputs = document.querySelectorAll(".main.active input");
+            var validate = true;
+            var validate_inputs = document.querySelectorAll(".main.active input[required]");
+            var empty_fields = [];
             validate_inputs.forEach(function(vaildate_input) {
                 vaildate_input.classList.remove('warning');
-                if (vaildate_input.hasAttribute('require')) {
-                    if (vaildate_input.value.length == 0) {
-                        validate = false;
-                        vaildate_input.classList.add('warning');
-                    }
+                if (vaildate_input.value.trim() === '') {
+                    validate = false;
+                    vaildate_input.classList.add('warning');
+                    empty_fields.push(vaildate_input.getAttribute('name') || vaildate_input.getAttribute('id'));
                 }
             });
+    
+            if (!validate) {
+                Swal.fire({
+                    title: 'Warning!',
+                    html: 'Please fill in all required fields:<br>' + empty_fields.join(', '),
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+            }
+    
             return validate;
-
         }
     </script>
+    
 
 </body>
 
