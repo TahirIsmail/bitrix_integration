@@ -612,27 +612,27 @@
 
 
 
-        #customers {
+        #top-table,#bottom-table {
             font-family: 'Poppins', sans-serif;
             border-collapse: collapse;
             width: 100%;
         }
 
-        #customers td,
-        #customers th {
+        #top-table td,#bottom-table td
+        #top-table th,#bottom-table th {
             font-size: small;
             border-bottom: 1px solid #ddd;
             font-weight: bold;
             padding: 8px;
         }
 
-        #customers th {
+        #top-table th ,#bottom-table th{
             background-color: #ddd;
         }
 
 
 
-        #customers th {
+        #top-table th,#bottom-table th {
             padding-top: 12px;
             padding-bottom: 12px;
             text-align: left;
@@ -756,77 +756,82 @@
                     </div>
                     <div class="step-number-content"></div>
                     <div class="main">
-
-                        <div class="text">
-                            <h2>Incubator Details</h2>
-                            {{-- <p>Inform companies about your education life.</p> --}}
-                        </div>
-
-
-                        <div class="input-text">
-                            <div class="input-div">
-                                <select>
-                                    <option>Incubator City</option>
-                                    <option>Lahore</option>
-                                    <option>Karachi</option>
-                                    <option>Islamabad-Rawalpindi</option>
-                                    <option>Faisalabad</option>
-                                    <option>Multan</option>
-
-                                </select>
-                            </div>
-                        </div>
-                        <h5>Preferred Timing</h5>
-                        <div class="input-text">
-
-                            <div class="radio_div">
-
-
-                                <input type="radio" id="male" name="gender" value="male" required>
-                                <label for="male">Morning (8AM - 4PM)</label>
+                        <div class="div-payment-form-data">
+                            <div class="text">
+                                <h2>Incubator Details</h2>
+                                {{-- <p>Inform companies about your education life.</p> --}}
                             </div>
 
 
-                            <div class="radio_div">
+                            <div class="input-text">
+                                <div class="input-div">
+                                    <select required name="incubator_city" id="incubator_city">
+                                        <option>---Choose-Incubator-City---</option>
+                                        <option value="Lahore">Lahore</option>
+                                        <option value="Karachi">Karachi</option>
+                                        <option value="Islamabad-Rawalindi">Islamabad-Rawalpindi</option>
+                                        <option value="Faisalabad">Faisalabad</option>
+                                        <option value="Multan">Multan</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <h5>Preferred Timing</h5>
+                            <div class="input-text">
+
+                                <div class="radio_div">
 
 
-                                <input type="radio" id="male" name="gender" value="male" required>
-                                <label for="male">Evening (4PM - 12AM)</label>
+                                    <input type="radio"  name="preferred_timing"
+                                        value="Morning,(8AM-4PM)" required>
+                                    <label for="preferred_timing">Morning (8AM - 4PM)</label>
+                                </div>
+
+
+                                <div class="radio_div">
+
+
+                                    <input type="radio" name="preferred_timing"
+                                        value="Evening,(4PM-12AM)" required>
+                                    <label for="preferred_timing">Evening (4PM - 12AM)</label>
+                                </div>
+
+
+                                <div class="radio_div">
+                                    <input type="radio" name="preferred_timing"
+                                        value="Night,(12AM-8AM)" required>
+                                    <label for="preferred_timing">Night (12AM - 8AM)</label>
+                                </div>
+
                             </div>
 
+                            <h5>Subscription Period</h5>
+                            <div class="input-text">
+                                <div class="input-div">
+                                    <select name="subscription_period" id="subscription_period">
+                                        <option>---Choose-Subscription-Period---</option>
+                                        <option value="1">1 month</option>
+                                        <option value="2">2 month</option>
+                                        <option value="3">3 months - 10% off</option>
+                                        <option value="6">6 months - 20% off</option>
 
-                            <div class="radio_div">
-                                <input type="radio" id="male" name="gender" value="male" required>
-                                <label for="male">Night (12AM - 8AM)</label>
+                                    </select>
+                                </div>
                             </div>
 
-                        </div>
+                            <h5>Coupon</h5>
+                            <div class="input-text">
+                                <div class="input-div">
+                                    <input type="text" name="coupon_code" id="coupon_code" required>
+                                    <span>Enter Coupon Code </span>
 
-                        <h5>Subscription Period</h5>
-                        <div class="input-text">
-                            <div class="input-div">
-                                <select>
-                                    <option>Subscription Period</option>
-                                    <option>1 month</option>
-                                    <option>2 month</option>
-                                    <option>3 months - 10% off</option>
-                                    <option>6 months - 20% off</option>
+                                </div>
+                                <div class="input-div buttons">
+                                    <button id="applyButton">Apply</button>
+                                </div>
 
-                                </select>
-                            </div>
-                        </div>
-
-                        <h5>Coupon</h5>
-                        <div class="input-text">
-                            <div class="input-div">
-                                <input type="text" required>
-                                <span>Enter Coupon Code </span>
 
                             </div>
-                            <div class="input-div buttons">
-                                <button id="applyButton">Apply</button>
-                            </div>
-
 
                         </div>
 
@@ -836,7 +841,7 @@
 
 
 
-                            <table id="customers">
+                            <table id="top-table">
                                 <tr>
                                     <th>
                                         SHIFT</th>
@@ -845,9 +850,9 @@
 
                                 </tr>
                                 <tr>
-                                    <td>evening</td>
-                                    <td>(8AM to 4PM)</td>
-                                    <td>25,000 PKR</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
 
 
@@ -862,7 +867,7 @@
 
 
                             <h6>Students</h6>
-                            <table id="customers">
+                            <table id="bottom-table">
                                 <tr>
                                     <th>
                                         INCUBATOR CITY</th>
@@ -883,6 +888,7 @@
                             </table>
 
                         </div>
+
                         <div class="buttons button_space">
                             <button class="back_button">Back</button>
                             <button class="next_button">Next Step</button>
@@ -891,7 +897,7 @@
 
 
 
-                    
+
                     <div class="step-number-content"></div>
                     <div class="main">
 
@@ -908,7 +914,7 @@
 
                         <div class="s_card">
                             <p class="s_card-title">Personal Information</p>
-                            <table id="customers">
+                            <table id="top-table">
 
                                 <tr>
                                     <td>Name : Farhad</td>
@@ -937,7 +943,7 @@
 
 
 
-                            <table id="customers">
+                            <table id="top-table">
                                 <tr>
                                     <th>INCUBATOR CITY</th>
                                     <th>SHIFT</th>
@@ -1000,7 +1006,7 @@
         var step_list = document.querySelectorAll(".progress-bar1 li");
         var num = document.querySelector(".step-number");
         let formnumber = 0;
-    
+
         next_click.forEach(function(next_click_form) {
             next_click_form.addEventListener('click', function() {
                 var valid = validateform();
@@ -1013,7 +1019,7 @@
                 contentchange();
             });
         });
-    
+
         var back_click = document.querySelectorAll(".back_button");
         back_click.forEach(function(back_click_form) {
             back_click_form.addEventListener('click', function() {
@@ -1023,10 +1029,10 @@
                 contentchange();
             });
         });
-    
+
         var username = document.querySelector("#user_name");
         var shownname = document.querySelector(".shown_name");
-    
+
         var submit_click = document.querySelectorAll(".submit_button");
         submit_click.forEach(function(submit_click_form) {
             submit_click_form.addEventListener('click', function() {
@@ -1035,27 +1041,27 @@
                 updateform();
             });
         });
-    
+
         function updateform() {
             main_form.forEach(function(mainform_number) {
                 mainform_number.classList.remove('active');
             });
             main_form[formnumber].classList.add('active');
         }
-    
+
         function progress_forward() {
             num.innerHTML = formnumber + 1;
             step_list[formnumber].classList.add('active');
         }
-    
+
         function progress_backward() {
             var form_num = formnumber + 1;
             step_list[form_num].classList.remove('active');
             num.innerHTML = form_num;
         }
-    
+
         var step_num_content = document.querySelectorAll(".step-number-content");
-    
+
         function contentchange() {
             step_num_content.forEach(function(content) {
                 content.classList.remove('active');
@@ -1063,10 +1069,11 @@
             });
             step_num_content[formnumber].classList.add('active');
         }
-    
+
         function validateform() {
             var validate = true;
             var validate_inputs = document.querySelectorAll(".main.active input[required]");
+            var validate_selects = document.querySelectorAll(".main.active select[required]")
             var empty_fields = [];
             validate_inputs.forEach(function(vaildate_input) {
                 vaildate_input.classList.remove('warning');
@@ -1076,7 +1083,15 @@
                     empty_fields.push(vaildate_input.getAttribute('name') || vaildate_input.getAttribute('id'));
                 }
             });
-    
+            validate_selects.forEach(function(validate_select) {
+                validate_select.classList.remove('warning');
+                if (validate_select.value.trim() === '') {
+                    validate = false;
+                    validate_select.classList.add('warning');
+                    empty_fields.push(validate_select.getAttribute('name') || validate_select.getAttribute('id'));
+                }
+            });
+
             if (!validate) {
                 Swal.fire({
                     title: 'Warning!',
@@ -1085,11 +1100,45 @@
                     confirmButtonText: 'OK'
                 });
             }
-    
+
             return validate;
         }
+        // Get all the form elements
     </script>
-    
+
+    <script type="text/javascript">
+        const formElements = document.querySelectorAll(
+            '.div-payment-form-data select, .div-payment-form-data input[type="text"], .div-payment-form-data input[type="radio"]'
+            );
+        console.log(formElements);
+        // Get the table rows where the data will be displayed
+        const tableRows = document.querySelectorAll('#top-table tr');
+
+        // Function to update the table with form data
+        function updateTable() {
+            const data = Array.from(formElements).reduce((acc, element) => {
+                acc[element.name] = element.value;
+                return acc;
+            }, {});
+
+            // Update the table with the form data
+            tableRows[1].children[1].textContent = data.incubator_city;
+            tableRows[1].children[2].textContent = data.preferred_timing;
+            tableRows[1].children[3].textContent = data.subscription_period;
+            tableRows[1].children[4].textContent = "25,000 PKR"; // You can calculate this based on the form data
+
+            // You can add more logic to calculate charges and total amount based on the form data
+        }
+
+        // Event listener to update the table on form field change
+        formElements.forEach(element => {
+            element.addEventListener('change', updateTable);
+        });
+
+        // Event listener for the Apply button to update the table
+       
+    </script>
+
 
 </body>
 
