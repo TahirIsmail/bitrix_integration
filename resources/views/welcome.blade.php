@@ -786,7 +786,7 @@
                                 <div class="radio_div">
 
 
-                                    <input type="radio" name="preferred_timing" value="Morning,(8AM-4PM)" required>
+                                    <input type="radio" name="preferred_timing" value="Morning,(8AM-4PM)">
                                     <label for="preferred_timing">Morning (8AM - 4PM)</label>
                                 </div>
 
@@ -794,13 +794,13 @@
                                 <div class="radio_div">
 
 
-                                    <input type="radio" name="preferred_timing" value="Evening,(4PM-12AM)" required>
+                                    <input type="radio" name="preferred_timing" value="Evening,(4PM-12AM)">
                                     <label for="preferred_timing">Evening (4PM - 12AM)</label>
                                 </div>
 
 
                                 <div class="radio_div">
-                                    <input type="radio" name="preferred_timing" value="Night,(12AM-8AM)" required>
+                                    <input type="radio" name="preferred_timing" value="Night,(12AM-8AM)">
                                     <label for="preferred_timing">Night (12AM - 8AM)</label>
                                 </div>
 
@@ -1120,12 +1120,13 @@
 
     <script type="text/javascript">
         const formElements = document.querySelectorAll(
-            '.div-payment-form-data select, .div-payment-form-data input[type="text"], .div-payment-form-data input[type="radio"]'
+            '.div-payment-form-data select, .div-payment-form-data input[type="text"]'
         );
         console.log(formElements);
         // Get the table rows where the data will be displayed
         const tableRows = document.querySelectorAll('#top-table tr');
         const incubator_title = document.querySelector('.title-incubator');
+
         // Function to update the table with form data
         function updateTable() {
             const data = Array.from(formElements).reduce((acc, element) => {
@@ -1133,7 +1134,11 @@
                     if (!acc[element.name]) {
                         acc[element.name] = [];
                     }
-                    acc[element.name].push(element.value);
+                    if (Array.isArray(acc[element.name])) {
+                        acc[element.name].push(element.value);
+                    } else {
+                        acc[element.name] = [acc[element.name], element.value];
+                    }
                 } else {
                     acc[element.name] = element.value;
                 }
@@ -1141,15 +1146,14 @@
             }, {});
 
             // Update the table with the form data
-            console.log(data);
+
             incubator_title.textContent = data.incubator_city;
-            timing = data.preferred_timing.split(',');
-            console.log(timing);
-            tableRows[1].children[0].textContent = timing[0];
+
+            tableRows[1].children[0].textContent = "Night";
             tableRows[2].children[0].textContent = "Evening";
             tableRows[3].children[0].textContent = "Morning";
 
-            tableRows[1].children[1].textContent = timing[1];
+            tableRows[1].children[1].textContent = "(12AM - 8AM)";
             tableRows[2].children[1].textContent = "(4PM - 12AM)";
 
             tableRows[3].children[1].textContent = "(8AM - 4PM)";
@@ -1157,21 +1161,17 @@
             // tableRows[1].children[2].textContent = data.subscription_period;
             if (data.incubator_city == 'Faisalabad' || data.incubator_city == 'Multan') {
 
-                tableRows[1].children[2].textContent = ""; // You can calculate this based on the form data
-                tableRows[2].children[2].textContent = ""; // You can calculate this based on the form data
-                tableRows[3].children[2].textContent = ""; // 
+
                 tableRows[1].children[2].textContent = "17,000 PKR";
                 tableRows[2].children[2].textContent = "17,000 PKR"; // You can calculate this based on the form data
                 tableRows[3].children[2].textContent = "17,000 PKR"; // You can calculate this based on the form data
-                 // You can calculate this based on the form data
+                // You can calculate this based on the form data
             } else {
-                tableRows[1].children[2].textContent = ""; // You can calculate this based on the form data
-                tableRows[2].children[2].textContent = ""; // You can calculate this based on the form data
-                tableRows[3].children[2].textContent = ""; // 
+
                 tableRows[1].children[2].textContent = "25,000 PKR"; // You can calculate this based on the form data
                 tableRows[2].children[2].textContent = "25,000 PKR"; // You can calculate this based on the form data
                 tableRows[3].children[2].textContent = "25,000 PKR"; // You can calculate this based on the form data
-                
+
             }
 
             // You can add more logic to calculate charges and total amount based on the form data
@@ -1185,7 +1185,34 @@
         // Event listener for the Apply button to update the table
     </script>
 
+    <script type=text/javascript>
+        const subscriptionPeriodSelect = document.getElementById('subscription_period');
 
+        // Add event listener for change event
+        subscriptionPeriodSelect.addEventListener('change', function() {
+            // Get the selected values of Preferred Timing and Incubator City
+            const preferredTiming = document.querySelector('input[name="preferred_timing"]:checked').value;
+            const incubatorCity = document.getElementById('incubator_city').value;
+
+            const cityTimingArray = preferredTiming.split(',');
+
+            // Traverse the table to find a match and retrieve charges
+            const tableRows1 = document.getElementById('top-table').getElementsByTagName('tr');
+            for (let i = 1; i < tableRows1.length; i++) { // Start from index 1 to skip header row
+                const cells = tableRows1[i].getElementsByTagName('td');
+                if (cells.length === 3) {
+                    const city = cells[0].innerText.trim();
+                    const timing = cells[1].innerText.trim();
+                    if (city === cityTimingArray[0] && timing === cityTimingArray[1]) {
+                        const charges = cells[2].innerText.trim(); // Retrieve charges
+                        console.log('Charges:', charges);
+                        // Update your logic here based on retrieved charges
+                        break; // Exit loop after finding a match
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>
