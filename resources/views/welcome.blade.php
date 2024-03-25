@@ -823,7 +823,7 @@
                             <h5>Coupon</h5>
                             <div class="input-text">
                                 <div class="input-div">
-                                    <input type="text" name="coupon_code" id="coupon_code" required>
+                                    <input type="text" name="coupon_code" id="coupon_code" >
                                     <span>Enter Coupon Code </span>
 
                                 </div>
