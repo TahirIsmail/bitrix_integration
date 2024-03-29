@@ -57,7 +57,14 @@ return [
             'channels' => ['single'],
             'ignore_exceptions' => false,
         ],
-
+        'bitrix' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/bitrixlog.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 14,
+            'replace_placeholders' => true,
+            'permission' => 0666,
+        ],
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
