@@ -17,3 +17,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+default.php
+composer.phar
+composer.lock
+.htaccess
