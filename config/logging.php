@@ -60,7 +60,7 @@ return [
         'bitrix' => [
             'driver' => 'daily',
             'path' => storage_path('logs/bitrixlog.log'),
-            'level' => env('LOG_LEVEL', 'debug'),
+            'level' => 'debug',
             'days' => 14,
             'replace_placeholders' => true,
             'permission' => 0666,
@@ -68,16 +68,19 @@ return [
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
-            'level' => env('LOG_LEVEL', 'debug'),
+            'level' => 'debug',
+            'days' => 30,
             'replace_placeholders' => true,
+            'permission' => 0666,
         ],
 
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
-            'level' => env('LOG_LEVEL', 'debug'),
-            'days' => 14,
+            'level' => 'debug',
+            'days' => 30,
             'replace_placeholders' => true,
+            'permission' => 0666,
         ],
 
         'slack' => [
