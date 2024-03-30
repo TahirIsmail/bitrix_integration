@@ -68,8 +68,8 @@ class BitrixHooksController extends Controller
 
                 $data1=[
                       'ID' => $leadID,
-                      'FIELDS[UF_CRM_1664642224317]' => $inoviceLink, // Payment Link
-                      'FIELDS[UF_CRM_1675176428307]' => '1st Installment', // Payment Link
+                      'FIELDS[UF_CRM_1711712382]' => $inoviceLink, // Payment Link
+                      'FIELDS[UF_CRM_1707731587]' => '1st Installment', // Payment Link
                   ];
                     $queryData1   = http_build_query($data1);
                     $ret =  $this->bitrixCall->sendCurlRequest($queryData1,"update","crm.lead");
