@@ -49,10 +49,11 @@ class BitrixHooksController extends Controller
                     'name'=>$result['NAME'],
                     'email'=>$result['EMAIL'][0]['VALUE'],
                     'phone'=>$result['PHONE'][0]['VALUE'],
-                    'booking_slot'=>$product_name,
+                    'program_title'=>$request['program'],
+                    'product_title'=>$product_name,
                     'amount'=>$result['OPPORTUNITY'],
                     'status'=>'selected',
-                    'message'=>$request['program'],
+                    'message'=>$product_name.' Payment',
                     'b24_lead_id'=>$leadID,
                 ]);
 
