@@ -26,12 +26,13 @@ class BitrixHooksController extends Controller
         try {
          Log::channel('bitrix')->info('==================Bitrix Invoice Create=============== ' . Date('Y-m-d H:i:s'));
          Log::channel('bitrix')->debug(request()->all());
-         Log::channel('bitrix')->debug(request());
+
 
          if (isset($request['auth']) AND $request['auth']['domain'] == 'ice.bitrix24.com') {
             if($request['program'] == 'Trainings') {
                 $leadID = $request['lead_id'];
                 $getData = $this->bitrixCall->sendCurlRequest(['ID' => $leadID],'get','crm.lead');
+                Log::channel('bitrix')->debug($getData);
                 $result = $getData['result'];
                 $leadProducts = $this->bitrixCall->sendCurlRequest(['ID' => $leadID],'get','crm.lead.productrows');
                 $product_result = $leadProducts['result'];
