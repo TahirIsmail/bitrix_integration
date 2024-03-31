@@ -1,52 +1,176 @@
-@extends('layouts.megamenu-master')
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-@section('header')
-@endsection
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
 
-@section('content')
-    <!-- Facebook Pixel Code -->
-    <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window,document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-     fbq('init', '5625251687532850'); 
-    fbq('track', 'PageView');
-    </script>
-    <noscript>
-     <img height="1" width="1" 
-    src="https://www.facebook.com/tr?id=5625251687532850&ev=PageView
-    &noscript=1"/>
-    </noscript>
-    <!-- End Facebook Pixel Code -->
+    <title>Thankyou</title>
 
-    <!-- Modules -->
-    <div class="wizard_bg mt-0">
-        <div class="container">
-            <!-- Thanks -->
-            <div class="container form_bg" data-aos="zoom-in">
-                <div class="text-center thanks_msg">
-                    <p class="img">
-                        <img src="{{ asset('/assets/img/thank-tick.png')}}" alt="" title="">
-                    </p>
-                    <h3>Thank You!</h3>
-                    <p>Your submission has been received.</p>
-                </div>
-            </div>
-            <!-- Thanks end-->
+    <style type="text/css">
+        #join-fb {
+        background-image: url("https://skillsrator.com/wp-content/uploads/2024/02/web-banner-01-min.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 100vh;
+        overflow-y: hidden;
+      }
+      body {
+  font-family: 'Poppins', sans-serif;
+    margin: 0;
+}
+
+#join-fb {
+    background-position: center;
+}
+
+.container {
+    padding: 5%;
+}
+
+#join-fb .container .ec-logo {
+    max-width: 18vw;
+}
+
+#join-fb .container .ec-jfb-content {
+}
+
+#join-fb .container .join-now {
+    margin-top: 50px;
+}
+
+#join-fb .container .title h1 {
+  font-size: 100px;
+  margin: 0;
+  text-transform: uppercase;
+  line-height: 1.5;
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: underline #feb405;
+}
+
+#join-fb .container .title p {
+  font-size: 20px;
+  line-height: 2;
+  color: white;
+  text-align: center;
+}
+
+#join-fb .container .cta {
+  margin-top: 90px;
+  text-align: center;
+}
+
+#join-fb .container .cta h6 {
+  font-size: 30px;
+  margin: 0;
+  text-transform: uppercase;
+  line-height: 1.5;
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+}
+
+#join-fb .container .cta a {
+  font-family: 'Montserrat', sans-serif;
+  color: #fff;
+  font-size: 42px;
+  text-transform: uppercase;
+}
+
+#join-fb .container .join-now {
+    background-color: white;
+    border: none;
+    border-radius: 50px;
+    color: #3680c3;
+    line-height: 40px;
+    padding: 5px 33px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 22px;
+    -webkit-box-shadow: 0px 3px 9px #8f8f8f;
+    -moz-box-shadow: 0px 3px 9px #8f8f8f;
+    box-shadow: 0px 3px 9px #8f8f8f;
+}
+
+#join-fb .container .join-now:hover {
+    text-decoration: none;
+    cursor: pointer;
+    background-color: #3680c3;
+    border: 1px solid #fff;
+    color: #fff;
+}
+
+@media (min-width: 769px) {
+  #join-fb .container .title p {
+    width: 50%;
+    margin: auto;
+  }
+}
+
+@media (max-width: 1199px) {
+    #join-fb .container .ec-logo {
+        max-width: 245px;
+    }
+}
+
+@media (max-width: 767px) {
+    #join-fb {
+        background-position-x: 60%;
+    }
+    #join-fb .container .ec-jfb-content {
+      margin-top: 40px
+    }
+    #join-fb .container .title h1 {
+        font-size: 40px;
+    }
+    #join-fb .container .title p {
+      font-size: 12px;
+    }
+    #join-fb .container .cta h6 {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+    #join-fb .container .cta a {
+      font-size: 20px;
+    }
+}
+    </style>
+  </head>
+  <body>
+
+    <section id="join-fb">
+      <div class="container">
+        <div class="ec-logo">
+          <img src="https://ec.com.pk/assets/img/ec-logo.png" alt="" width="100%">
         </div>
-    </div>
-    <div class="space_botm"></div>
-    <!-- Modules end -->
+        <div class="ec-jfb-content">
+          <div class="title">
+            <h1>Thank You</h1>
+            <p>
+              Your submission has been received.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
 
 
-
-@endsection
-
-@section('footer')
-
-@endsection
+  </body>
+  <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+        window.setTimeout(function(){
+        window.location.href = "https://skillsrator.com/";
+    }, 5000);
+    });
+  </script>
+</html>

@@ -124,34 +124,12 @@ class PaymentController extends Controller
             Log::info('===============Incubator Payment Debug Start================');
 
             if (!empty($data)) {
-                $payment = PaymentDetails::where('order_id', $data->customer_bill_order_id)->orWhere('registration_id',$data->customer_bill_order_id)->first();
+                $payment = b24leadsInvoices::where('order_id', $data->customer_bill_order_id)->orWhere('registration_id',$data->customer_bill_order_id)->first();
                 Log::info('=========Incubator Payment Data==========='.$payment);
                 if (isset($payment) && $payment->email == $data->customer_email) {
                     if ($data->status === 'completed') {
                         if ($payment->is_paid != 1) {
-                            $incReg = IncubatorPaymentDetails::where('registration_no', $payment->registration_id)->first();
-
-                            $city = $incReg->city_id ? $incReg->city->name : $incReg->city_name;
-                            $user = User::find($incReg->user_id);
-                            $user->greeting = "Dear " . $user->name . ",";
-                            $user->email = $user->email;
-                            $AppCount = IncubatorPaymentDetails::where(['user_id' => $request->id, 'status' => 4])->count();
-                            if ($AppCount >= 1) {
-                                $user->refund == 'no';
-                                $user->notify(new ApprovedStatusEmail($city));
-                            } else {
-                                $user->refund == 'yes';
-                                $user->notify(new ApprovedStatusEmail($city));
-                            }
-                            $payment->update(['is_paid' => '1']);
-                            $incReg->incubator->update(['approve_at' => Carbon::now()->toDateString(), 'status' => '1']);
-                            $incReg->update(['status' => '1', 'approve_at' => Carbon::now()->toDateString(), 'is_paid' => '1']);
-                            $com = new IncubatorComment();
-                            $com->comment = 'Payment Received';
-                            $com->status = 'Approved & Paid';
-                            $com->enroll_id = $incReg->incubator_id;
-                            $com->user = 0;
-                            $com->save();
+                            $payment->update(['is_paid' => '1','payment_date'=>now()]);
                             Log::info('=========Incubator Payment Complete===========');
                             if ($incReg->b24_lead_id != '' || $incReg->b24_deal_id != '') {
 
@@ -212,25 +190,16 @@ class PaymentController extends Controller
             if (empty($data)){
                 return $incompleteUrl;
             }
-            $payment = PaymentDetails::where('order_id', $data->customer_bill_order_id)->first();
+            $payment = b24leadsInvoices::where('order_id', $data->customer_bill_order_id)->first();
             if (isset($payment) && $payment->email != $data->customer_email) {
                return $incompleteUrl;
             }
             if ($data->status === 'completed') {
-                    $incReg = IncubatorPaymentDetails::where('registration_no', $data->customer_bill_order_id)->first();
-
-                    $incReg->incubator->update(['status' => '0']);
-                    $incReg->update(['status' => '0', 'is_paid' => '1']);
-                    $com = new IncubatorComment();
-                    $com->comment = 'Zero amount subscription';
-                    $com->status = 'Pending';
-                    $com->enroll_id = $incReg->incubator_id;
-                    $com->user = 0;
-                    $com->save();
+                $payment->update(['is_paid' => '1','payment_date'=>now()]);
                     return view('payments.thankyou');;
             }
             else {
-                return $incomplete;
+                // return $incomplete;
             }
         }
     }
