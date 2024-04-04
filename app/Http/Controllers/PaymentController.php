@@ -21,9 +21,10 @@ class PaymentController extends Controller
      */
     public function show(Request $request,$id)
     {
-        Log::channel('bitrix')->info('==================Invoice Show=============== ' . Date('Y-m-d H:i:s'));
+        Log::channel('bitrix')->info('==================Get Invoice=============== ' . Date('Y-m-d H:i:s'));
         Log::channel('bitrix')->debug($id);
         $invoice = b24leadsInvoices::with('b24lead')->where('id',$id)->first();
+        Log::channel('bitrix')->debug($invoice);
         if (empty($invoice) OR $invoice->is_paid == 1) {
             return view('payments.transaction_expired');
         }
@@ -54,9 +55,10 @@ class PaymentController extends Controller
             "txn_description" => $txn_desc." - " .$invoice->b24lead->name,
             "txn_currency" => $invoice_txn_currency,
             "customer_ip" => $request->ip(),
-            "txn_platform_return_url" => url("payment/thankyou"),
+            "txn_platform_return_url" => url("payment/voucher"),
         );
-        // dd($data);
+        Log::channel('bitrix')->info('==================Invoice Data=============== ' . Date('Y-m-d H:i:s'));
+        Log::channel('bitrix')->debug($data);
         $plaintext = http_build_query($data);
 
         if (in_array($cipher, openssl_get_cipher_methods())) {
