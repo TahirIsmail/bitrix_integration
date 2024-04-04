@@ -65,6 +65,14 @@ return [
             'replace_placeholders' => true,
             'permission' => 0666,
         ],
+        'chatBot' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/chatBot.log'),
+            'level' => 'debug',
+            'days' => 14,
+            'replace_placeholders' => true,
+            'permission' => 0666,
+        ],
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),

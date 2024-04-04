@@ -118,7 +118,7 @@ class PaymentController extends Controller
         Log::channel('bitrix')->info('==================Invoice Paid Thank you page=============== ' . Date('Y-m-d H:i:s'));
         Log::channel('bitrix')->debug($request->all());
 
-        if (isset($request->status) AND $request->status == 'completed') {
+        if (isset($request->status)) {
             // $curl = curl_init();
             // curl_setopt_array($curl, array(
             //     CURLOPT_URL => env('PAYMENT_RECHECK_URL') . app('request')->input('orderid'),
