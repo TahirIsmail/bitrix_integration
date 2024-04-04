@@ -10,9 +10,17 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use App\Services\BitrixCallsService;
 
 class PaymentController extends Controller
 {
+
+    protected $bitrixCall;
+
+    public function __construct()
+    {
+        $this->bitrixCall = new BitrixCallsService();
+    }
     /**
      * Display the specified resource.
      *
@@ -109,7 +117,8 @@ class PaymentController extends Controller
     {
         Log::channel('bitrix')->info('==================Invoice Paid Thank you page=============== ' . Date('Y-m-d H:i:s'));
         Log::channel('bitrix')->debug($request->all());
-        if (isset($request->status)) {
+
+        if (isset($request->status) AND $request->status == 'completed') {
             // $curl = curl_init();
             // curl_setopt_array($curl, array(
             //     CURLOPT_URL => env('PAYMENT_RECHECK_URL') . app('request')->input('orderid'),
@@ -134,22 +143,22 @@ class PaymentController extends Controller
                 $payment = b24leadsInvoices::where('order_id', $data['orderid'])->orWhere('lead_id',$data['tnxid'])->first();
                 Log::info('=========Incubator Payment Data==========='.$payment);
                 if (isset($payment)) {
-                    if ($data->status === 'completed') {
-                        if ($payment->is_paid != 1) {
-                            $payment->update(['is_paid' => '1','payment_date'=>now()]);
 
+                        if ($payment->is_paid) {
+                            $payment->update(['is_paid' => '1','payment_date'=>now()]);
+                            $payment->b24lead->update(['status' => 'approved']);
                             if ($payment->b24lead->b24_lead_id != '' || $payment->b24lead->b24_deal_id != '') {
-                               if($payment->b24lead->b24_deal_id != null){
+                              if($payment->b24lead->b24_deal_id != null){
                                 $b24_id = $payment->b24lead->b24_deal_id;
                                 $b24_stage_id = 'C14:FINAL_INVOICE';
                                 $b24_action = 'crm.deal';
                                 $field = 'FIELDS[STAGE_ID]';
-                               }else{
+                              }else{
                                 $b24_id = $payment->b24lead->b24_lead_id;
                                 $b24_stage_id = 'UC_VHVLEM';
                                 $b24_action = 'crm.lead';
                                 $field = 'FIELDS[STATUS_ID]';
-                               }
+                              }
 
                                $bitrixObj=[
                                 'ID' => $b24_id,
@@ -161,7 +170,7 @@ class PaymentController extends Controller
                             }
                         }
                         return response()->json(['status' => 200]);
-                    }
+
                 } else {
                     return response()->json(['status' => 400]);
                 }
