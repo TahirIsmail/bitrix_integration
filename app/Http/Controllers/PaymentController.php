@@ -55,7 +55,7 @@ class PaymentController extends Controller
             "txn_description" => $txn_desc." - " .$invoice->b24lead->name,
             "txn_currency" => $invoice_txn_currency,
             "customer_ip" => $request->ip(),
-            "txn_platform_return_url" => url("payment/voucher"),
+            "txn_platform_return_url" => url("transaction-complete"),
         );
         Log::channel('bitrix')->info('==================Invoice Data=============== ' . Date('Y-m-d H:i:s'));
         Log::channel('bitrix')->debug($data);

@@ -24,7 +24,7 @@ Route::prefix('bitrix')->group(function(){
     Route::any('/create-deal-invoice', 'Bitrix_Hooks\BitrixHooksController@createBitrixDealInvoice');
 });
 Route::any('payment/{id}', [PaymentController::class,'show']);
-Route::any('payment/voucher', [PaymentController::class,'transactionComptele']);
+Route::any('transaction-complete', [PaymentController::class,'transactionComptele']);
 Route::any('payment/thankyou', [PaymentController::class,'payment_thankyou']);
 Route::get('/incomplete', function () {
             return View::make("payments.canceled-page");
