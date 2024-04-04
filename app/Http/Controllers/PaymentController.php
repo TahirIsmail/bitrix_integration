@@ -21,6 +21,8 @@ class PaymentController extends Controller
      */
     public function show(Request $request,$id)
     {
+        Log::channel('bitrix')->info('==================Invoice Show=============== ' . Date('Y-m-d H:i:s'));
+        Log::channel('bitrix')->debug($id);
         $invoice = b24leadsInvoices::with('b24lead')->where('id',$id)->first();
         if (empty($invoice) OR $invoice->is_paid == 1) {
             return view('payments.transaction_expired');
@@ -73,8 +75,9 @@ class PaymentController extends Controller
      */
     public function payment_thankyou(Request $request)
     {
+        Log::channel('bitrix')->info('==================Invoice Paid Thank you page=============== ' . Date('Y-m-d H:i:s'));
+        Log::channel('bitrix')->debug($request->all());
         $get_invoice = b24leadsInvoices::firstWhere('order_id',$request->orderid);
-
         // gateway paid
         if ($request->status == 'completed' && isset($get_invoice) && $get_invoice->status != 1) {
             $get_invoice->is_paid = 1;
