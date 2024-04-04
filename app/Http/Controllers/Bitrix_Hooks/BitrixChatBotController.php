@@ -104,37 +104,7 @@ class BitrixChatBotController extends Controller
 
 public function transferChat($chatId,$botId,$clientId,$transferQueue,$dialogId,$username='')
 {   //dd('here is transfer chat');
-    if ($username!='' AND $transferQueue == 'queue10') {
-        $message = 'Dear '.$username.':
 
-Greetings from Skillsrator (Extreme Commerce)
-
-You have shown interest to Learn, Earn and Grow through EC Incubator, Karachi.
-
-You can visit our campus on daily bases for 1-1 CONSULTATION session from 10:00 a.m to 4:00 p.m OR you can attend our FREE ORIENTATION SESSION on Tuesday at 1.00p.m for detailed understanding in multiple ecommerce pathways.
-" You can also avail 1 MONTH FREE SUBSCRIPTION "
-Location:
-Skillsrator (Extreme Commerce) Plaza, Tariq Road, Karachi; https://maps.app.goo.gl/1h4eQnj5hNrCKKeH6 ';
-       } else if($username!='' AND $transferQueue == 'queue20') {
-$message = 'Dear '.$username.':
-
-Welcome to Skillsrator (Extreme Commerce Incubation Network) - A place to connect with Trainers, Digital Experts & Freelancer to expand your knowledge and opportunities!
-Discover the power of networking opportunities, hands-on learning, and structured training programs. Our training sessions cover a range of skill sets, from Digital Marketing and much more.
-We are providing 3 new mentioned training .You can attend one-day free demo classes.
-1- Graphic designing
-2- Amazon Wholesale
-3- Shopify
-Following trainings are ongoing, you can also attend these trainings as well,
-1) SEO
-2) FREELANCING
-3) AMAZON PL
-4) EBAY
-5) DIGITAL MARKETING
-6) TIKTOK SHOP
-
-Located at 57-A, Near Bilal Masjid Gulgusht Colony, Multan, our doors are open from 10 am to 10 pm; Monday to Saturday. Feel free to drop by and explore how ECIN can help you in learning digital skills to pave your way to earn in dollars.
-For inquiries,call us at 061 6217082';
-    }else{
         $message = 'Dear '.$username.':
 
         Thank you for your interest in Extreme Commerce Incubator.
@@ -142,7 +112,7 @@ For inquiries,call us at 061 6217082';
 Our agents are currently at capacity and will reach out to you in next 48 to 72 hours.
 
 Meanwhile please feel free to go through this video for a better understanding of our offerings https://youtu.be/S9WKe-nPy6Q';
-       }
+
     $this->sendCustomMessage($botId,$dialogId,$message,$clientId);
 
     $data = array("CHAT_ID"=>$chatId,"USERS"=>array(1),"BOT_ID"=>$botId,'CLIENT_ID' =>$clientId);
