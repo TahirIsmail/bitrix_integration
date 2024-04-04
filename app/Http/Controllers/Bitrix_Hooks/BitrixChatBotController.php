@@ -41,20 +41,20 @@ class BitrixChatBotController extends Controller
                     {
                         return $this->transferChat($chatId,$botId,$clientId,'queue8',$dialogId);
                     }
-                    if ($message == '1' || str_contains($message, 'Karachi'))
+                    if ($message == '5' || str_contains($message, 'Karachi'))
                     {
                         return $this->transferChat($chatId,$botId,$clientId,'queue10',$dialogId,$username);
                     }
-                    elseif($message == '2' || str_contains($message, 'Lahore')){
+                    elseif($message == '11' || str_contains($message, 'Lahore')){
                         return $this->transferChat($chatId,$botId,$clientId,'queue12',$dialogId);
                     }
-                    elseif($message == '3' || str_contains($message, 'Islamabad')){
+                    elseif($message == '7' || str_contains($message, 'Islamabad')){
                         return $this->transferChat($chatId,$botId,$clientId,'queue22',$dialogId);
                     }
-                    elseif($message == '4' || str_contains($message, 'Faisalabad')){
+                    elseif($message == '13' || str_contains($message, 'Faisalabad')){
                         return $this->transferChat($chatId,$botId,$clientId,'queue24',$dialogId);
                     }
-                    elseif($message == '5' || str_contains($message, 'Multan')){
+                    elseif($message == '9' || str_contains($message, 'Multan')){
                         return $this->transferChat($chatId,$botId,$clientId,'queue20',$dialogId,$username);
                     }
                     // elseif($message == '6' || str_contains($message, 'Peshawar')){
@@ -72,17 +72,18 @@ class BitrixChatBotController extends Controller
                     // Reply 7 for Rahim Yar Khan:
                     // Reply 6 for Sialkot:
                     $message = "
-                    Hello👋, Welcome to Extreme Commerce! To better assist you, please select your city code from the following options by pressing the corresponding number:
+                    Greetings ".$username."
 
-                    Reply 1 for Karachi:
-                    Reply 2 for Lahore:
-                    Reply 3 for Islamabad:
-                    Reply 4 for Faisalabad:
-                    Reply 5 for Multan:
-                    Reply 0 for other Cities:
+                    We are pleased to welcome you to Skillsrator! To ensure we provide you with the best assistance possible, kindly indicate your city code by selecting the corresponding number:
 
-                    Once you've made your selection, we'll connect you with one of our representatives who can help you with your inquiry.
-                        ";
+                    Reply 5 for Karachi.
+                    Reply 11 for Lahore.
+                    Reply 7 for Islamabad.
+                    Reply 13 for Faisalabad.
+                    Reply 9 for Multan.
+                    Reply 0 for other cities.
+
+                    We will promptly connect you with one of our representatives who will be able to assist you with your inquiry.";
 
                     if($request['data']['PARAMS']['MESSAGE'] != 4){
                         $dialogId = $request['data']['PARAMS']['DIALOG_ID'];
