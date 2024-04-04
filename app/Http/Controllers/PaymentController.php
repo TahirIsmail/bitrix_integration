@@ -89,7 +89,7 @@ class PaymentController extends Controller
 
             $response = Http::get(env('BITRIX_URL').'crm.lead.update.json', [
                     'ID' => $get_invoice->b24lead->b24_lead_id,
-                    'FIELDS[STATUS_ID]' => 'UC_WK7W03',
+                    'FIELDS[STATUS_ID]' => 'UC_VHVLEM',
                     'FIELDS[UF_CRM_1675176428307]' => '1st Installment Plan'
                 ]);
                 // $user = new User();
@@ -107,6 +107,8 @@ class PaymentController extends Controller
 
     public function transactionComptele(Request $request)
     {
+        Log::channel('bitrix')->info('==================Invoice Paid Thank you page=============== ' . Date('Y-m-d H:i:s'));
+        Log::channel('bitrix')->debug($request->all());
         if (isset($request->status)) {
             $curl = curl_init();
             curl_setopt_array($curl, array(
@@ -145,7 +147,7 @@ class PaymentController extends Controller
                                 $field = 'FIELDS[STAGE_ID]';
                                }else{
                                 $b24_id = $incReg->b24_lead_id;
-                                $b24_stage_id = 'UC_WK7W03';
+                                $b24_stage_id = 'UC_VHVLEM';
                                 $b24_action = 'crm.lead';
                                 $field = 'FIELDS[STATUS_ID]';
                                }
