@@ -144,7 +144,7 @@ class PaymentController extends Controller
                 Log::info('=========Incubator Payment Data==========='.$payment);
                 if (isset($payment)) {
 
-                        if ($payment->is_paid) {
+                        if ($payment->is_paid != 1) {
                             $payment->update(['is_paid' => '1','payment_date'=>now()]);
                             $payment->b24lead->update(['status' => 'approved']);
                             if ($payment->b24lead->b24_lead_id != '' || $payment->b24lead->b24_deal_id != '') {
