@@ -141,9 +141,9 @@ class PaymentController extends Controller
 
             if (!empty($data)) {
                 $payment = b24leadsInvoices::where('order_id', $data['orderid'])->orWhere('lead_id',$data['tnxid'])->first();
-                Log::info('=========Incubator Payment Data==========='.$payment);
+                // Log::info('=========Incubator Payment Data==========='.$payment);
                 if (isset($payment)) {
-
+                    Log::info('=========Incubator Payment Data==========='.$payment->is_paid);
                         if ($payment->is_paid != 1) {
                             $payment->update(['is_paid' => '1','payment_date'=>now()]);
                             $payment->b24lead->update(['status' => 'approved']);
