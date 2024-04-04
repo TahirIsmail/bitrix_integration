@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
     <title>Bitrix Lead Form</title>
@@ -786,7 +787,7 @@
                                 <div class="radio_div">
 
 
-                                    <input type="radio" name="preferred_timing" value="Morning,(8AM-4PM)">
+                                    <input type="radio" name="preferred_timing" value="Morning,8AM-4PM">
                                     <label for="preferred_timing">Morning (8AM - 4PM)</label>
                                 </div>
 
@@ -794,13 +795,13 @@
                                 <div class="radio_div">
 
 
-                                    <input type="radio" name="preferred_timing" value="Evening,(4PM-12AM)">
+                                    <input type="radio" name="preferred_timing" value="Evening,4PM-12AM">
                                     <label for="preferred_timing">Evening (4PM - 12AM)</label>
                                 </div>
 
 
                                 <div class="radio_div">
-                                    <input type="radio" name="preferred_timing" value="Night,(12AM-8AM)">
+                                    <input type="radio" name="preferred_timing" value="Night,12AM-8AM">
                                     <label for="preferred_timing">Night (12AM - 8AM)</label>
                                 </div>
 
@@ -823,7 +824,7 @@
                             <h5>Coupon</h5>
                             <div class="input-text">
                                 <div class="input-div">
-                                    <input type="text" name="coupon_code" id="coupon_code" >
+                                    <input type="text" name="coupon_code" id="coupon_code">
                                     <span>Enter Coupon Code </span>
 
                                 </div>
@@ -878,29 +879,15 @@
 
 
 
-                            <h6>Students</h6>
-                            <table id="bottom-table">
-                                <tr>
-                                    <th>
-                                        INCUBATOR CITY</th>
-                                    <th>SHIFT</th>
-                                    <th>SUBSCRIPTION PERIOD</th>
-                                    <th> TOTAL AMOUNT TO DEPOSIT (PKR)</th>
-
-                                </tr>
-                                <tr>
-                                    <td>Lahore</td>
-                                    <td>evening</td>
-                                    <td>1 month</td>
-                                    <td>25,000 PKR</td>
-                                </tr>
-
-
-
-                            </table>
+                            
+                            
 
                         </div>
+                        <h6>Students</h6>
+                        <div id="subscription-table">
 
+
+                        </div>
                         <div class="buttons button_space">
                             <button class="back_button">Back</button>
                             <button class="next_button">Next Step</button>
@@ -1211,6 +1198,37 @@
                     }
                 }
             }
+        });
+    </script>
+    <script type="text/javascript">
+        $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+        $(document).ready(function() {
+            
+            $('#subscription_period').change(function() {
+                var selectedOption = $(this).val();
+                var incubator_city = $('#incubator_city').val();
+                var preferred_timing = $('input[name="preferred_timing"]:checked').val().split(',');
+                $.ajax({
+                    url: '/incubator/calculate',
+                    method: 'POST',
+                    data: {
+                        subscription_period: selectedOption,
+                        incubator_city:incubator_city,
+                        shift:preferred_timing[0],
+                        timing:preferred_timing[1],
+                    },
+                    success: function(response) {
+                        $('#subscription-table').html(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(error);
+                    }
+                });
+            });
         });
     </script>
 </body>

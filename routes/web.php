@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Bitrix_Hooks\BitrixHooksController;
 use App\Http\Controllers\Bitrix_Hooks\BitrixChatBotController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\IncubatorController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,6 +18,10 @@ use App\Http\Controllers\PaymentController;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::prefix('incubator')->group(function (){
+    Route::post('/calculate',[IncubatorController::class,'calculateSubscription']);
 });
 
 Route::prefix('bitrix')->group(function(){
