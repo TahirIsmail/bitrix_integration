@@ -49,7 +49,7 @@ class BitrixCallsService {
     }
 
     public function sendImbotCurlRequest($queryData,$action="add",$method="crm.lead"){
-         $BITRIX_URL = 'https://ice.bitrix24.com/rest/60352/0lfacoma9f89y9k2/';
+         $BITRIX_URL = env('BITRIX_URL');
          $queryUrl              = $BITRIX_URL."$method.$action/";
          $curl                  = curl_init();
          curl_setopt_array($curl, array(
