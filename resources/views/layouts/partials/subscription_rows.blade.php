@@ -1,7 +1,7 @@
 <table id="bottom-table">
 
 
-
+   
 
     <tr>
         <th>
@@ -12,9 +12,9 @@
             
         </tr>
         <tr>
-            <td>Lahore</td>
-            <td>evening</td>
+            <td>{{$city->name}}</td>
+            <td>{{$shift->name}}</td>
             <td>1 month</td>
-            <td>25,000 PKR</td>
+            <td>{{round($charge->amount, 2)}}</td>
         </tr>
     </table>

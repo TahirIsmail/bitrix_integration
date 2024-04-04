@@ -75,6 +75,8 @@ class IncubatorController extends Controller
         $shift = $city->shifts()->where('name',$data['shift'])->first();
         $timing = Timing::where('shift_id',$shift->id)->first();
         $charge = Charge::where('incubator_timings_id',$timing->id)->first();
-        return view('layouts.partials.subscribtion_rows',compact('city','shift','timing','charge'))->render();
+
+        
+        return view('layouts.partials.subscription_rows',compact('city','shift','timing','charge'))->render();
     }
 }
