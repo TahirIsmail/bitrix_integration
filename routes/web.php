@@ -24,12 +24,14 @@ Route::prefix('bitrix')->group(function(){
     Route::any('/create-deal-invoice', 'Bitrix_Hooks\BitrixHooksController@createBitrixDealInvoice');
 });
 Route::any('payment/{id}', [PaymentController::class,'show']);
-Route::prefix('payment')->group(function(){
-    // Route::any('/{id}', [PaymentController::class,'show']);
-    Route::post('/voucher', [PaymentController::class,'transactionComptele']);
-    Route::get('/voucher', [PaymentController::class,'zeroTransactionComptele']);
-    Route::any('/thankyou', [PaymentController::class,'createBitrixInvoice']);
-    Route::get('/incomplete', function () {
-        return View::make("payments.canceled-page");
-    });
-});
+Route::any('payment/voucher', [PaymentController::class,'transactionComptele']);
+Route::any('payment/thankyou', [PaymentController::class,'payment_thankyou']);
+Route::get('/incomplete', function () {
+            return View::make("payments.canceled-page");
+        });
+// Route::prefix('payment')->group(function(){
+//     // Route::any('/{id}', [PaymentController::class,'show']);
+//     Route::get('/voucher', [PaymentController::class,'zeroTransactionComptele']);
+
+//
+// });
