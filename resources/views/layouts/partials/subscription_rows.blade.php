@@ -15,6 +15,7 @@
             <td>{{$city->name}}</td>
             <td>{{$shift->name}}</td>
             <td>1 month</td>
-            <td>{{round($charge->amount, 2)}}</td>
+            <td>{{round($totalAmount, 2)}}</td>
+            {{-- {{$totalAmount}} --}}
         </tr>
     </table>

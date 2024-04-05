@@ -71,12 +71,27 @@ class IncubatorController extends Controller
     public function calculateSubscription(Request $request){
         //shifts  //timings // charges //cities
         $data = $request->all();
+        
         $city  = City::with('shifts.timings')->where('name',$data['incubator_city'])->first();
         $shift = $city->shifts()->where('name',$data['shift'])->first();
         $timing = Timing::where('shift_id',$shift->id)->first();
         $charge = Charge::where('incubator_timings_id',$timing->id)->first();
+        if($data['subscription_period'] == 6){
+            $totalAmount = ((int)($charge->amount)  * (int)($data['subscription_period']));
+            $OffAmount = (int)($totalAmount) * (float)(0.2);
+            $totalAmount = (int)($totalAmount - $OffAmount);
 
+        }
+        elseif($data['subscription_period'] == 3){
+            $totalAmount = ((int)($charge->amount)  * (int)($data['subscription_period']));
+            $OffAmount = (int)($totalAmount) * (float)(0.1);
+            $totalAmount = (int)($totalAmount - $OffAmount);
+
+        }
+        else{
+            $totalAmount = (int)($charge->amount)  * (int)($data['subscription_period']);
+        }
         
-        return view('layouts.partials.subscription_rows',compact('city','shift','timing','charge'))->render();
+        return view('layouts.partials.subscription_rows',compact('city','shift','timing','charge','totalAmount'))->render();
     }
 }
