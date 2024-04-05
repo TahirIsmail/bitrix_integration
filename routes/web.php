@@ -28,7 +28,7 @@ Route::prefix('bitrix')->group(function(){
     Route::any('/deal-created', [BitrixHooksController::class,'dealCreated']);
     Route::any('/create-invoice', [BitrixHooksController::class,'createBitrixInvoice']);
     Route::any('/create-deal-invoice', 'Bitrix_Hooks\BitrixHooksController@createBitrixDealInvoice');
-    Route::any('/chatbot-handler',[BitrixChatBotController::class,'handler']);
+    Route::any('/chatbothandler',[BitrixChatBotController::class,'handler']);
 });
 Route::any('payment/{id}', [PaymentController::class,'show']);
 Route::any('transaction-complete', [PaymentController::class,'transactionComptele']);

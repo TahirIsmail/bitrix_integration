@@ -44,6 +44,7 @@ class BitrixHooksController extends Controller
                     $product_name = $product_result[0]['PRODUCT_NAME'];
                     $price = $product_result[0]['PRICE'];
                 }
+                $product_name = Str::slug($product_name);
                 Log::channel('bitrix')->debug($product_name.' ===> '.$price);
                 $data = b24leads::create([
                     'name'=>$result['NAME'],
