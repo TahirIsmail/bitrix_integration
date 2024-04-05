@@ -689,18 +689,20 @@
                             </div>
 
                             <div class="input-div">
-                                <input type="text" name="email" required>
+                                <input type="text" name="email" id="email" required>
                                 <span>E-mail Address</span>
                             </div>
                         </div>
                         <div class="input-text">
 
                             <div class="input-div">
-                                <input type="text" name="cnic_number" maxlength="15" minlength="15" required>
+                                <input type="text" id="cnic_number" name="cnic_number" maxlength="15" minlength="15"
+                                    required>
                                 <span>CNIC Number</span>
                             </div>
                             <div class="input-div">
-                                <input type="text" name="whatsapp_number" maxlength="11" minlength="11" required>
+                                <input type="text" id="whatsapp_number" name="whatsapp_number" maxlength="11"
+                                    minlength="11" required>
                                 <span>WhatsApp Number</span>
                             </div>
 
@@ -711,7 +713,7 @@
 
 
                             <div class="input-div">
-                                <input type="text" name="facebook_profile" required>
+                                <input type="text" id="facebook_profile" name="facebook_profile" required>
                                 <span>FaceBook Profile </span>
                             </div>
 
@@ -731,12 +733,12 @@
                         <div class="input-text">
 
                             <div class="radio_div">
-                                <input type="radio" id="male" name="gender" value="male" required>
+                                <input type="radio" id="gender" name="gender" value="male" required>
                                 <label for="male">Male</label>
                             </div>
 
                             <div class="radio_div">
-                                <input type="radio" id="female" name="gender" value="female" required>
+                                <input type="radio" id="gender" name="gender" value="female" required>
                                 <label for="female">Female</label>
                             </div>
 
@@ -879,8 +881,8 @@
 
 
 
-                            
-                            
+
+
 
                         </div>
                         <h6>Students</h6>
@@ -890,7 +892,7 @@
                         </div>
                         <div class="buttons button_space">
                             <button class="back_button">Back</button>
-                            <button class="next_button">Next Step</button>
+                            <button class="next_button" id="showSummary">Next Step</button>
                         </div>
                     </div>
 
@@ -911,57 +913,8 @@
                             </div>
                         </div>
 
-                        <div class="s_card">
-                            <p class="s_card-title">Personal Information</p>
-                            <table id="top-table">
+                        <div id="summary">
 
-                                <tr>
-                                    <td>Name : Farhad</td>
-                                    <td>Email : farhad@gmail.com</td>
-
-                                </tr>
-                                <tr>
-                                    <td>Gender : male</td>
-                                    <td>Mobile/WhatsApp No : 03370720725</td>
-
-                                </tr>
-                                <tr>
-                                    <td>CNIC No : 3740518075655</td>
-                                    <td>Facebook Profile : 000000</td>
-
-                                </tr>
-                            </table>
-                            <div class="go-corner">
-                                <div class="go-arrow">2</div>
-                            </div>
-                        </div>
-
-
-                        <div class="s_card">
-                            <p class="s_card-title">Incubator Payment Summary</p>
-
-
-
-                            <table id="top-table">
-                                <tr>
-                                    <th>INCUBATOR CITY</th>
-                                    <th>SHIFT</th>
-                                    <th>SUBSCRIPTION PERIOD</th>
-                                    <th>TOTAL AMOUNT TO DEPOSIT (PKR)</th>
-                                </tr>
-                                <tr>
-                                    <td>Lahore</td>
-                                    <td>evening</td>
-                                    <td>1 month</td>
-                                    <td>25,000 PKR</td>
-                                </tr>
-
-
-
-                            </table>
-                            <div class="go-corner">
-                                <div class="go-arrow">3</div>
-                            </div>
                         </div>
                         <div class="buttons button_space">
                             <button class="back_button">Back</button>
@@ -1202,30 +1155,78 @@
     </script>
     <script type="text/javascript">
         $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
         $(document).ready(function() {
-            
+
             $('#subscription_period').change(function() {
-                var selectedOption = $(this).val();
-                var incubator_city = $('#incubator_city').val();
-                var preferred_timing = $('input[name="preferred_timing"]:checked').val().split(',');
+                let selectedOption = $(this).val();
+                let incubator_city = $('#incubator_city').val();
+                let preferred_timing = $('input[name="preferred_timing"]:checked').val().split(',');
                 $.ajax({
                     url: '/incubator/calculate',
                     method: 'POST',
                     data: {
                         subscription_period: selectedOption,
-                        incubator_city:incubator_city,
-                        shift:preferred_timing[0],
-                        timing:preferred_timing[1],
+                        incubator_city: incubator_city,
+                        shift: preferred_timing[0],
+                        timing: preferred_timing[1],
                     },
                     success: function(response) {
                         $('#subscription-table').html(response);
                     },
                     error: function(xhr, status, error) {
                         console.log(error);
+                    }
+                });
+            });
+
+
+            $(document).on('click', '#showSummary', function() {
+                const userName = $('#user_name').val();
+                const email = $('#email').val();
+                const cnicNumber = $('#cnic_number').val();
+                const whatsappNumber = $('#whatsapp_number').val();
+                const facebookProfile = $('#facebook_profile').val();
+                const preferred_timing = $('input[name="preferred_timing"]:checked').val().split(',');
+                const shift = preferred_timing[0];
+                const timing = preferred_timing[1];
+                // Fetch values using the .attr() method for other elements
+                const gender = $('input[name="gender"]:checked').attr('id');
+                const incubator_city = $('#incubator_city').val();
+
+                const subscriptionPeriod = $('#subscription_period').val();
+                const couponCode = $('#coupon_code').val();
+                const totalAmount = $('#totalAmount').val();
+
+                
+                $.ajax({
+                    url: '{{ url('incubator/summary') }}',
+                    type: 'POST',
+                    data: {
+                        user_name: userName,
+                        email: email,
+                        cnic_number: cnicNumber,
+                        whatsapp_number: whatsappNumber,
+                        facebook_profile: facebookProfile,
+                        gender: gender,
+                        incubator_city: incubator_city,
+                        timing:timing,
+                        shift:shift,
+                        subscription_period: subscriptionPeriod,
+                        coupon_code: couponCode,
+                        totalAmount: totalAmount
+                    },
+                    success: function(response) {
+                        $('#summary').html(response);
+                        Swal.fire("Payment Summary");
+                       
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle any errors that occur during the request
+                        console.error(xhr.responseText);
                     }
                 });
             });
