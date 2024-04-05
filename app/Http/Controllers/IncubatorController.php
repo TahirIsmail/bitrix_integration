@@ -97,6 +97,8 @@ class IncubatorController extends Controller
     }
 
     public function showSummary(Request $request){
-        return view('layouts.partials.incubator_summary');
+        
+        $data = $request->all();
+        return view('layouts.partials.incubator_summary',compact('data'))->render();
     }
 }

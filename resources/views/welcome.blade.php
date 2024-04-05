@@ -1194,12 +1194,12 @@
                 const shift = preferred_timing[0];
                 const timing = preferred_timing[1];
                 // Fetch values using the .attr() method for other elements
-                const gender = $('input[name="gender"]:checked').attr('id');
+                const gender = $('input[name="gender"]:checked').val();
                 const incubator_city = $('#incubator_city').val();
 
                 const subscriptionPeriod = $('#subscription_period').val();
                 const couponCode = $('#coupon_code').val();
-                const totalAmount = $('#totalAmount').val();
+                const totalAmount = $('#totalAmount').text();
 
                 
                 $.ajax({

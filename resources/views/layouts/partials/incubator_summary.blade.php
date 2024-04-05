@@ -3,18 +3,18 @@
     <table id="top-table">
 
         <tr>
-            <td>Name : Farhad</td>
-            <td>Email : farhad@gmail.com</td>
+            <td>Name : {{$data['user_name']}}</td>
+            <td>Email : {{$data['email']}}</td>
 
         </tr>
         <tr>
-            <td>Gender : male</td>
-            <td>Mobile/WhatsApp No : 03370720725</td>
+            <td>Gender : {{$data['gender']}}</td>
+            <td>Mobile/WhatsApp No : {{$data['whatsapp_number']}}</td>
 
         </tr>
         <tr>
-            <td>CNIC No : 3740518075655</td>
-            <td>Facebook Profile : 000000</td>
+            <td>CNIC No : {{$data['cnic_number']}}</td>
+            <td>Facebook Profile : {{$data['facebook_profile']}}</td>
 
         </tr>
     </table>
@@ -37,10 +37,10 @@
             <th>TOTAL AMOUNT TO DEPOSIT (PKR)</th>
         </tr>
         <tr>
-            <td>Lahore</td>
-            <td>evening</td>
-            <td>1 month</td>
-            <td>25,000 PKR</td>
+            <td>{{$data['incubator_city']}}</td>
+            <td>{{$data['shift']}}</td>
+            <td>{{$data['subscription_period']}} month</td>
+            <td>{{$data['totalAmount']}}</td>
         </tr>
 
 
