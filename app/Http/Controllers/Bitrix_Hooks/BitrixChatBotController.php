@@ -43,19 +43,19 @@ class BitrixChatBotController extends Controller
                     }
                     if ($message == '5' || str_contains($message, 'Karachi'))
                     {
-                        return $this->transferChat($chatId,$botId,$clientId,'queue10',$dialogId,$username);
+                        return $this->transferChat($chatId,$botId,$clientId,'queue9',$dialogId,$username);
                     }
                     elseif($message == '11' || str_contains($message, 'Lahore')){
-                        return $this->transferChat($chatId,$botId,$clientId,'queue12',$dialogId);
+                        return $this->transferChat($chatId,$botId,$clientId,'queue11',$dialogId);
                     }
                     elseif($message == '7' || str_contains($message, 'Islamabad')){
-                        return $this->transferChat($chatId,$botId,$clientId,'queue22',$dialogId);
+                        return $this->transferChat($chatId,$botId,$clientId,'queue13',$dialogId);
                     }
                     elseif($message == '13' || str_contains($message, 'Faisalabad')){
-                        return $this->transferChat($chatId,$botId,$clientId,'queue24',$dialogId);
+                        return $this->transferChat($chatId,$botId,$clientId,'queue19',$dialogId);
                     }
                     elseif($message == '9' || str_contains($message, 'Multan')){
-                        return $this->transferChat($chatId,$botId,$clientId,'queue20',$dialogId,$username);
+                        return $this->transferChat($chatId,$botId,$clientId,'15',$dialogId,$username);
                     }
                     // elseif($message == '6' || str_contains($message, 'Peshawar')){
                     //     return $this->transferChat($chatId,$botId,$clientId,'queue16',$dialogId);
