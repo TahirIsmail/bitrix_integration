@@ -9,6 +9,9 @@ use App\Models\Lead;
 use App\Models\Timing;
 use App\Models\Shift;
 use Illuminate\Support\Facades\DB;
+use App\Models\IncubateeSubscription;
+use App\Models\IncubateeSubscriptionDetail;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Builder;
 class IncubatorController extends Controller
 {
@@ -33,7 +36,51 @@ class IncubatorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'user_name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:incubatee_subscriptions,email',
+            'cnic_number' => 'required|string|max:20',
+            'whatsapp_number' => 'required|string|max:20',
+            'facebook_profile' => 'required|string|max:255',
+            'gender' => 'required|string|max:10',
+            'incubator_city' => 'required|string|max:255',
+            'timing' => 'required|string|max:255',
+            'shift' => 'required|string|max:255',
+            'subscription_period' => 'required|integer|max:12',
+            'totalAmount' => 'required|integer|max:9999999',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->first()]);
+        }
+
+        try {
+            $incubateeSubscription = IncubateeSubscription::create([
+                'user_name' => $request->user_name,
+                'email' => $request->email,
+                'cnic_number' => $request->cnic_number,
+                'whatsapp_number' => $request->whatsapp_number,
+                'facebook_profile' => $request->facebook_profile,
+                'gender' => $request->gender,
+                'incubator_city' => $request->incubator_city,
+                'timing' => $request->timing,
+                'shift' => $request->shift,
+                'subscription_period' => $request->subscription_period,
+                'totalAmount' => $request->totalAmount,
+            ]);
+            $city = City::where('name',$request->incubator_city)->first();
+            $incubateeSubscriptionDetail = IncubateeSubscriptionDetail::create([
+                'incubatee_code' => $incubateeSubscription->id + 1000,
+                'incubatee_id' => $incubateeSubscription->id,
+                'timings_or_shift' => $request->timing . ' ' . $request->shift,
+                'city_id' => $city->id,
+                'purpose' => $request->purpose,
+            ]);
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
     }
 
     /**

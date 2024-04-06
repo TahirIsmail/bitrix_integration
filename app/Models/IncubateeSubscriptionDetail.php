@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class IncubateeSubscriptionDetail extends Model
 {
     use HasFactory;
+    protected $guarded = [];
     public function incubatee(){
         return $this->belongsTo(IncubateeSubscriptionDetail::class, 'incubatee_id');
     }

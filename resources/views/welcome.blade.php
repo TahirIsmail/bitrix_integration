@@ -724,7 +724,7 @@
 
 
                             <div class="input-div">
-                                <textarea required></textarea>
+                                <textarea required id="purpose"></textarea>
                                 <span>Purpose / Incubation Reason</span>
                             </div>
 
@@ -813,7 +813,8 @@
                             <div class="input-text">
                                 <div class="input-div">
                                     <select name="subscription_period" id="subscription_period" required>
-                                        <option disabled selected value="">---Choose-Subscription-Period---</option>
+                                        <option disabled selected value="">---Choose-Subscription-Period---
+                                        </option>
                                         <option value="1">1 month</option>
                                         <option value="2">2 month</option>
                                         <option value="3">3 months - 10% off</option>
@@ -961,7 +962,7 @@
 
         next_click.forEach(function(next_click_form) {
             next_click_form.addEventListener('click', function() {
-                alert("its working or not");
+
                 var valid = validateform();
                 if (!valid) {
                     return;
@@ -989,9 +990,77 @@
         var submit_click = document.querySelectorAll(".submit_button");
         submit_click.forEach(function(submit_click_form) {
             submit_click_form.addEventListener('click', function() {
-                shownname.innerHTML = username.value;
-                formnumber++;
-                updateform();
+                const userName = $('#user_name').val();
+                const email = $('#email').val();
+                const cnicNumber = $('#cnic_number').val();
+                const whatsappNumber = $('#whatsapp_number').val();
+                const facebookProfile = $('#facebook_profile').val();
+                const preferred_timing = $('input[name="preferred_timing"]:checked').val().split(',');
+                const shift = preferred_timing[0];
+                const timing = preferred_timing[1];
+
+                const gender = $('input[name="gender"]:checked').val();
+                const incubator_city = $('#incubator_city').val();
+
+                const subscriptionPeriod = $('#subscription_period').val();
+                const couponCode = $('#coupon_code').val();
+                const totalAmount = $('#totalAmount').text();
+                const purpose =  $('#purpose').val();
+
+                $.ajax({
+                    url: '{{ url('incubator/store') }}',
+                    type: 'POST',
+                    data: {
+                        user_name: userName,
+                        email: email,
+                        cnic_number: cnicNumber,
+                        whatsapp_number: whatsappNumber,
+                        facebook_profile: facebookProfile,
+                        gender: gender,
+                        incubator_city: incubator_city,
+                        timing: timing,
+                        shift: shift,
+                        subscription_period: subscriptionPeriod,
+                        coupon_code: couponCode,
+                        purpose:purpose,
+                        totalAmount: totalAmount
+                    },
+                    success: function(response) {
+                        if (response.error) {
+                            Swal.fire({
+                                title: 'Error!',
+                                confirmButtonColor: '#304767',
+                                text: response.error,
+                                icon: 'error',
+                                confirmButtonText: 'Ok',
+                            });
+                            
+                        } else if (response.success) {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: 'Incubatee subscribed successfully.',
+                                icon: 'success',
+                                confirmButtonColor: '#304767',
+                                confirmButtonText: 'OK',
+                            });
+                            shownname.innerHTML = username.value;
+                            formnumber++;
+                            updateform();
+                        }
+
+                        // Swal.fire("Payment Summary");
+
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle any errors that occur during the request
+                        Swal.fire({
+                            confirmButtonColor: '#304767',
+                            text: "Something went wrong"
+                        });
+                        console.error(xhr.responseText);
+                    }
+                });
+
             });
         });
 
@@ -1100,6 +1169,7 @@
                     title: 'Warning!',
                     html: error_message,
                     icon: 'warning',
+                    confirmButtonColor: '#304767',
                     confirmButtonText: 'OK'
                 });
             } else {

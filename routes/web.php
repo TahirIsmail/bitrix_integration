@@ -23,6 +23,7 @@ Route::get('/', function () {
 Route::prefix('incubator')->group(function (){
     Route::post('/calculate',[IncubatorController::class,'calculateSubscription']);
     Route::post('/summary',[IncubatorController::class,'showSummary']);
+    Route::post('/store',[IncubatorController::class,'store']);
 });
 
 Route::prefix('bitrix')->group(function(){
