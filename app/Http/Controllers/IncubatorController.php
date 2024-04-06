@@ -71,11 +71,12 @@ class IncubatorController extends Controller
     public function calculateSubscription(Request $request){
         
         $data = $request->all();
-        
+        $gender = $data['gender'];
         $city  = City::with('shifts.timings')->where('name',$data['incubator_city'])->first();
         $shift = $city->shifts()->where('name',$data['shift'])->first();
         $timing = Timing::where('shift_id',$shift->id)->first();
         $charge = Charge::where('incubator_timings_id',$timing->id)->first();
+        
         $subscription_months = $data['subscription_period'];
         if($data['subscription_period'] == 6){
             $totalAmount = ((int)($charge->amount)  * (int)($data['subscription_period']));
@@ -91,6 +92,18 @@ class IncubatorController extends Controller
         }
         else{
             $totalAmount = (int)($charge->amount)  * (int)($data['subscription_period']);
+        }
+        if($gender == 'male' && $shift->name == 'Night'){
+           
+            $OffAmount = (int)($totalAmount) * (float)(0.5);
+            $totalAmount = (int)($totalAmount - $OffAmount);
+
+
+        }
+        if($gender == 'female' && ($shift->name == 'Morning' || $shift->name == 'Evening')){
+            
+            $OffAmount = (int)($totalAmount) * (float)(0.6);
+            $totalAmount = (int)($totalAmount - $OffAmount);
         }
         
         return view('layouts.partials.subscription_rows',compact('city','shift','timing','charge','totalAmount','subscription_months'))->render();

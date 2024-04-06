@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('incubatee_subscription_details', function (Blueprint $table) {
             $table->id();
-            $table->string('incubatee_code');
+            $table->unsignedBigInteger('incubatee_code');
             $table->unsignedBigInteger('incubatee_id');
             $table->string('timings_or_shift');
             $table->unsignedBigInteger('city_id');
-            $table->string('purpose');
+            $table->string('purpose')->nullable();
             
 
             $table->foreign('incubatee_id')->references('id')->on('incubatee_subscriptions');

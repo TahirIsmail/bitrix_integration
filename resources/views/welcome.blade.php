@@ -1303,7 +1303,7 @@
                     },
                     success: function(response) {
                         $('#summary').html(response);
-                        Swal.fire("Payment Summary");
+                        // Swal.fire("Payment Summary");
 
                     },
                     error: function(xhr, status, error) {
