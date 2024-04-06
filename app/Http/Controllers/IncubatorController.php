@@ -62,19 +62,24 @@ class IncubatorController extends Controller
                 'whatsapp_number' => $request->whatsapp_number,
                 'facebook_profile' => $request->facebook_profile,
                 'gender' => $request->gender,
-                'incubator_city' => $request->incubator_city,
-                'timing' => $request->timing,
-                'shift' => $request->shift,
-                'subscription_period' => $request->subscription_period,
-                'totalAmount' => $request->totalAmount,
+                
             ]);
+            $currentDate = date('Y-m-d');
             $city = City::where('name',$request->incubator_city)->first();
             $incubateeSubscriptionDetail = IncubateeSubscriptionDetail::create([
                 'incubatee_code' => $incubateeSubscription->id + 1000,
                 'incubatee_id' => $incubateeSubscription->id,
-                'timings_or_shift' => $request->timing . ' ' . $request->shift,
+                'timings' => $request->timing,
+                'shift' => $request->shift,
                 'city_id' => $city->id,
                 'purpose' => $request->purpose,
+                'city' => $request->incubator_city,
+                'timing' => $request->timing,
+                'shift' => $request->shift,
+                'subscription_period' => $request->subscription_period.' '.'months',
+                'totalAmount' => $request->totalAmount,
+                'joining_date' => $currentDate,
+                'expiry_date' => date('Y-m-d', strtotime($currentDate . ' + 30 days')),
             ]);
 
             return response()->json(['success' => true]);

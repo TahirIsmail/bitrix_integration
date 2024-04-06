@@ -14,14 +14,20 @@ return new class extends Migration
         Schema::create('incubatee_subscription_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('incubatee_code');
-            $table->unsignedBigInteger('incubatee_id');
-            $table->string('timings_or_shift');
-            $table->unsignedBigInteger('city_id');
+            $table->unsignedBigInteger('incubatee_id')->unsigned()->default(0);
+            $table->foreign('incubatee_id')->references('id')->on('incubatee_subscriptions');
+            $table->string('timings');
+            $table->string('shift');
+            $table->unsignedBigInteger('city_id')->unsigned()->default(0);
+            $table->foreign('city_id')->references('id')->on('incubator_cities');
             $table->string('purpose');
-            
-
-            $table->foreign('incubatee_id')->references('id')->on('incubatee_subscriptions')->onDelete('cascade');
-            $table->foreign('city_id')->references('id')->on('incubator_cities')->onDelete('cascade');
+            $table->string('city');
+            $table->string('timing');
+            $table->string('subscription_period');
+            $table->enum('status', ['pending', 'unpaid', 'approved', 'active', 'rejected', 'expired', 'refund'])->default('pending');
+            $table->decimal('totalAmount', 10, 2);
+            $table->date('joining_date')->default(date('Y-m-d'));
+            $table->date('expiry_date')->default(date('Y-m-d', strtotime('+30 days')));
             $table->timestamps();
         });
     }

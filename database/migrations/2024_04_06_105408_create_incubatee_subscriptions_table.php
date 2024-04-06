@@ -19,11 +19,6 @@ return new class extends Migration
             $table->string('whatsapp_number')->nullable();
             $table->string('facebook_profile')->nullable();
             $table->string('gender')->nullable();
-            $table->string('incubator_city')->nullable();
-            $table->string('timing')->nullable();
-            $table->string('shift')->nullable();
-            $table->string('subscription_period')->nullable();
-            $table->decimal('totalAmount', 8, 2)->nullable();
             $table->timestamps();
         });
     }
@@ -41,11 +36,6 @@ return new class extends Migration
                 'whatsapp_number',
                 'facebook_profile',
                 'gender',
-                'incubator_city',
-                'timing',
-                'shift',
-                'subscription_period',
-                'totalAmount',
             ]);
         });
         Schema::dropIfExists('incubatee_subscriptions');
