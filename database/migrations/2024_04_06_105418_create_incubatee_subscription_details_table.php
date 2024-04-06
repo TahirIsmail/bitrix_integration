@@ -18,6 +18,9 @@ return new class extends Migration
             $table->foreign('incubatee_id')->references('id')->on('incubatee_subscriptions');
             $table->string('timings');
             $table->string('shift');
+
+
+            
             $table->unsignedBigInteger('city_id')->unsigned()->default(0);
             $table->foreign('city_id')->references('id')->on('incubator_cities');
             $table->string('purpose');
