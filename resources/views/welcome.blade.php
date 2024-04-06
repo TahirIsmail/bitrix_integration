@@ -789,7 +789,7 @@
                                 <div class="radio_div">
 
 
-                                    <input type="radio" name="preferred_timing" value="Morning,8AM-4PM">
+                                    <input type="radio" name="preferred_timing" value="Morning,8AM-4PM" required>
                                     <label for="preferred_timing">Morning (8AM - 4PM)</label>
                                 </div>
 
@@ -797,13 +797,13 @@
                                 <div class="radio_div">
 
 
-                                    <input type="radio" name="preferred_timing" value="Evening,4PM-12AM">
+                                    <input type="radio" name="preferred_timing" value="Evening,4PM-12AM" required>
                                     <label for="preferred_timing">Evening (4PM - 12AM)</label>
                                 </div>
 
 
                                 <div class="radio_div">
-                                    <input type="radio" name="preferred_timing" value="Night,12AM-8AM">
+                                    <input type="radio" name="preferred_timing" value="Night,12AM-8AM" required>
                                     <label for="preferred_timing">Night (12AM - 8AM)</label>
                                 </div>
 
@@ -1097,6 +1097,7 @@
             var validate_inputs = document.querySelectorAll(".main.active input[required]");
             var validate_selects = document.querySelectorAll(".main.active select[required]");
             var validate_radios = document.querySelectorAll(".main.active input[type='radio'][required]");
+            
             var empty_fields = [];
             var invalid_fields = [];
 
@@ -1292,7 +1293,9 @@
             $('#subscription_period').change(function() {
                 let selectedOption = $(this).val();
                 let incubator_city = $('#incubator_city').val();
+                
                 let preferred_timing = $('input[name="preferred_timing"]:checked').val().split(',');
+                
                 let gender = $('input[name="gender"]:checked').val();
 
 
