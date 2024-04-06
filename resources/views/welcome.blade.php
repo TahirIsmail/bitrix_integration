@@ -773,7 +773,7 @@
                             <div class="input-text">
                                 <div class="input-div">
                                     <select required name="incubator_city" id="incubator_city">
-                                        <option>---Choose-Incubator-City---</option>
+                                        <option disabled>---Choose-Incubator-City---</option>
                                         <option value="Lahore">Lahore</option>
                                         <option value="Karachi">Karachi</option>
                                         <option value="Islamabad-Rawalpindi">Islamabad-Rawalpindi</option>
@@ -812,8 +812,8 @@
                             <h5>Subscription Period</h5>
                             <div class="input-text">
                                 <div class="input-div">
-                                    <select name="subscription_period" id="subscription_period">
-                                        <option>---Choose-Subscription-Period---</option>
+                                    <select name="subscription_period" id="subscription_period" required>
+                                        <option disabled>---Choose-Subscription-Period---</option>
                                         <option value="1">1 month</option>
                                         <option value="2">2 month</option>
                                         <option value="3">3 months - 10% off</option>
@@ -823,7 +823,7 @@
                                 </div>
                             </div>
 
-                            <h5>Coupon</h5>
+                            {{-- <h5>Coupon</h5>
                             <div class="input-text">
                                 <div class="input-div">
                                     <input type="text" name="coupon_code" id="coupon_code">
@@ -835,7 +835,7 @@
                                 </div>
 
 
-                            </div>
+                            </div> --}}
 
                         </div>
 
@@ -961,6 +961,7 @@
 
         next_click.forEach(function(next_click_form) {
             next_click_form.addEventListener('click', function() {
+                alert("its working or not");
                 var valid = validateform();
                 if (!valid) {
                     return;
@@ -1025,37 +1026,92 @@
         function validateform() {
             var validate = true;
             var validate_inputs = document.querySelectorAll(".main.active input[required]");
-            var validate_selects = document.querySelectorAll(".main.active select[required]")
+            var validate_selects = document.querySelectorAll(".main.active select[required]");
+            var validate_radios = document.querySelectorAll(".main.active input[type='radio'][required]");
             var empty_fields = [];
+            var invalid_fields = [];
+
             validate_inputs.forEach(function(vaildate_input) {
                 vaildate_input.classList.remove('warning');
                 if (vaildate_input.value.trim() === '') {
                     validate = false;
                     vaildate_input.classList.add('warning');
                     empty_fields.push(vaildate_input.getAttribute('name') || vaildate_input.getAttribute('id'));
+                    console.log("Value of " + (vaildate_input.getAttribute('name') || vaildate_input.getAttribute(
+                        'id')) + " is empty");
+                } else if (vaildate_input.id === 'whatsapp_number' && !validateNumber(vaildate_input.value)) {
+                    validate = false;
+                    vaildate_input.classList.add('warning');
+                    invalid_fields.push(vaildate_input.getAttribute('name') || vaildate_input.getAttribute('id'));
+                    console.log("Value of " + (vaildate_input.getAttribute('name') || vaildate_input.getAttribute(
+                        'id')) + " is not a valid number");
+                } else {
+                    console.log("Value of " + (vaildate_input.getAttribute('name') || vaildate_input.getAttribute(
+                        'id')) + " is " + vaildate_input.value);
                 }
             });
+
             validate_selects.forEach(function(validate_select) {
                 validate_select.classList.remove('warning');
                 if (validate_select.value.trim() === '') {
                     validate = false;
                     validate_select.classList.add('warning');
                     empty_fields.push(validate_select.getAttribute('name') || validate_select.getAttribute('id'));
+                    console.log("Value of " + (validate_select.getAttribute('name') || validate_select.getAttribute(
+                        'id')) + " is empty");
+                } else {
+                    console.log("Value of " + (validate_select.getAttribute('name') || validate_select.getAttribute(
+                        'id')) + " is " + validate_select.value);
                 }
             });
 
-            if (!validate) {
+            var radioGroups = {};
+            validate_radios.forEach(function(validate_radio) {
+                validate_radio.classList.remove('warning');
+                if (!radioGroups[validate_radio.name]) {
+                    radioGroups[validate_radio.name] = false;
+                }
+                if (validate_radio.checked) {
+                    radioGroups[validate_radio.name] = validate_radio.value;
+                }
+            });
+
+            Object.keys(radioGroups).forEach(function(group) {
+                if (!radioGroups[group]) {
+                    validate = false;
+                    console.log("No radio button checked in group " + group);
+                } else {
+                    console.log("Radio button group " + group + " is checked with value " + radioGroups[group]);
+                }
+            });
+
+            if (empty_fields.length > 0 || invalid_fields.length > 0) {
+                var error_message = '';
+                if (empty_fields.length > 0) {
+                    error_message += 'Please fill in all required fields:<br>' + empty_fields.join(', ');
+                }
+                if (invalid_fields.length > 0) {
+                    if (error_message !== '') {
+                        error_message += '<br>';
+                    }
+                    error_message += 'Please correct the following invalid fields:<br>' + invalid_fields.join(', ');
+                }
                 Swal.fire({
                     title: 'Warning!',
-                    html: 'Please fill in all required fields:<br>' + empty_fields.join(', '),
+                    html: error_message,
                     icon: 'warning',
                     confirmButtonText: 'OK'
                 });
+            } else {
+                console.log("Validation successful");
             }
 
             return validate;
         }
-        // Get all the form elements
+
+        function validateNumber(number) {
+            return /^\d{11}$/.test(number);
+        }
     </script>
 
     <script type="text/javascript">
@@ -1160,17 +1216,43 @@
             }
         });
         $(document).ready(function() {
-
+            $('#incubator_city, input[name="preferred_timing"]').on('change', function() {
+                $('#subscription_period').val('');
+            });
             $('#subscription_period').change(function() {
                 let selectedOption = $(this).val();
                 let incubator_city = $('#incubator_city').val();
                 let preferred_timing = $('input[name="preferred_timing"]:checked').val().split(',');
+                let gender = $('input[name="gender"]:checked').val();
+
+
+                if (!selectedOption || selectedOption.trim() === '') {
+                    $(this).val('');
+                    alert('Please select an option.');
+                    $(this).focus();
+                }
+
+                if (!incubator_city || incubator_city.trim() === '') {
+                    $('#incubator_city').val('');
+                    alert('Please enter the incubator city.');
+                    $('#incubator_city').focus();
+                }
+
+                if (!preferred_timing || preferred_timing[0].trim() === '' || preferred_timing[1].trim() ===
+                    '') {
+                    $('input[name="preferred_timing"]').prop('checked', false);
+                    alert('Please select a preferred timing.');
+                    $('input[name="preferred_timing"]').eq(0).focus();
+                }
+
+
                 $.ajax({
                     url: '/incubator/calculate',
                     method: 'POST',
                     data: {
                         subscription_period: selectedOption,
                         incubator_city: incubator_city,
+                        gender: gender,
                         shift: preferred_timing[0],
                         timing: preferred_timing[1],
                     },
@@ -1193,7 +1275,7 @@
                 const preferred_timing = $('input[name="preferred_timing"]:checked').val().split(',');
                 const shift = preferred_timing[0];
                 const timing = preferred_timing[1];
-                // Fetch values using the .attr() method for other elements
+
                 const gender = $('input[name="gender"]:checked').val();
                 const incubator_city = $('#incubator_city').val();
 
@@ -1201,7 +1283,7 @@
                 const couponCode = $('#coupon_code').val();
                 const totalAmount = $('#totalAmount').text();
 
-                
+
                 $.ajax({
                     url: '{{ url('incubator/summary') }}',
                     type: 'POST',
@@ -1213,8 +1295,8 @@
                         facebook_profile: facebookProfile,
                         gender: gender,
                         incubator_city: incubator_city,
-                        timing:timing,
-                        shift:shift,
+                        timing: timing,
+                        shift: shift,
                         subscription_period: subscriptionPeriod,
                         coupon_code: couponCode,
                         totalAmount: totalAmount
@@ -1222,7 +1304,7 @@
                     success: function(response) {
                         $('#summary').html(response);
                         Swal.fire("Payment Summary");
-                       
+
                     },
                     error: function(xhr, status, error) {
                         // Handle any errors that occur during the request

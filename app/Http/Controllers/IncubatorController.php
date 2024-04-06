@@ -69,7 +69,7 @@ class IncubatorController extends Controller
     }
 
     public function calculateSubscription(Request $request){
-        //shifts  //timings // charges //cities
+        
         $data = $request->all();
         
         $city  = City::with('shifts.timings')->where('name',$data['incubator_city'])->first();
