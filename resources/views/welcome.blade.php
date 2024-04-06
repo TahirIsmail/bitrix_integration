@@ -773,7 +773,7 @@
                             <div class="input-text">
                                 <div class="input-div">
                                     <select required name="incubator_city" id="incubator_city">
-                                        <option disabled>---Choose-Incubator-City---</option>
+                                        <option disabled selected value="">---Choose-Incubator-City---</option>
                                         <option value="Lahore">Lahore</option>
                                         <option value="Karachi">Karachi</option>
                                         <option value="Islamabad-Rawalpindi">Islamabad-Rawalpindi</option>
@@ -813,7 +813,7 @@
                             <div class="input-text">
                                 <div class="input-div">
                                     <select name="subscription_period" id="subscription_period" required>
-                                        <option disabled>---Choose-Subscription-Period---</option>
+                                        <option disabled selected value="">---Choose-Subscription-Period---</option>
                                         <option value="1">1 month</option>
                                         <option value="2">2 month</option>
                                         <option value="3">3 months - 10% off</option>
