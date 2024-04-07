@@ -142,8 +142,8 @@ class Helper
                   curl_close($curl);
                   $voucherNo = '0';
                   $voucher_path = '';
-                  Log::channel('bitrix')->debug(json_decode($response));
                   $response = json_decode($response);
+                  Log::channel('bitrix')->debug($response);
                   if (isset($response->vouchers)) {
                     $voucherNo = $response->vouchers[0];
                     }
