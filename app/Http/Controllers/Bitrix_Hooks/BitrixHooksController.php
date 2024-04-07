@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Bitrix_Hooks;
 
 use Log;
+use Helper;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -29,7 +30,16 @@ class BitrixHooksController extends Controller
 
 
          if (isset($request['auth']) AND $request['auth']['domain'] == 'ice.bitrix24.com') {
-            if($request['program'] == 'Trainings') {
+            $inoviceLink = null;
+            if($request['program'] == 'Incubator'){
+                $registration = IncubateeSubscriptionDetail::where('b24_lead_id',$request['lead_id'])->first();
+                $getResponse = generateIncubatorInvoice($registration);
+                if($getResponse['response'] == 'success'){
+                    $inoviceLink = $getResponse['invoice'];
+                }
+                Log::channel('bitrix')->debug(['payment'=>$inoviceLink]);
+            }
+            elseif($request['program'] == 'Trainings') {
                 $leadID = $request['lead_id'];
                 $getData = $this->bitrixCall->sendCurlRequest(['ID' => $leadID],'get','crm.lead');
                 Log::channel('bitrix')->debug($getData);
@@ -66,17 +76,15 @@ class BitrixHooksController extends Controller
                 ]);
 
                 $inoviceLink = env('APP_URL') . 'payment/' . $invoice->id;
-
-                $data1=[
-                      'ID' => $leadID,
-                      'FIELDS[UF_CRM_1711712382]' => $inoviceLink, // Payment Link
-                      'FIELDS[UF_CRM_1707731587]' => '1st Installment', // Payment Link
-                  ];
-                    $queryData1   = http_build_query($data1);
-                    $ret =  $this->bitrixCall->sendCurlRequest($queryData1,"update","crm.lead");
-                    Log::channel('bitrix')->debug($ret);
             }
-
+            $data1=[
+                'ID' => $leadID,
+                'FIELDS[UF_CRM_1711712382]' => $inoviceLink, // Payment Link
+                'FIELDS[UF_CRM_1707731587]' => '1st Installment', // Payment Link
+            ];
+              $queryData1   = http_build_query($data1);
+              $ret =  $this->bitrixCall->sendCurlRequest($queryData1,"update","crm.lead");
+              Log::channel('bitrix')->debug($ret);
          }
          return response()->json(['status'=>200,'success'=>true]);
 
