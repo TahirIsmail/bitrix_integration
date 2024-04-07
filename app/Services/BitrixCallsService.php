@@ -134,7 +134,7 @@ class BitrixCallsService {
         // $fields['UTM_SOURCE']        = $request->pi_utm_source;
         // $fields['UTM_MEDIUM']        =  $request->pi_utm_medium;
         // $fields['UTM_CAMPAIGN']      = $request->pi_utm_campaign;
-        $fields['UF_CRM_1675331286'] = Helper::incubatoSubscriptionTypeBitrixId($data->subscription_period);
+        $fields['UF_CRM_1707476450'] = Helper::incubatoSubscriptionTypeBitrixId($data->subscription_period);
         $fields['UF_CRM_1707475905'] = $preferredTiming;
         // $fields['UF_CRM_1664188710'] = $bitrixBcStdId;
         $fields['UF_CRM_1710672374'] = $batch; //Batch
