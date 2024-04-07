@@ -13,7 +13,8 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'bitrix/create-invoice',
-        'deal-created',
+        'bitrix/deal-created',
+        'bitrix/incubation-activation',
         'bitrix/chatbothandler',
         'payment',
         'transaction-complete',

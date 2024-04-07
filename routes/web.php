@@ -28,6 +28,7 @@ Route::prefix('incubator')->group(function (){
 
 Route::prefix('bitrix')->group(function(){
     Route::any('/deal-created', [BitrixHooksController::class,'dealCreated']);
+    Route::any('/incubation-activation', [BitrixHooksController::class,'dealCreated']);
     Route::any('/create-invoice', [BitrixHooksController::class,'createBitrixInvoice']);
     Route::any('/create-deal-invoice', 'Bitrix_Hooks\BitrixHooksController@createBitrixDealInvoice');
     Route::any('/chatbothandler',[BitrixChatBotController::class,'handler']);

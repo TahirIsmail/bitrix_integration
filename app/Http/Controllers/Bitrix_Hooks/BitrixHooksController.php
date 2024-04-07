@@ -147,4 +147,70 @@ class BitrixHooksController extends Controller
         }
     }
 
+    public function incubationActivation(Request $request)
+    {
+        try {
+             Log::channel('bitrix')->info('==================Bitrix Incubation Activation Started=============== ' . Date('Y-m-d H:i:s'));
+             Log::channel('bitrix')->debug(request()->all());
+
+             if (isset($request['auth']) AND $request['auth']['domain'] == 'ice.bitrix24.com') {
+                $dealID = $request['deal_id'];
+                $joining_date = Carbon::createFromFormat('d/m/Y', $request['joining_date'])->toDateString();
+                $contract = ($request['contract'] == 'Yes')?1:0;
+                $card_issue = ($request['card_issue'] == 'Yes')?1:0;
+                $card_no = ($request['card_no'] == 'Yes')?1:0;
+                $snap_form = ($request['snap_form'] == 'Yes')?1:0;
+                $added_whatsapp = ($request['added_whatsapp'] == 'Yes')?1:0;
+            if (($request['program'] == 'Incubator' OR $request['program'] == 'Incubation Online' OR $request['program'] == 'Co-working Space'))
+            {
+                  $registration = IncubateeSubscriptionDetail::where([
+                         'b24_deal_id' => $dealID,
+                     ])->first();
+                  if ($registration->status == 'active') {
+                    Log::channel('bitrix')->info('Incubation Already Activated');
+                    return false;
+                  }
+                  $exp = IncubateeSubscriptionDetail::where('user_id', $registration->user_id)->latest('id')->skip(1)->first();
+                  $expiry_date = null;
+                  $getRemainingDays = 0;
+                  if (isset($exp) && !empty($exp) && $exp->status == 'approved' && (now()->toDateString() < Carbon::parse($exp->expiry_date)->toDateString())) {
+                        $data = date_diff(date_create($exp->expiry_date), date_create(now()->toDateString()));
+                    $getRemainingDays = $data->days;
+                  }
+                  $mode = explode(' ',$registration->subscription_period);
+                  $expiry_date = null;
+                  $days = $getRemainingDays;
+                  if (isset($mode[0]) and $mode[0] != '') {
+                  $expiry_date = Carbon::parse($joining_date)->addMonthsNoOverflow($mode[0])->addDays($days)->toDateString();
+                  }
+                  $registration->expiry_date = $expiry_date;
+                  $registration->joining_at = $joining_date;
+                //   $registration->joining_status = 2;
+                  $registration->contract_addendum_signed = $contract;
+                  $registration->issued_card = $card_issue;
+                  $registration->card_no = $card_no;
+                  $registration->snap_form_filled = $snap_form;
+                  $registration->added_in_whatsApp_groups = $added_whatsapp;
+
+                  $registration->push();
+
+                    $data = [
+                        'ID' => $dealID,
+                        'FIELDS[CLOSEDATE]' => $expiry_date,
+                        'FIELDS[UF_CRM_65CDE15B72DC4]' => $expiry_date,
+                        'FIELDS[UF_CRM_1679135173]' => 'Activated',
+                    ];
+                    $res = $this->bitrixCall->sendCurlRequest(http_build_query($data),"update","crm.deal");
+
+                    Log::channel('bitrix')->debug($data);
+              }
+             }
+             return response()->json(['status'=>200,'success'=>true]);
+
+            } catch (Exception $e) {
+                Log::info($e->getMessage());
+                throw new ApiOperationFailedException($e->getMessage(), $e->getCode());
+            }
+    }
+
 }
