@@ -123,7 +123,7 @@ class Helper
                   $fieldsData = http_build_query($fieldsData);
                   $curl = curl_init();
                   curl_setopt_array($curl, array(
-                      CURLOPT_URL => "https://pay.skillsrator.com/api/kuickpay2/vouchers/create",
+                      CURLOPT_URL => "https://pay.skillsrator.com/api/vouchers/create",
                       CURLOPT_RETURNTRANSFER => true,
                       CURLOPT_ENCODING => '',
                       CURLOPT_MAXREDIRS => 10,
