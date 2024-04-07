@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\b24leads;
 use App\Models\b24leadsInvoices;
+use App\Models\IncubateeSubscriptionDetail;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\Controller;
 use App\Services\BitrixCallsService;
