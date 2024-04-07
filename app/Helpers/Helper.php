@@ -113,7 +113,7 @@ class Helper
                       "customer_ip" => request()->ip(), //"192.100.2.15",
                       "txn_platform_return_url" => url("transaction-complete"),
                   );
-                  Log::channel('bitrix')->debug($data);
+
                   $plaintext = http_build_query($data);
                   if (in_array($cipher, openssl_get_cipher_methods())) {
                       $ciphertext = openssl_encrypt($plaintext, $cipher, $key, $options = 0, $iv, $tag);
@@ -142,6 +142,7 @@ class Helper
                   curl_close($curl);
                   $voucherNo = '0';
                   $voucher_path = '';
+                  Log::channel('bitrix')->debug(json_decode($response));
                   $response = json_decode($response);
                   if (isset($response->vouchers)) {
                     $voucherNo = $response->vouchers[0];
