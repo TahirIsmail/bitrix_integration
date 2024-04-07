@@ -106,7 +106,7 @@ class BitrixHooksController extends Controller
             Log::channel('bitrix')->debug(['contact_id'=>$request['contact_id']]);
             $leadID = $request['lead_id'];
 
-        if($request['program'] == 'Managed Services') {
+        if($request['program'] == 'Trainings') {
               $registration = b24leads::where([
                      'b24_lead_id' => $leadID
                  ])->first();
@@ -121,23 +121,23 @@ class BitrixHooksController extends Controller
             // $inc->incubator->status = 1;
             $inc->push();
 
-            // $getData = $this->bitrixCall->sendCurlRequest(['ID' => $leadID],'get','crm.lead');
-            // $result = $getData['result'];
-            // $data1=[
-            //         'ID' => $request['deal_id'],
-            //         'FIELDS[CURRENCY_ID]' => 'PKR',
-            //         'FIELDS[UF_CRM_1664375027]' => $inc->city->bitrix_city_id,
-            //         'FIELDS[UF_CRM_1664375057]' => 28,
-            //         'FIELDS[OPPORTUNITY]' => $inc->amount_deposit, // Payment Link
-            //       ];
-            // $queryData1   = http_build_query($data1);
-            // $this->bitrixCall->sendCurlRequest($queryData1,"update","crm.deal");
+            $getData = $this->bitrixCall->sendCurlRequest(['ID' => $leadID],'get','crm.lead');
+            $result = $getData['result'];
+            $data1=[
+                    'ID' => $request['deal_id'],
+                    'FIELDS[CURRENCY_ID]' => 'PKR',
+                    'FIELDS[UF_CRM_65CDE15B27F5D]' => $inc->city_id,
+                    // 'FIELDS[UF_CRM_1664375057]' => 28,
+                    'FIELDS[OPPORTUNITY]' => $inc->totalAmount, // Payment Link
+                  ];
+            $queryData1   = http_build_query($data1);
+            $this->bitrixCall->sendCurlRequest($queryData1,"update","crm.deal");
 
-            // $products = array(["PRODUCT_ID" => $inc->city->bitrix_product_id, "PRICE" => $inc->amount_deposit, "QUANTITY" => 1]);
+            $products = array(["PRODUCT_ID" => Helper::incubatorCityBitrixId($inc->city_id), "PRICE" => $inc->totalAmount, "QUANTITY" => 1]);
 
-            // $product['id']   = $request['deal_id'];
-            // $product['rows'] = $products;
-            // $this->bitrixCall->sendCurlRequest(http_build_query($product),'set','crm.deal.productrows');
+            $product['id']   = $request['deal_id'];
+            $product['rows'] = $products;
+            $this->bitrixCall->sendCurlRequest(http_build_query($product),'set','crm.deal.productrows');
           }
          }
          return response()->json(['status'=>200,'success'=>true]);

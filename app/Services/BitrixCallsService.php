@@ -149,18 +149,18 @@ class BitrixCallsService {
     public function createIncDeal($registration,$data)
     {
         Log::channel('bitrix')->info('==================Bitrix Auto Assign Incubator Deal Create Start=============== ' . Date('Y-m-d H:i:s'));
-        $bitrixBcStdId = ((Helper::isBootCampStd($data->incubatee->tags) == true) ? 1142 : 1144);
-        if (strpos($data->incubatee->email, 'ecc.edu.pk') !== false) {
-            $bitrixBcStdId = 1158;
-        }
-        $subCategory = '';
-        if ($registration->program->id == 3 || $registration->program->id == 6 || $registration->program->id == 7)
-        {
-        $subCategory = (($registration->program->id == 3)?1150:(($registration->program->id == 6)?1146:1148));
-        }
+        // $bitrixBcStdId = ((Helper::isBootCampStd($data->incubatee->tags) == true) ? 1142 : 1144);
+        // if (strpos($data->incubatee->email, 'ecc.edu.pk') !== false) {
+        //     $bitrixBcStdId = 1158;
+        // }
+        // $subCategory = '';
+        // if ($registration->program->id == 3 || $registration->program->id == 6 || $registration->program->id == 7)
+        // {
+        // $subCategory = (($registration->program->id == 3)?1150:(($registration->program->id == 6)?1146:1148));
+        // }
 
         //Check if he is already contact of bitrix
-        $getData = Http::get('https://extremecommerce.bitrix24.com/rest/18/hu74sl94xow1jvh2/crm.contact.list', ['FILTER[EMAIL]' => $data->incubatee->email]);
+        $getData = Http::get(env('BITRIX_URL').'crm.contact.list', ['FILTER[EMAIL]' => $data->incubatee->email]);
         if (!empty(json_decode($getData)->result)) {
             $fields['CONTACT_ID'] = json_decode($getData)->result[0]->ID;
         } else {
@@ -178,23 +178,21 @@ class BitrixCallsService {
         $fields['STATUS_ID']            = 'C14:NEW';
         $fields['CURRENCY_ID']          = 'PKR';
         $fields['OPPORTUNITY']          = $data->totalAmount;
-        $fields['UF_CRM_1664375027']    = $data->city->bitrix_city_id;
-        $fields['UF_CRM_1664375057']    = 28; //country Pakistan only
-        $fields['UF_CRM_1664374997']    = (($data->incubatee->gender == 'male') ? 18 : 20);
+        $fields['UF_CRM_65CDE15B27F5D']    = Helper::incubatorCityBitrixId($data->city_id); //done
+        // $fields['UF_CRM_1664375057']    = 28; //country Pakistan only
+        $fields['UF_CRM_1664374997']    = (($data->incubatee->gender == 'male') ? 2521 : 2523);
         $fields['UF_CRM_1664030660']    = $data->incubatee->date_of_birth ?? '';
         $fields['UF_CRM_1664375199']    = 50; //Incubator Only Program
         $fields['UF_CRM_1663458377297'] = $data->incubatee->facebook_profile;
-        $fields['UF_CRM_63D8F2FB6E2BE'] = $data->incubatee->cnic_number;
+        $fields['UF_CRM_1707992744'] = $data->incubatee->cnic_number;//done
         $fields['UF_CRM_1675251200'] = $data->coupon;
-        $fields['UF_CRM_1675331322'] = Helper::incubatoSubscriptionTypeBitrixId($data->subscription_period);
-        $fields['UF_CRM_1671005865'] = ($data->shift == 'day')?1632:(($data->shift == 'evening')?1634:1636);
-        $fields['UF_CRM_1664375287'] = $subCategory;
-        $fields['UF_CRM_1664375250'] = $bitrixBcStdId;
-        $fields['UF_CRM_6346CD7E3D06C'] = '';
-        $fields['UF_CRM_1675846599826'] = @$data->city->code.'-'.@$data->incubator->incubatee_code;
-        $fields['UF_CRM_1675176530'] = '1st Installment Plan';
+        $fields['UF_CRM_65CDE15B4C69F'] = Helper::incubatoSubscriptionTypeBitrixId($data->subscription_period);//done
+        $fields['UF_CRM_65CDE15AE2C0F'] = (($data->shift == 'day')?1:(($data->shift == 'evening')?3:5));//done
+        // $fields['UF_CRM_6346CD7E3D06C'] = '';
+        // $fields['UF_CRM_1675846599826'] = @$data->city->code.'-'.@$data->incubator->incubatee_code;
+        $fields['UF_CRM_65CDE15B5E754'] = '1st Installment Plan';//done
         $fields['UF_CRM_1677148403'] = (($data->isHavingDiscount())?'More than 6 month 50% discount.':'');
-        $fields['UF_CRM_1664375219'] = 'INC'.now()->format('MY'); //Batch
+        $fields['UF_CRM_66128DD3272B1'] = 'INC'.now()->format('MY'); //Batch
         $products = array(["PRODUCT_ID" => Helper::incubatorCityBitrixId($data->city_id), "PRICE" => $data->totalAmount, "QUANTITY" => 1]);
         $fields = array('fields'=>$fields);
         $dealId = $this->sendRequest($fields,$products,'add','crm.deal');
