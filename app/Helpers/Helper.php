@@ -133,7 +133,7 @@ class Helper
                       CURLOPT_CUSTOMREQUEST => 'POST',
                       CURLOPT_POSTFIELDS => $fieldsData,
                       CURLOPT_HTTPHEADER => array(
-                          'Authorization: Bearer ' . env('EC_PAY_API_TOKEN'),
+                          'Authorization: Bearer ' . env('SR_PAY_API_TOKEN'),
                           'Accept: application/json',
                           'Content-Type: application/x-www-form-urlencoded'
                       ),
@@ -143,7 +143,6 @@ class Helper
                   $voucherNo = '0';
                   $voucher_path = '';
                   $response = json_decode($response);
-                  Log::channel('bitrix')->debug($response);
                   if (isset($response->vouchers)) {
                     $voucherNo = $response->vouchers[0];
                     }
