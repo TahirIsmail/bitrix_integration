@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Bitrix_Hooks;
 
 use Log;
-use Helper;
+use App\Helpers\Helper;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -34,7 +34,7 @@ class BitrixHooksController extends Controller
             $inoviceLink = null;
             if($request['program'] == 'Incubator'){
                 $registration = IncubateeSubscriptionDetail::where('b24_lead_id',$request['lead_id'])->first();
-                $getResponse = generateIncubatorInvoice($registration);
+                $getResponse = Helper::generateIncubatorInvoice($registration);
                 if($getResponse['response'] == 'success'){
                     $inoviceLink = $getResponse['invoice'];
                 }
