@@ -650,6 +650,42 @@
             border-color: blue;
         }
     </style>
+    <style>
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #304767;
+            border-bottom: 16px solid #304767;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loader-hidden {
+            display: none;
+        }
+    </style>
 </head>
 
 <body class="antialiased">
@@ -902,7 +938,7 @@
 
                     <div class="step-number-content"></div>
                     <div class="main">
-
+                        <div id="loader" class="loader-hidden"></div>
 
                         <div class="s_card">
                             <p class="s_card-title">Program</p>
@@ -917,6 +953,7 @@
                         <div id="summary">
 
                         </div>
+
                         <div class="buttons button_space">
                             <button class="back_button">Back</button>
                             <button class="submit_button">Submit</button>
@@ -990,6 +1027,7 @@
         var submit_click = document.querySelectorAll(".submit_button");
         submit_click.forEach(function(submit_click_form) {
             submit_click_form.addEventListener('click', function() {
+                $('#loader').removeClass('loader-hidden');
                 const userName = $('#user_name').val();
                 const email = $('#email').val();
                 const cnicNumber = $('#cnic_number').val();
@@ -998,69 +1036,82 @@
                 const preferred_timing = $('input[name="preferred_timing"]:checked').val().split(',');
                 const shift = preferred_timing[0];
                 const timing = preferred_timing[1];
-
                 const gender = $('input[name="gender"]:checked').val();
                 const incubator_city = $('#incubator_city').val();
-
                 const subscriptionPeriod = $('#subscription_period').val();
                 const couponCode = $('#coupon_code').val();
                 const totalAmount = $('#totalAmount').text();
-                const purpose =  $('#purpose').val();
+                const purpose = $('#purpose').val();
 
-                $.ajax({
-                    url: '{{ url('incubator/store') }}',
-                    type: 'POST',
-                    data: {
-                        user_name: userName,
-                        email: email,
-                        cnic_number: cnicNumber,
-                        whatsapp_number: whatsappNumber,
-                        facebook_profile: facebookProfile,
-                        gender: gender,
-                        incubator_city: incubator_city,
-                        timing: timing,
-                        shift: shift,
-                        subscription_period: subscriptionPeriod,
-                        coupon_code: couponCode,
-                        purpose:purpose,
-                        totalAmount: totalAmount
-                    },
-                    success: function(response) {
-                        if (response.error) {
-                            Swal.fire({
-                                title: 'Error!',
-                                confirmButtonColor: '#304767',
-                                text: response.error,
-                                icon: 'error',
-                                confirmButtonText: 'Ok',
-                            });
-                            
-                        } else if (response.success) {
-                            Swal.fire({
-                                title: 'Success!',
-                                text: 'Incubatee subscribed successfully.',
-                                icon: 'success',
-                                confirmButtonColor: '#304767',
-                                confirmButtonText: 'OK',
-                            });
-                            shownname.innerHTML = username.value;
-                            formnumber++;
-                            updateform();
-                        }
+                // Disable the button
+                submit_click_form.disabled = true;
 
-                        // Swal.fire("Payment Summary");
-
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle any errors that occur during the request
-                        Swal.fire({
-                            confirmButtonColor: '#304767',
-                            text: "Something went wrong"
+                // Show the loader
+                Swal.fire({
+                    title: 'processing...',
+                    confirmButtonColor: '#304767',
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading();
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '{{ url('incubator/store') }}',
+                            type: 'POST',
+                            data: {
+                                user_name: userName,
+                                email: email,
+                                cnic_number: cnicNumber,
+                                whatsapp_number: whatsappNumber,
+                                facebook_profile: facebookProfile,
+                                gender: gender,
+                                incubator_city: incubator_city,
+                                timing: timing,
+                                shift: shift,
+                                subscription_period: subscriptionPeriod,
+                                coupon_code: couponCode,
+                                purpose: purpose,
+                                totalAmount: totalAmount
+                            },
+                            success: function(response) {
+                                if (response.error) {
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        confirmButtonColor: '#304767',
+                                        text: response.error,
+                                        icon: 'error',
+                                        confirmButtonText: 'Ok',
+                                    });
+                                   
+                                } else if (response.success) {
+                                    
+                                    Swal.fire({
+                                        title: 'Success!',
+                                        text: 'Incubatee subscribed successfully.',
+                                        icon: 'success',
+                                        confirmButtonColor: '#304767',
+                                        confirmButtonText: 'OK',
+                                    });
+                                    shownname.innerHTML = username.value;
+                                    formnumber++;
+                                    updateform();
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                Swal.fire({
+                                    confirmButtonColor: '#304767',
+                                    text: "Something went wrong"
+                                });
+                                console.error(xhr.responseText);
+                            },
+                            complete: function() {
+                                Swal.close(); // Close the loading message
+                                submit_click_form.disabled = false; // Enable the button
+                            }
                         });
-                        console.error(xhr.responseText);
                     }
                 });
-
             });
         });
 
@@ -1097,7 +1148,7 @@
             var validate_inputs = document.querySelectorAll(".main.active input[required]");
             var validate_selects = document.querySelectorAll(".main.active select[required]");
             var validate_radios = document.querySelectorAll(".main.active input[type='radio'][required]");
-            
+
             var empty_fields = [];
             var invalid_fields = [];
 
@@ -1293,9 +1344,9 @@
             $('#subscription_period').change(function() {
                 let selectedOption = $(this).val();
                 let incubator_city = $('#incubator_city').val();
-                
+
                 let preferred_timing = $('input[name="preferred_timing"]:checked').val().split(',');
-                
+
                 let gender = $('input[name="gender"]:checked').val();
 
 
