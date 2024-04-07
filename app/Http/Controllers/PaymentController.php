@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\b24leads;
 use App\Models\PaymentDetails;
 use App\Models\b24leadsInvoices;
+use App\Models\IncubateeSubscriptionDetail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
@@ -214,15 +215,16 @@ class PaymentController extends Controller
                     Log::info('=========Incubator Payment Data==========='.$payment->is_paid);
                         if ($payment->is_paid != 1) {
                             $payment->update(['is_paid' => '1','payment_date'=>now()]);
-                            // $payment->update(['status' => 'approved']);
-                            if ($payment->b24_lead_id != '' || $payment->b24_deal_id != '') {
-                              if($payment->b24_deal_id != null){
-                                $b24_id = $payment->b24_deal_id;
+                            $incReg = IncubateeSubscriptionDetail::where('registration_no', $payment->registration_id)->first();
+                            $incReg->update(['status' => 'approved']);
+                            if ($incReg->b24_lead_id != '' || $incReg->b24_deal_id != '') {
+                              if($incReg->b24_deal_id != null){
+                                $b24_id = $incReg->b24_deal_id;
                                 $b24_stage_id = 'C14:FINAL_INVOICE';
                                 $b24_action = 'crm.deal';
                                 $field = 'FIELDS[STAGE_ID]';
                               }else{
-                                $b24_id = $payment->b24_lead_id;
+                                $b24_id = $incReg->b24_lead_id;
                                 $b24_stage_id = 'UC_VHVLEM';
                                 $b24_action = 'crm.lead';
                                 $field = 'FIELDS[STATUS_ID]';
