@@ -215,14 +215,14 @@ class PaymentController extends Controller
                         if ($payment->is_paid != 1) {
                             $payment->update(['is_paid' => '1','payment_date'=>now()]);
                             // $payment->update(['status' => 'approved']);
-                            if ($payment->b24lead->b24_lead_id != '' || $payment->b24lead->b24_deal_id != '') {
-                              if($payment->b24lead->b24_deal_id != null){
-                                $b24_id = $payment->b24lead->b24_deal_id;
+                            if ($payment->b24_lead_id != '' || $payment->b24_deal_id != '') {
+                              if($payment->b24_deal_id != null){
+                                $b24_id = $payment->b24_deal_id;
                                 $b24_stage_id = 'C14:FINAL_INVOICE';
                                 $b24_action = 'crm.deal';
                                 $field = 'FIELDS[STAGE_ID]';
                               }else{
-                                $b24_id = $payment->b24lead->b24_lead_id;
+                                $b24_id = $payment->b24_lead_id;
                                 $b24_stage_id = 'UC_VHVLEM';
                                 $b24_action = 'crm.lead';
                                 $field = 'FIELDS[STATUS_ID]';
