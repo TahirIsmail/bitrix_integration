@@ -115,8 +115,9 @@ class BitrixHooksController extends Controller
           }
           elseif($request['program'] == 'Incubator' || $request['program'] == 'Incubation Online' || $request['program'] == 'Co-working Space'){
             $inc = IncubateeSubscriptionDetail::where('b24_lead_id',$leadID)->first();
-            User::where('id',$inc->user_id)->update(['b24_contact_id'=>$request['contact_id']]);
+
             $inc->b24_deal_id = $request['deal_id'];
+            $inc->b24_contact_id = $request['contact_id'];
             // $inc->incubator->status = 1;
             $inc->push();
 
