@@ -13,8 +13,15 @@ use App\Models\IncubateeSubscription;
 use App\Models\IncubateeSubscriptionDetail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Builder;
+use App\Services\BitrixCallsService;
 class IncubatorController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->bitrix = new BitrixCallsService();
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -62,7 +69,7 @@ class IncubatorController extends Controller
                 'whatsapp_number' => $request->whatsapp_number,
                 'facebook_profile' => $request->facebook_profile,
                 'gender' => $request->gender,
-                
+
             ]);
             $currentDate = date('Y-m-d');
             $city = City::where('name',$request->incubator_city)->first();
@@ -78,9 +85,12 @@ class IncubatorController extends Controller
                 'shift' => $request->shift,
                 'subscription_period' => $request->subscription_period.' '.'months',
                 'totalAmount' => $request->totalAmount,
-                'joining_date' => $currentDate,
-                'expiry_date' => date('Y-m-d', strtotime($currentDate . ' + 30 days')),
+                'registration_no'=>'INC-SUBS-'.$incubateeSubscription->id.'-'.time(),
             ]);
+
+            $lead_id = $this->bitrix->createIncLead($incubateeSubscriptionDetail,$request,207);
+            $incubateeSubscriptionDetail->b24_lead_id = $lead_id;
+            $incubateeSubscriptionDetail->update();
 
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
@@ -121,14 +131,14 @@ class IncubatorController extends Controller
     }
 
     public function calculateSubscription(Request $request){
-        
+
         $data = $request->all();
         $gender = $data['gender'];
         $city  = City::with('shifts.timings')->where('name',$data['incubator_city'])->first();
         $shift = $city->shifts()->where('name',$data['shift'])->first();
         $timing = Timing::where('shift_id',$shift->id)->first();
         $charge = Charge::where('incubator_timings_id',$timing->id)->first();
-        
+
         $subscription_months = $data['subscription_period'];
         if($data['subscription_period'] == 6){
             $totalAmount = ((int)($charge->amount)  * (int)($data['subscription_period']));
@@ -146,23 +156,23 @@ class IncubatorController extends Controller
             $totalAmount = (int)($charge->amount)  * (int)($data['subscription_period']);
         }
         if($gender == 'male' && $shift->name == 'Night'){
-           
+
             $OffAmount = (int)($totalAmount) * (float)(0.5);
             $totalAmount = (int)($totalAmount - $OffAmount);
 
 
         }
         if($gender == 'female' && ($shift->name == 'Morning' || $shift->name == 'Evening')){
-            
+
             $OffAmount = (int)($totalAmount) * (float)(0.6);
             $totalAmount = (int)($totalAmount - $OffAmount);
         }
-        
+
         return view('layouts.partials.subscription_rows',compact('city','shift','timing','charge','totalAmount','subscription_months'))->render();
     }
 
     public function showSummary(Request $request){
-        
+
         $data = $request->all();
         return view('layouts.partials.incubator_summary',compact('data'))->render();
     }

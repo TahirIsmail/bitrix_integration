@@ -28,12 +28,14 @@ Route::prefix('incubator')->group(function (){
 
 Route::prefix('bitrix')->group(function(){
     Route::any('/deal-created', [BitrixHooksController::class,'dealCreated']);
+    Route::any('/incubation-activation', [BitrixHooksController::class,'dealCreated']);
     Route::any('/create-invoice', [BitrixHooksController::class,'createBitrixInvoice']);
     Route::any('/create-deal-invoice', 'Bitrix_Hooks\BitrixHooksController@createBitrixDealInvoice');
     Route::any('/chatbothandler',[BitrixChatBotController::class,'handler']);
 });
 Route::any('payment/{id}', [PaymentController::class,'show']);
 Route::any('transaction-complete', [PaymentController::class,'transactionComptele']);
+Route::any('incubator-transaction-complete', [PaymentController::class,'IncubatorTransactionComptele']);
 Route::any('payment/thankyou', [PaymentController::class,'payment_thankyou']);
 Route::get('/incomplete', function () {
             return View::make("payments.canceled-page");

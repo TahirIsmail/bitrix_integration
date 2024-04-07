@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\b24leads;
+use App\Models\PaymentDetails;
 use App\Models\b24leadsInvoices;
+use App\Models\IncubateeSubscriptionDetail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
@@ -155,6 +157,74 @@ class PaymentController extends Controller
                                 $field = 'FIELDS[STAGE_ID]';
                               }else{
                                 $b24_id = $payment->b24lead->b24_lead_id;
+                                $b24_stage_id = 'UC_VHVLEM';
+                                $b24_action = 'crm.lead';
+                                $field = 'FIELDS[STATUS_ID]';
+                              }
+
+                               $bitrixObj=[
+                                'ID' => $b24_id,
+                                 $field => $b24_stage_id, // Payment Verification
+                                 'FIELDS[UF_CRM_1680780128579]' => 'Validate',
+                                ];
+                                $queryFields = http_build_query($bitrixObj);
+                                $this->bitrixCall->sendCurlRequest($queryFields,'update',$b24_action);
+                            }
+                        }
+                        return response()->json(['status' => 200]);
+
+                } else {
+                    return response()->json(['status' => 400]);
+                }
+            } else {
+                return response()->json(['status' => 400]);
+            }
+        }
+    }
+
+    public function IncubatorTransactionComptele(Request $request)
+    {
+        Log::channel('bitrix')->info('==================Incubator Invoice Paid Thank you page=============== ' . Date('Y-m-d H:i:s'));
+        Log::channel('bitrix')->debug($request->all());
+
+        if (isset($request->status)) {
+            // $curl = curl_init();
+            // curl_setopt_array($curl, array(
+            //     CURLOPT_URL => env('PAYMENT_RECHECK_URL') . app('request')->input('orderid'),
+            //     CURLOPT_RETURNTRANSFER => true,
+            //     CURLOPT_ENCODING => '',
+            //     CURLOPT_MAXREDIRS => 10,
+            //     CURLOPT_TIMEOUT => 0,
+            //     CURLOPT_FOLLOWLOCATION => true,
+            //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            //     CURLOPT_CUSTOMREQUEST => 'POST',
+            //     CURLOPT_HTTPHEADER => array(
+            //         'Authorization: Bearer ' . env('SR_PAY_API_TOKEN')
+            //     ),
+            // ));
+            // $response = curl_exec($curl);
+            // curl_close($curl);
+
+            // $data = json_decode($response)->data;
+            $data = $request->all();
+
+            if (!empty($data)) {
+                $payment = PaymentDetails::where('order_id', $data['orderid'])->orWhere('registration_id',$data['orderid'])->first();
+                // Log::info('=========Incubator Payment Data==========='.$payment);
+                if (isset($payment)) {
+                    Log::info('=========Incubator Payment Data==========='.$payment->is_paid);
+                        if ($payment->is_paid != 1) {
+                            $payment->update(['is_paid' => '1','payment_date'=>now()]);
+                            $incReg = IncubateeSubscriptionDetail::where('registration_no', $payment->registration_id)->first();
+                            $incReg->update(['status' => 'approved']);
+                            if ($incReg->b24_lead_id != '' || $incReg->b24_deal_id != '') {
+                              if($incReg->b24_deal_id != null){
+                                $b24_id = $incReg->b24_deal_id;
+                                $b24_stage_id = 'C14:FINAL_INVOICE';
+                                $b24_action = 'crm.deal';
+                                $field = 'FIELDS[STAGE_ID]';
+                              }else{
+                                $b24_id = $incReg->b24_lead_id;
                                 $b24_stage_id = 'UC_VHVLEM';
                                 $b24_action = 'crm.lead';
                                 $field = 'FIELDS[STATUS_ID]';
