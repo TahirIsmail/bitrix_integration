@@ -185,13 +185,13 @@ class BitrixHooksController extends Controller
                   $expiry_date = Carbon::parse($joining_date)->addMonthsNoOverflow($mode[0])->addDays($days)->toDateString();
                   }
                   $registration->expiry_date = $expiry_date;
-                  $registration->joining_at = $joining_date;
+                  $registration->joining_date = $joining_date;
                 //   $registration->joining_status = 2;
-                  $registration->contract_addendum_signed = $contract;
-                  $registration->issued_card = $card_issue;
-                  $registration->card_no = $card_no;
-                  $registration->snap_form_filled = $snap_form;
-                  $registration->added_in_whatsApp_groups = $added_whatsapp;
+                //   $registration->contract_addendum_signed = $contract;
+                //   $registration->issued_card = $card_issue;
+                //   $registration->card_no = $card_no;
+                //   $registration->snap_form_filled = $snap_form;
+                //   $registration->added_in_whatsApp_groups = $added_whatsapp;
 
                   $registration->push();
 
