@@ -113,6 +113,7 @@ class Helper
                       "customer_ip" => request()->ip(), //"192.100.2.15",
                       "txn_platform_return_url" => url("transaction-complete"),
                   );
+                  Log::channel('bitrix')->debug($data);
                   $plaintext = http_build_query($data);
                   if (in_array($cipher, openssl_get_cipher_methods())) {
                       $ciphertext = openssl_encrypt($plaintext, $cipher, $key, $options = 0, $iv, $tag);
