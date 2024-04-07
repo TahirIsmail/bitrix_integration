@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\b24leads;
+use App\Models\PaymentDetails;
 use App\Models\b24leadsInvoices;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\HtmlString;
