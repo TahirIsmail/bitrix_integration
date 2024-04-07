@@ -111,7 +111,7 @@ class Helper
                       "txn_currency_rate" => "Dollar_Rates_2",
                       "txn_expiry_datetime" => date('Y-m-d', strtotime("+30 days")),
                       "customer_ip" => request()->ip(), //"192.100.2.15",
-                      "txn_platform_return_url" => url("transaction-complete"),
+                      "txn_platform_return_url" => url("incubator-transaction-complete"),
                   );
 
                   $plaintext = http_build_query($data);

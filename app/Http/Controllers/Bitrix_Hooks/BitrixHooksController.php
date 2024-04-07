@@ -29,7 +29,6 @@ class BitrixHooksController extends Controller
          Log::channel('bitrix')->info('==================Bitrix Invoice Create=============== ' . Date('Y-m-d H:i:s'));
          Log::channel('bitrix')->debug(request()->all());
 
-
          if (isset($request['auth']) AND $request['auth']['domain'] == 'ice.bitrix24.com') {
             $inoviceLink = null;
             $leadID = $request['lead_id'];

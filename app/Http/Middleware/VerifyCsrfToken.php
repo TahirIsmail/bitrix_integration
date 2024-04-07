@@ -16,6 +16,7 @@ class VerifyCsrfToken extends Middleware
         'bitrix/chatbothandler',
         'payment',
         'transaction-complete',
+        'incubator-transaction-complete',
         'payment/thankyou'
     ];
 }
