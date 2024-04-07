@@ -171,7 +171,7 @@ class BitrixHooksController extends Controller
                     Log::channel('bitrix')->info('Incubation Already Activated');
                     return false;
                   }
-                  $exp = IncubateeSubscriptionDetail::where('user_id', $registration->user_id)->latest('id')->skip(1)->first();
+                  $exp = IncubateeSubscriptionDetail::where('id', $registration->id)->latest('id')->skip(1)->first();
                   $expiry_date = null;
                   $getRemainingDays = 0;
                   if (isset($exp) && !empty($exp) && $exp->status == 'approved' && (now()->toDateString() < Carbon::parse($exp->expiry_date)->toDateString())) {
