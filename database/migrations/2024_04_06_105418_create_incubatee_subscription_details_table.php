@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('subscription_period');
             $table->enum('status', ['pending', 'unpaid', 'approved', 'active', 'rejected', 'expired', 'refund'])->default('pending');
             $table->decimal('totalAmount', 10, 2);
+            $table->text('registration_no')->nullable();
             $table->date('joining_date')->nullable();
             $table->date('expiry_date')->nullable();
             $table->timestamps();

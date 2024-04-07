@@ -990,6 +990,14 @@
         var submit_click = document.querySelectorAll(".submit_button");
         submit_click.forEach(function(submit_click_form) {
             submit_click_form.addEventListener('click', function() {
+               
+
+                Swal.fire({
+                    title: 'Submitting form...',
+                    confirmButton: false,
+                    showLoaderOnConfirm: true,
+                    allowOutsideClick: false
+                });
                 const userName = $('#user_name').val();
                 const email = $('#email').val();
                 const cnicNumber = $('#cnic_number').val();
@@ -1005,7 +1013,7 @@
                 const subscriptionPeriod = $('#subscription_period').val();
                 const couponCode = $('#coupon_code').val();
                 const totalAmount = $('#totalAmount').text();
-                const purpose =  $('#purpose').val();
+                const purpose = $('#purpose').val();
 
                 $.ajax({
                     url: '{{ url('incubator/store') }}',
@@ -1022,7 +1030,7 @@
                         shift: shift,
                         subscription_period: subscriptionPeriod,
                         coupon_code: couponCode,
-                        purpose:purpose,
+                        purpose: purpose,
                         totalAmount: totalAmount
                     },
                     success: function(response) {
@@ -1034,7 +1042,7 @@
                                 icon: 'error',
                                 confirmButtonText: 'Ok',
                             });
-                            
+
                         } else if (response.success) {
                             Swal.fire({
                                 title: 'Success!',
@@ -1097,7 +1105,7 @@
             var validate_inputs = document.querySelectorAll(".main.active input[required]");
             var validate_selects = document.querySelectorAll(".main.active select[required]");
             var validate_radios = document.querySelectorAll(".main.active input[type='radio'][required]");
-            
+
             var empty_fields = [];
             var invalid_fields = [];
 
@@ -1293,9 +1301,9 @@
             $('#subscription_period').change(function() {
                 let selectedOption = $(this).val();
                 let incubator_city = $('#incubator_city').val();
-                
+
                 let preferred_timing = $('input[name="preferred_timing"]:checked').val().split(',');
-                
+
                 let gender = $('input[name="gender"]:checked').val();
 
 
