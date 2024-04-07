@@ -32,8 +32,9 @@ class BitrixHooksController extends Controller
 
          if (isset($request['auth']) AND $request['auth']['domain'] == 'ice.bitrix24.com') {
             $inoviceLink = null;
+            $leadID = $request['lead_id'];
             if($request['program'] == 'Incubator'){
-                $registration = IncubateeSubscriptionDetail::where('b24_lead_id',$request['lead_id'])->first();
+                $registration = IncubateeSubscriptionDetail::where('b24_lead_id',$leadID)->first();
                 $getResponse = Helper::generateIncubatorInvoice($registration);
                 if($getResponse['response'] == 'success'){
                     $inoviceLink = $getResponse['invoice'];
@@ -41,7 +42,7 @@ class BitrixHooksController extends Controller
                 Log::channel('bitrix')->debug(['payment'=>$inoviceLink]);
             }
             elseif($request['program'] == 'Trainings') {
-                $leadID = $request['lead_id'];
+
                 $getData = $this->bitrixCall->sendCurlRequest(['ID' => $leadID],'get','crm.lead');
                 Log::channel('bitrix')->debug($getData);
                 $result = $getData['result'];
