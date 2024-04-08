@@ -157,16 +157,17 @@ class IncubatorController extends Controller
         }
         if($gender == 'male' && $shift->name == 'Night'){
 
-            $OffAmount = (int)($totalAmount) * (float)(0.5);
+            $OffAmount = (int)($totalAmount) * (float)(0.4);
             $totalAmount = (int)($totalAmount - $OffAmount);
 
 
         }
         if($gender == 'female' && ($shift->name == 'Morning' || $shift->name == 'Evening')){
 
-            $OffAmount = (int)($totalAmount) * (float)(0.6);
+            $OffAmount = (int)($totalAmount) * (float)(0.4);
             $totalAmount = (int)($totalAmount - $OffAmount);
         }
+        
 
         return view('layouts.partials.subscription_rows',compact('city','shift','timing','charge','totalAmount','subscription_months'))->render();
     }

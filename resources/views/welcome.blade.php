@@ -802,8 +802,8 @@
                                 </div>
 
 
-                                <div class="radio_div">
-                                    <input type="radio" name="preferred_timing" value="Night,12AM-8AM" required>
+                                <div class="radio_div" id="night_div">
+                                    <input type="radio" name="preferred_timing" id="night_time" value="Night,12AM-8AM" required>
                                     <label for="preferred_timing">Night (12AM - 8AM)</label>
                                 </div>
 
@@ -1160,6 +1160,14 @@
                     console.log("No radio button checked in group " + group);
                 } else {
                     console.log("Radio button group " + group + " is checked with value " + radioGroups[group]);
+                    if(radioGroups[group] == 'female'){
+                            document.getElementById('night_time').disabled = true;
+                            document.getElementById("night_div").style.display = "none";
+                    }
+                    else {
+                        document.getElementById('night_time').disabled = false;
+                        document.getElementById("night_div").style.display = "block";
+                    }
                 }
             });
 
@@ -1197,8 +1205,7 @@
         const formElements = document.querySelectorAll(
             '.div-payment-form-data select, .div-payment-form-data input[type="text"]'
         );
-        console.log(formElements);
-        // Get the table rows where the data will be displayed
+        
         const tableRows = document.querySelectorAll('#top-table tr');
         const incubator_title = document.querySelector('.title-incubator');
 
@@ -1243,9 +1250,9 @@
                 // You can calculate this based on the form data
             } else {
 
-                tableRows[1].children[2].textContent = "25,000 PKR"; // You can calculate this based on the form data
-                tableRows[2].children[2].textContent = "25,000 PKR"; // You can calculate this based on the form data
-                tableRows[3].children[2].textContent = "25,000 PKR"; // You can calculate this based on the form data
+                tableRows[1].children[2].textContent = "15,000 PKR"; // You can calculate this based on the form data
+                tableRows[2].children[2].textContent = "15,000 PKR"; // You can calculate this based on the form data
+                tableRows[3].children[2].textContent = "15,000 PKR"; // You can calculate this based on the form data
 
             }
 
@@ -1281,8 +1288,8 @@
                     if (city === cityTimingArray[0] && timing === cityTimingArray[1]) {
                         const charges = cells[2].innerText.trim(); // Retrieve charges
                         console.log('Charges:', charges);
-                        // Update your logic here based on retrieved charges
-                        break; // Exit loop after finding a match
+                        
+                        break; 
                     }
                 }
             }
