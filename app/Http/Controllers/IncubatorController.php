@@ -177,4 +177,14 @@ class IncubatorController extends Controller
         $data = $request->all();
         return view('layouts.partials.incubator_summary',compact('data'))->render();
     }
+
+
+    public function showSubscriptionPeriod(Request $request){
+    $citySubscriptions  = City::with('shifts.timings')->where('name',$request->incubator_city)->first();
+    
+    
+    return view('layouts.partials.subscription_period_select',compact('citySubscriptions'))->render();
+
+
+    }
 }
