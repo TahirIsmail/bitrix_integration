@@ -145,6 +145,7 @@ public function sendCustomMessage($botId,$dialogId,$message,$clientId)
     $queryData   = http_build_query($data);
     $result_data = $this->bitrixCall->sendImbotCurlRequest($queryData,"add","imbot.message");
     Log::channel('chatBot')->info('----------------Chat Bot custom message--------------');
+    Log::channel('chatBot')->debug($data);
     Log::channel('chatBot')->debug($result_data);
 }
 
