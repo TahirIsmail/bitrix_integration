@@ -43,19 +43,19 @@ class BitrixChatBotController extends Controller
                     }
                     if ($message == '5' || str_contains($message, 'Karachi'))
                     {
-                        return $this->transferChat($chatId,$botId,$clientId,'queue9',$dialogId,$username);
+                        return $this->transferChat($chatId,$botId,$clientId,'queue5',$dialogId,$username);
                     }
                     elseif($message == '11' || str_contains($message, 'Lahore')){
                         return $this->transferChat($chatId,$botId,$clientId,'queue11',$dialogId);
                     }
                     elseif($message == '7' || str_contains($message, 'Islamabad')){
-                        return $this->transferChat($chatId,$botId,$clientId,'queue13',$dialogId);
+                        return $this->transferChat($chatId,$botId,$clientId,'queue7',$dialogId);
                     }
                     elseif($message == '13' || str_contains($message, 'Faisalabad')){
-                        return $this->transferChat($chatId,$botId,$clientId,'queue19',$dialogId);
+                        return $this->transferChat($chatId,$botId,$clientId,'queue13',$dialogId);
                     }
                     elseif($message == '9' || str_contains($message, 'Multan')){
-                        return $this->transferChat($chatId,$botId,$clientId,'15',$dialogId,$username);
+                        return $this->transferChat($chatId,$botId,$clientId,'queue9',$dialogId,$username);
                     }
                     // elseif($message == '6' || str_contains($message, 'Peshawar')){
                     //     return $this->transferChat($chatId,$botId,$clientId,'queue16',$dialogId);
@@ -107,11 +107,9 @@ public function transferChat($chatId,$botId,$clientId,$transferQueue,$dialogId,$
 
         $message = 'Dear '.$username.':
 
-        Thank you for your interest in Extreme Commerce Incubator.
+        Thank you for your interest in Skillsrator Incubator.
 
-    Our agents are currently at capacity and will reach out to you in next 48 to 72 hours.
-
-    Meanwhile please feel free to go through this video for a better understanding of our offerings https://youtu.be/S9WKe-nPy6Q';
+    Our agents are currently at capacity and will reach out to you in next 48 to 72 hours.';
 
     $this->sendCustomMessage($botId,$dialogId,$message,$clientId);
 
