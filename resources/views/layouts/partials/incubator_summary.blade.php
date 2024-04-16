@@ -39,7 +39,9 @@
         <tr>
             <td>{{$data['incubator_city']}}</td>
             <td>{{$data['shift']}}</td>
-            <td>{{$data['subscription_period']}} month</td>
+            <td>
+                {{ ($data['subscription_period'] == 7) ? '7 months or more' : ($data['subscription_period'].' month'.($data['subscription_period'] > 1 ? 's' : '')) }}
+            </td>
             <td>{{$data['totalAmount']}}</td>
         </tr>
 

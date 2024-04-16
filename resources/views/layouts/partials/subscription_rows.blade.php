@@ -14,7 +14,9 @@
         <tr>
             <td>{{$city->name}}</td>
             <td>{{$shift->name}}</td>
-            <td>{{($subscription_months == 7) ?? $subscription_month.'months or more' : $subscription_months.'month'}}</td>
+            <td>
+                {{ ($subscription_months == 7) ? '7 months or more' : ($subscription_months.' month'.($subscription_months > 1 ? 's' : '')) }}
+            </td>
             <td id="totalAmount">{{round($totalAmount, 2)}}</td>
             {{-- {{$totalAmount}} --}}
         </tr>
