@@ -196,7 +196,7 @@ class IncubatorController extends Controller
     public function showSummary(Request $request){
 
         $data = $request->all();
-        dd($data);
+    
         return view('layouts.partials.incubator_summary',compact('data'))->render();
     }
 
