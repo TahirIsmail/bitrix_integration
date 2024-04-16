@@ -803,7 +803,8 @@
 
 
                                 <div class="radio_div" id="night_div">
-                                    <input type="radio" name="preferred_timing" id="night_time" value="Night,12AM-8AM" required>
+                                    <input type="radio" name="preferred_timing" id="night_time"
+                                        value="Night,12AM-8AM" required>
                                     <label for="preferred_timing">Night (12AM - 8AM)</label>
                                 </div>
 
@@ -818,7 +819,10 @@
                                         <option value="1">1 month</option>
                                         <option value="2">2 month</option>
                                         <option value="3">3 months - 10% off</option>
+                                        <option value="4">4 months</option>
+                                        <option value="5">5 months</option>
                                         <option value="6">6 months - 20% off</option>
+                                <option value="7">After 6 months - 40% off</option>
 
                                     </select>
                                 </div>
@@ -990,7 +994,7 @@
         var submit_click = document.querySelectorAll(".submit_button");
         submit_click.forEach(function(submit_click_form) {
             submit_click_form.addEventListener('click', function() {
-               
+
 
                 Swal.fire({
                     title: 'Submitting form...',
@@ -1160,14 +1164,7 @@
                     console.log("No radio button checked in group " + group);
                 } else {
                     console.log("Radio button group " + group + " is checked with value " + radioGroups[group]);
-                    if(radioGroups[group] == 'female'){
-                            document.getElementById('night_time').disabled = true;
-                            document.getElementById("night_div").style.display = "none";
-                    }
-                    else {
-                        document.getElementById('night_time').disabled = false;
-                        document.getElementById("night_div").style.display = "block";
-                    }
+
                 }
             });
 
@@ -1205,7 +1202,7 @@
         const formElements = document.querySelectorAll(
             '.div-payment-form-data select, .div-payment-form-data input[type="text"]'
         );
-        
+
         const tableRows = document.querySelectorAll('#top-table tr');
         const incubator_title = document.querySelector('.title-incubator');
 
@@ -1256,6 +1253,13 @@
 
             }
 
+            if (data.incubator_city == 'Faisalabad' || data.incubator_city == 'Multan' || data.incubator_city == 'Islamabad-Rawalpindi') {
+                document.getElementById('night_time').disabled = true;
+                document.getElementById("night_div").style.display = "none";
+            } else {
+                document.getElementById('night_time').disabled = false;
+                document.getElementById("night_div").style.display = "block";
+            }
             // You can add more logic to calculate charges and total amount based on the form data
         }
 
@@ -1288,8 +1292,8 @@
                     if (city === cityTimingArray[0] && timing === cityTimingArray[1]) {
                         const charges = cells[2].innerText.trim(); // Retrieve charges
                         console.log('Charges:', charges);
-                        
-                        break; 
+
+                        break;
                     }
                 }
             }
@@ -1303,6 +1307,15 @@
         });
         $(document).ready(function() {
             $('#incubator_city, input[name="preferred_timing"]').on('change', function() {
+                var city = $('#incubator_city').val();
+                if (city === 'Multan') {
+                    $('#subscription_period option:eq(4)').text('4 months - Multan Special - 25% off');
+                    $('#subscription_period option:eq(5)').text('5 months - Multan Special - 30% off');
+                } else {
+                    $('#subscription_period option:eq(4)').text('4 months');
+                    $('#subscription_period option:eq(5)').text('5 months');
+                }
+                $('#subscription_period').val('');
                 $('#subscription_period').val('');
             });
             $('#subscription_period').change(function() {

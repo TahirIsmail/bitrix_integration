@@ -138,35 +138,56 @@ class IncubatorController extends Controller
         $shift = $city->shifts()->where('name',$data['shift'])->first();
         $timing = Timing::where('shift_id',$shift->id)->first();
         $charge = Charge::where('incubator_timings_id',$timing->id)->first();
-
+       
         $subscription_months = $data['subscription_period'];
-        if($data['subscription_period'] == 6){
-            $totalAmount = ((int)($charge->amount)  * (int)($data['subscription_period']));
-            $OffAmount = (int)($totalAmount) * (float)(0.2);
-            $totalAmount = (int)($totalAmount - $OffAmount);
+        switch ($subscription_months) {
+            case 1:
+                // Handle subscription period 1
+                $totalAmount = $city->one_month_price;
+
+                break;
+            case 2:
+                // Handle subscription period 2
+                $totalAmount = $city->two_months_price;
+
+                break;
+            case 3:
+                // Handle subscription period 3
+                $totalAmount = $city->three_months_price;
+                break;
+            case 4:
+                // Handle subscription period 4
+                $totalAmount = $city->four_months_price;
+                break;
+            case 5:
+                // Handle subscription period 5
+                $totalAmount = $city->five_months_price;
+                break;
+            case 6:
+                // Handle subscription period 6
+                $totalAmount = $city->six_months_price;
+                break;
+            case 7:
+                // Handle subscription period 7 (special case after 6 months)
+                $totalAmount = (int)$city->one_month_price * 7;
+                $offpercent = (int)$totalAmount * 0.4;
+                $totalAmount = (int)$totalAmount - $offpercent;
+                break;
+            default:
+                // Handle default case if subscription period is not within 1 to 7
+                break;
+        }
+        //Lahore Karachi Islamabad-Rawalpindi
+        if($gender == 'female' && ($city->name == 'Islamabad-Rawalpindi' || $city->name == 'Karachi' || $city->name == 'Lahore')){
+            $offpercent = (int)$totalAmount * 0.4;
+            $totalAmount = (int)$totalAmount - $offpercent;
 
         }
-        elseif($data['subscription_period'] == 3){
-            $totalAmount = ((int)($charge->amount)  * (int)($data['subscription_period']));
-            $OffAmount = (int)($totalAmount) * (float)(0.1);
-            $totalAmount = (int)($totalAmount - $OffAmount);
-
+        elseif($gender == 'female' && $city->name == 'Multan'){
+            $offpercent = (int)$totalAmount * 0.3;
+            $totalAmount = (int)$totalAmount - $offpercent;
         }
-        else{
-            $totalAmount = (int)($charge->amount)  * (int)($data['subscription_period']);
-        }
-        if($gender == 'male' && $shift->name == 'Night'){
-
-            $OffAmount = (int)($totalAmount) * (float)(0.4);
-            $totalAmount = (int)($totalAmount - $OffAmount);
-
-
-        }
-        if($gender == 'female' && ($shift->name == 'Morning' || $shift->name == 'Evening')){
-
-            $OffAmount = (int)($totalAmount) * (float)(0.4);
-            $totalAmount = (int)($totalAmount - $OffAmount);
-        }
+        
         
 
         return view('layouts.partials.subscription_rows',compact('city','shift','timing','charge','totalAmount','subscription_months'))->render();
@@ -179,12 +200,5 @@ class IncubatorController extends Controller
     }
 
 
-    public function showSubscriptionPeriod(Request $request){
-    $citySubscriptions  = City::with('shifts.timings')->where('name',$request->incubator_city)->first();
-    
-    
-    return view('layouts.partials.subscription_period_select',compact('citySubscriptions'))->render();
 
-
-    }
 }
