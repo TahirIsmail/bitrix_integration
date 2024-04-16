@@ -29,7 +29,7 @@ class BitrixChatBotController extends Controller
     Log::channel('chatBot')->info('----------------Chat Bot Handler running--------------');
     Log::channel('chatBot')->debug(request()->all());
 
-            $botId = 74220;
+            $botId = 137;
             $clientId = $request['CLIENT_ID'];
             $username = @$request['data']['USER']['NAME'];
             $chatId = $request['data']['PARAMS']['CHAT_ID'];
