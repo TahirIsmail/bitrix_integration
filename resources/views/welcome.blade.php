@@ -1247,9 +1247,9 @@
                 // You can calculate this based on the form data
             } else {
 
-                tableRows[1].children[2].textContent = "15,000 PKR"; // You can calculate this based on the form data
-                tableRows[2].children[2].textContent = "15,000 PKR"; // You can calculate this based on the form data
-                tableRows[3].children[2].textContent = "15,000 PKR"; // You can calculate this based on the form data
+                tableRows[1].children[2].textContent = "25,000 PKR"; // You can calculate this based on the form data
+                tableRows[2].children[2].textContent = "25,000 PKR"; // You can calculate this based on the form data
+                tableRows[3].children[2].textContent = "25,000 PKR"; // You can calculate this based on the form data
 
             }
 
