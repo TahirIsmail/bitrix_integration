@@ -72,7 +72,7 @@ class BitrixChatBotController extends Controller
                     // Reply 7 for Rahim Yar Khan:
                     // Reply 6 for Sialkot:
                     $message = "
-                    Greetings ".$username."
+                    Greetings ".@$username."
 
                     We are pleased to welcome you to Skillsrator! To ensure we provide you with the best assistance possible, kindly indicate your city code by selecting the corresponding number:
 
@@ -85,7 +85,7 @@ class BitrixChatBotController extends Controller
 
                     We will promptly connect you with one of our representatives who will be able to assist you with your inquiry.";
 
-                    if($request['data']['PARAMS']['MESSAGE'] != 4){
+                    if($request['data']['PARAMS']['MESSAGE'] != 13){
                         $dialogId = $request['data']['PARAMS']['DIALOG_ID'];
                         $this->sendCustomMessage($botId,$dialogId,$message,$clientId);
                     }
@@ -109,9 +109,9 @@ public function transferChat($chatId,$botId,$clientId,$transferQueue,$dialogId,$
 
         Thank you for your interest in Extreme Commerce Incubator.
 
-Our agents are currently at capacity and will reach out to you in next 48 to 72 hours.
+    Our agents are currently at capacity and will reach out to you in next 48 to 72 hours.
 
-Meanwhile please feel free to go through this video for a better understanding of our offerings https://youtu.be/S9WKe-nPy6Q';
+    Meanwhile please feel free to go through this video for a better understanding of our offerings https://youtu.be/S9WKe-nPy6Q';
 
     $this->sendCustomMessage($botId,$dialogId,$message,$clientId);
 
@@ -144,6 +144,8 @@ public function sendCustomMessage($botId,$dialogId,$message,$clientId)
 
     $queryData   = http_build_query($data);
     $result_data = $this->bitrixCall->sendImbotCurlRequest($queryData,"add","imbot.message");
+    Log::channel('chatBot')->info('----------------Chat Bot custom message--------------');
+    Log::channel('chatBot')->debug($result_data);
 }
 
 function clean($string) {
