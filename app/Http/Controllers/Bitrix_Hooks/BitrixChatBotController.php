@@ -66,39 +66,39 @@ class BitrixChatBotController extends Controller
                     // elseif($message == '6' || str_contains($message, 'Sialkot')){
                     //     return $this->transferChat($chatId,$botId,$clientId,'queue14',$dialogId);
                     // }
-                    else{
-                    Log::channel('chatBot')->info('ImBot Else Running');
+                    // else{
+                    // Log::channel('chatBot')->info('ImBot Else Running');
                     // Reply 6 for Peshawar:
                     // Reply 7 for Rahim Yar Khan:
                     // Reply 6 for Sialkot:
-                    $message = "
-                    Greetings ".@$username."
+                    // $message = "
+                    // Greetings ".@$username."
 
-                    We are pleased to welcome you to Skillsrator! To ensure we provide you with the best assistance possible, kindly indicate your city code by selecting the corresponding number:
+                    // We are pleased to welcome you to Skillsrator! To ensure we provide you with the best assistance possible, kindly indicate your city code by selecting the corresponding number:
 
-                    Reply 5 for Karachi.
-                    Reply 11 for Lahore.
-                    Reply 7 for Islamabad.
-                    Reply 13 for Faisalabad.
-                    Reply 9 for Multan.
-                    Reply 0 for other cities.
+                    // Reply 5 for Karachi.
+                    // Reply 11 for Lahore.
+                    // Reply 7 for Islamabad.
+                    // Reply 13 for Faisalabad.
+                    // Reply 9 for Multan.
+                    // Reply 0 for other cities.
 
-                    We will promptly connect you with one of our representatives who will be able to assist you with your inquiry.";
+                    // We will promptly connect you with one of our representatives who will be able to assist you with your inquiry.";
 
-                    if($request['data']['PARAMS']['MESSAGE'] != 13){
-                        $dialogId = $request['data']['PARAMS']['DIALOG_ID'];
-                        $this->sendCustomMessage($botId,$dialogId,$message,$clientId);
-                    }
-                    else{
-                        $data2=array(
-                            "CHAT_ID"=>$chatId,
-                            "USER_ID"=>$request['data']['PARAMS']['FROM_USER_ID'],
-                            'CLIENT_ID'=>$clientId
-                            );
-                        $queryData      = http_build_query($data2);
-                        $result_data= $this->bitrixCall->sendImbotCurlRequest($queryData,"setOwner","imbot.chat");
-                    }
-                }
+                    // if($request['data']['PARAMS']['MESSAGE'] != 13){
+                    //     $dialogId = $request['data']['PARAMS']['DIALOG_ID'];
+                    //     $this->sendCustomMessage($botId,$dialogId,$message,$clientId);
+                    // }
+                    // else{
+                    //     $data2=array(
+                    //         "CHAT_ID"=>$chatId,
+                    //         "USER_ID"=>$request['data']['PARAMS']['FROM_USER_ID'],
+                    //         'CLIENT_ID'=>$clientId
+                    //         );
+                    //     $queryData      = http_build_query($data2);
+                    //     $result_data= $this->bitrixCall->sendImbotCurlRequest($queryData,"setOwner","imbot.chat");
+                    // }
+                // }
     }
 }
 
