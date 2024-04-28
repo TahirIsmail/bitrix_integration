@@ -110,19 +110,6 @@
 
                         </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
                         <div class="buttons">
                             <button class="next_button">Next Step</button>
                         </div>
