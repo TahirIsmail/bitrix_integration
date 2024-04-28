@@ -34,6 +34,33 @@ class Helper
         return $bitrixId;
     }
 
+    static function incubatorProductCityBitrixId($cityId) {
+        switch ($cityId) {
+            case '6':
+            $bitrixId = 1117;
+            break;
+            case '7':
+            $bitrixId = 1113;
+            break;
+            case '8':
+            $bitrixId = 1121;
+            break;
+            case '9':
+            $bitrixId = 1125;
+            break;
+            case '10':
+            $bitrixId = 1129;
+            break;
+            case '11':
+            $bitrixId = 1133;
+            break;
+            default:
+            $bitrixId = 1117;
+            break;
+        }
+        return $bitrixId;
+    }
+
     static function incubatoSubscriptionTypeBitrixId($type)
         {
         switch ($type) {

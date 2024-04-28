@@ -5,6 +5,7 @@ use App\Http\Controllers\Bitrix_Hooks\BitrixHooksController;
 use App\Http\Controllers\Bitrix_Hooks\BitrixChatBotController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\IncubatorController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,6 +26,9 @@ Route::prefix('incubator')->group(function (){
     Route::post('/summary',[IncubatorController::class,'showSummary']);
     Route::post('/subscription_period',[IncubatorController::class,'showSubscriptionPeriod']);
     Route::post('/store',[IncubatorController::class,'store']);
+    Route::get('/renewal',function(){ return view('incubator/renewal');});
+    Route::post('/store_renewal',[IncubatorController::class,'store_renewal']);
+    Route::post('/coupon',[App\Http\Controllers\IncubatorController::class, 'couponDetails']);
 });
 
 Route::prefix('bitrix')->group(function(){
@@ -47,3 +51,15 @@ Route::get('/incomplete', function () {
 
 //
 // });
+
+
+Route::prefix('admin')->group(function(){
+    Auth::routes();
+    Route::get('/home', function(){
+        return redirect('admin');
+    })->name('home');
+    Route::get('/', [App\Http\Controllers\Admin\AdminController::class, 'index']);
+    //Coupon
+    Route::resource('coupons',App\Http\Controllers\Admin\CouponController::class);
+
+});
