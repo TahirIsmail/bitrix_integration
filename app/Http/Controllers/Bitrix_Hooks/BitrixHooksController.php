@@ -133,7 +133,7 @@ class BitrixHooksController extends Controller
             $queryData1   = http_build_query($data1);
             $this->bitrixCall->sendCurlRequest($queryData1,"update","crm.deal");
 
-            $products = array(["PRODUCT_ID" => Helper::incubatorCityBitrixId($inc->city_id), "PRICE" => $inc->totalAmount, "QUANTITY" => 1]);
+            $products = array(["PRODUCT_ID" => Helper::incubatorProductCityBitrixId($inc->city_id), "PRICE" => $inc->totalAmount, "QUANTITY" => 1]);
 
             $product['id']   = $request['deal_id'];
             $product['rows'] = $products;
