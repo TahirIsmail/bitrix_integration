@@ -57,8 +57,7 @@ class BitrixCallsService {
             if ($products != null) {
              $product['id'] = $response->json('result');
              $product['rows'] = $products;
-             $this->sendCurlRequest(http_build_query($product),'set',$method.'.productrows');
-            //  Http::get(env('BITRIX_URL').$method.'.productrows.set.json', $product);
+             Http::get(env('BITRIX_URL').$method.'.productrows.set.json', $product);
             }
             return $response->json('result');
          }
@@ -132,7 +131,7 @@ class BitrixCallsService {
         $fields['UF_CRM_1707309956']    = $programId; //Incubator Only Program done
         $fields['UF_CRM_1663458377297'] = $data->incubatee->facebook_profile;
         $fields['UF_CRM_1707992707'] = $data->incubatee->cnic_number; //done
-        // $fields['UF_CRM_1675251200'] = $data->coupon;
+        $fields['UF_CRM_1707731613'] = $data->coupon;
         // $fields['UTM_SOURCE']        = $request->pi_utm_source;
         // $fields['UTM_MEDIUM']        =  $request->pi_utm_medium;
         // $fields['UTM_CAMPAIGN']      = $request->pi_utm_campaign;
@@ -196,11 +195,16 @@ class BitrixCallsService {
         $fields['UF_CRM_66128DD331D76'] = $invoice_link;//done
         // $fields['UF_CRM_1677148403'] = (($data->isHavingDiscount())?'More than 6 month 50% discount.':'');
         $fields['UF_CRM_66128DD3272B1'] = 'INC'.now()->format('MY'); //Batch done
-        $products = array(["PRODUCT_ID" => Helper::incubatorCityBitrixId($data->city_id), "PRICE" => $data->totalAmount, "QUANTITY" => 1]);
+
         $fields = array('fields'=>$fields);
         Log::channel('bitrix')->debug($fields);
-        $dealId = $this->sendRequest($fields,$products,'add','crm.deal');
+        $dealId = $this->sendRequest($fields,null,'add','crm.deal');
         Log::channel('bitrix')->debug($dealId);
+        $products = array(["PRODUCT_ID" => Helper::incubatorProductCityBitrixId($data->city_id), "PRICE" => $data->totalAmount, "QUANTITY" => 1]);
+        $product['id'] = $dealId;
+        $product['rows'] = $products;
+        Log::channel('bitrix')->debug($product);
+        $this->sendCurlRequest(http_build_query($product),'set','crm.deal.productrows');
         Log::channel('bitrix')->info('==================Bitrix Auto Assign Incubator Deal Create Complete=============== ' . Date('Y-m-d H:i:s'));
         return $dealId;
 

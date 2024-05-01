@@ -75,13 +75,14 @@ class IncubatorController extends Controller
                 'registration_no'=>'INC-SUBS-'.$incubateeSubscription->id.'-'.time(),
             ]);
 
-                $getResponse = Helper::generateIncubatorInvoice($incubateeSubscriptionDetail);
-                if($getResponse['response'] == 'success'){
-                    $inoviceLink = $getResponse['invoice'];
-                    $dealId = $this->bitrix->createIncDeal($incubateeSubscriptionDetail,$inoviceLink,'Incubator-Only');
-                $incubateeSubscriptionDetail->b24_deal_id = $dealId;
-                $incubateeSubscriptionDetail->update();
-                }
+                // $getResponse = Helper::generateIncubatorInvoice($incubateeSubscriptionDetail);
+                // if($getResponse['response'] == 'success'){
+                //     $inoviceLink = $getResponse['invoice'];
+
+                // }
+            $dealId = $this->bitrix->createIncDeal($incubateeSubscriptionDetail,0,'Incubator-Only');
+            $incubateeSubscriptionDetail->b24_deal_id = $dealId;
+            $incubateeSubscriptionDetail->update();
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()]);

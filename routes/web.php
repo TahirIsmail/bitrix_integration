@@ -35,7 +35,7 @@ Route::prefix('bitrix')->group(function(){
     Route::any('/deal-created', [BitrixHooksController::class,'dealCreated']);
     Route::any('/incubation-activation', [BitrixHooksController::class,'incubationActivation']);
     Route::any('/create-invoice', [BitrixHooksController::class,'createBitrixInvoice']);
-    Route::any('/create-deal-invoice', 'Bitrix_Hooks\BitrixHooksController@createBitrixDealInvoice');
+    Route::any('/create-deal-invoice', [BitrixHooksController::class,'createBitrixDealInvoice']);
     Route::any('/chatbothandler',[BitrixChatBotController::class,'handler']);
 });
 Route::any('payment/{id}', [PaymentController::class,'show']);
@@ -59,7 +59,8 @@ Route::prefix('admin')->group(function(){
         return redirect('admin');
     })->name('home');
     Route::get('/', [App\Http\Controllers\Admin\AdminController::class, 'index']);
+    Route::get('incubatee-details', [App\Http\Controllers\Admin\AdminController::class, 'incubatee_details']);
     //Coupon
     Route::resource('coupons',App\Http\Controllers\Admin\CouponController::class);
-
+    // Route::get('import_data', [App\Http\Controllers\Admin\AdminController::class, 'import_data']);
 });

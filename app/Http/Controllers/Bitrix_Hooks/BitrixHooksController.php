@@ -95,6 +95,40 @@ class BitrixHooksController extends Controller
         }
     }
 
+    public function createBitrixDealInvoice(Request $request)
+    {
+        try {
+         Log::channel('bitrix')->info('==================Bitrix Deal Invoice Create=============== ' . Date('Y-m-d H:i:s'));
+         Log::channel('bitrix')->debug(request()->all());
+
+         if (isset($request['auth']) AND $request['auth']['domain'] == 'ice.bitrix24.com') {
+            $inoviceLink = null;
+            $dealID = $request['deal_id'];
+            if($request['program'] == 'Incubator'){
+                $registration = IncubateeSubscriptionDetail::where('b24_deal_id',$dealID)->first();
+                $getResponse = Helper::generateIncubatorInvoice($registration);
+                if($getResponse['response'] == 'success'){
+                    $inoviceLink = $getResponse['invoice'];
+                }
+                Log::channel('bitrix')->debug(['payment'=>$inoviceLink]);
+            }
+            $data1=[
+                'ID' => $dealID,
+                'FIELDS[UF_CRM_66128DD331D76]' => $inoviceLink, // Payment Link
+                'FIELDS[UF_CRM_65CDE15B5E754]' => '1st Installment', // Payment Link
+            ];
+              $queryData1   = http_build_query($data1);
+              $ret =  $this->bitrixCall->sendCurlRequest($queryData1,"update","crm.deal");
+              Log::channel('bitrix')->debug($ret);
+         }
+         return response()->json(['status'=>200,'success'=>true]);
+
+        } catch (Exception $e) {
+            Log::channel('bitrix')->info($e->getMessage());
+            throw new ApiOperationFailedException($e->getMessage(), $e->getCode());
+        }
+    }
+
     public function dealCreated(Request $request)
     {
      try {
