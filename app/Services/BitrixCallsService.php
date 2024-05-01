@@ -57,7 +57,8 @@ class BitrixCallsService {
             if ($products != null) {
              $product['id'] = $response->json('result');
              $product['rows'] = $products;
-             Http::get(env('BITRIX_URL').$method.'.productrows.set.json', $product);
+             $this->sendCurlRequest(http_build_query($product),'set',$method.'.productrows');
+            //  Http::get(env('BITRIX_URL').$method.'.productrows.set.json', $product);
             }
             return $response->json('result');
          }
