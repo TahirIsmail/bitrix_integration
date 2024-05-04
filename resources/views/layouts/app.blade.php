@@ -33,11 +33,13 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
+                    @if (auth()->check())
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item"><a class="nav-link" href="{{ url('admin/home') }}">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url('admin/coupons') }}">Coupons</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url('admin/incubator/search') }}">Voucher Regenerate</a></li>
                     </ul>
-
+                    @endif
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->

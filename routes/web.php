@@ -59,7 +59,12 @@ Route::prefix('admin')->group(function(){
         return redirect('admin');
     })->name('home');
     Route::get('/', [App\Http\Controllers\Admin\AdminController::class, 'index']);
-    Route::get('incubatee-details', [App\Http\Controllers\Admin\AdminController::class, 'incubatee_details']);
+    Route::post('incubator/changeDipositAmount', [App\Http\Controllers\Admin\IncubatorController::class, 'updateDipositAmount']);
+    Route::post('incubator/delete-incubatee', [App\Http\Controllers\Admin\IncubatorController::class, 'deleteIncubatee']);
+    Route::post('incubator/delete-incubatee-subscription', [App\Http\Controllers\Admin\IncubatorController::class, 'deleteIncubateeSubscription']);
+    Route::get('incubator/regenerate-voucher/{id}', [App\Http\Controllers\Admin\IncubatorController::class, 'voucherRecreate']);
+    Route::post('incubator/search', [App\Http\Controllers\Admin\IncubatorController::class, 'searchIncubateeData']);
+    Route::get('/incubator/search',[App\Http\Controllers\Admin\IncubatorController::class, 'searchIncubatee']);
     //Coupon
     Route::resource('coupons',App\Http\Controllers\Admin\CouponController::class);
     // Route::get('import_data', [App\Http\Controllers\Admin\AdminController::class, 'import_data']);
