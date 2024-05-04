@@ -25,7 +25,7 @@
 
 
 <div class="s_card">
-    <p class="s_card-title">Incubator Payment Summary</p>
+    <p class="s_card-title">Payment Summary</p>
 
 
 
