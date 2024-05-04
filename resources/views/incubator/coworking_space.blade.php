@@ -357,7 +357,7 @@
                 const purpose = $('#purpose').val();
 
                 $.ajax({
-                    url: '{{ url("coworking_space") }}',
+                    url: '{{ url("store-coworking-space") }}',
                     type: 'POST',
                     data: {
                         user_name: userName,
