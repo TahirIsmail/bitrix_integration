@@ -75,7 +75,7 @@ class IncubatorController extends Controller
             'FIELDS[UF_CRM_1711712382]' => $inoviceLink, // Payment Link
             'FIELDS[UF_CRM_1707731587]' => '1st Installment', // Payment Link
         ];
-        $queryData1   = http_build_query($data1);
+        $queryFields   = http_build_query($data1);
         $ret =  $this->bitrix->sendCurlRequest($queryFields,'update',(($registration->b24_deal_id)?'crm.deal':'crm.lead'));
     }
 
