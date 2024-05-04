@@ -32,7 +32,7 @@ class BitrixHooksController extends Controller
          if (isset($request['auth']) AND $request['auth']['domain'] == 'ice.bitrix24.com') {
             $inoviceLink = null;
             $leadID = $request['lead_id'];
-            if($request['program'] == 'Incubator'){
+            if($request['program'] == 'Incubator' OR $request['program'] == 'Co-Working Space'){
                 $registration = IncubateeSubscriptionDetail::where('b24_lead_id',$leadID)->first();
                 $getResponse = Helper::generateIncubatorInvoice($registration);
                 if($getResponse['response'] == 'success'){
