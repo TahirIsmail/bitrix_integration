@@ -198,7 +198,7 @@
                         <div class="s_card">
                             <p class="s_card-title"> Payment Summary</p>
                             <h6 class="title-incubator"></h6>
-                            <h6>Incubator Charges</h6>
+                            <h6>Co-working Space Charges</h6>
 
 
 
@@ -248,7 +248,7 @@
                         <div class="s_card">
                             <p class="s_card-title">Program</p>
                             <p class="small-desc">
-                                Incubator Only
+                                Co-working Space
                             </p>
                             <div class="go-corner">
                                 <div class="go-arrow">1</div>
