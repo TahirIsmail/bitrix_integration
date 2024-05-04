@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-    <title>Incubator Renewal</title>
+    <title>Co-working Space</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -43,7 +43,7 @@
                     <div class="main active">
 
                         <div class="text">
-                            <h2 class="text-center">Incubator Renewal Form</h2>
+                            <h2 class="text-center">Co-working Space Form</h2>
                             <hr>
                             <h3> Personal Information</h3>
                             <p style="color:black;">Enter your personal information.</p>
@@ -91,7 +91,7 @@
 
                             <div class="input-div">
                                 <textarea required id="purpose"></textarea>
-                                <span>Purpose / Incubation Reason</span>
+                                <span>Purpose / Reason</span>
                             </div>
 
                         </div>
@@ -171,11 +171,11 @@
                                         </option>
                                         <option value="1">1 month</option>
                                         <option value="2">2 month</option>
-                                        <option value="3">3 months - 10% off</option>
-                                        <option value="4">4 months</option>
-                                        <option value="5">5 months</option>
-                                        <option value="6">6 months - 20% off</option>
-                                <option value="7">After 6 months - 40% off</option>
+                                        <option value="3">3 months</option>
+                                        {{-- <option value="4">4 months</option> --}}
+                                        {{-- <option value="5">5 months</option> --}}
+                                        <option value="6">6 months</option>
+                                {{-- <option value="7">After 6 months - 40% off</option> --}}
 
                                     </select>
                                 </div>
@@ -357,7 +357,7 @@
                 const purpose = $('#purpose').val();
 
                 $.ajax({
-                    url: '{{ url('incubator/store_renewal') }}',
+                    url: '{{ url("coworking_space") }}',
                     type: 'POST',
                     data: {
                         user_name: userName,
@@ -387,7 +387,7 @@
                         } else if (response.success) {
                             Swal.fire({
                                 title: 'Success!',
-                                text: 'Incubatee subscribed successfully.',
+                                text: 'Co-working Space Form Submit successfully.',
                                 icon: 'success',
                                 confirmButtonColor: '#304767',
                                 confirmButtonText: 'OK',
@@ -578,15 +578,24 @@
             if (data.incubator_city == 'Faisalabad' || data.incubator_city == 'Multan') {
 
 
-                tableRows[1].children[2].textContent = "17,000 PKR";
-                tableRows[2].children[2].textContent = "17,000 PKR"; // You can calculate this based on the form data
-                tableRows[3].children[2].textContent = "17,000 PKR"; // You can calculate this based on the form data
+                tableRows[1].children[2].textContent = "11,000 PKR";
+                tableRows[2].children[2].textContent = "11,000 PKR"; // You can calculate this based on the form data
+                tableRows[3].children[2].textContent = "11,000 PKR"; // You can calculate this based on the form data
                 // You can calculate this based on the form data
-            } else {
+            }
+            else if (data.incubator_city == 'Multan') {
 
-                tableRows[1].children[2].textContent = "25,000 PKR"; // You can calculate this based on the form data
-                tableRows[2].children[2].textContent = "25,000 PKR"; // You can calculate this based on the form data
-                tableRows[3].children[2].textContent = "25,000 PKR"; // You can calculate this based on the form data
+
+                tableRows[1].children[2].textContent = "12,000 PKR";
+                tableRows[2].children[2].textContent = "12,000 PKR"; // You can calculate this based on the form data
+                tableRows[3].children[2].textContent = "12,000 PKR"; // You can calculate this based on the form data
+                // You can calculate this based on the form data
+            }
+             else {
+
+                tableRows[1].children[2].textContent = "18,000 PKR"; // You can calculate this based on the form data
+                tableRows[2].children[2].textContent = "18,000 PKR"; // You can calculate this based on the form data
+                tableRows[3].children[2].textContent = "18,000 PKR"; // You can calculate this based on the form data
 
             }
 
@@ -737,7 +746,7 @@
 
         function calculate(selectedOption,incubator_city,gender,preferred_timing,coupon = null){
             $.ajax({
-                    url: '/incubator/calculate',
+                    url: '/coworking/calculate',
                     method: 'POST',
                     data: {
                         subscription_period: selectedOption,

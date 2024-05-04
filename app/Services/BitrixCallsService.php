@@ -112,8 +112,8 @@ class BitrixCallsService {
            $programTitle = 'Incubation Online';
            $batch = 'INCO'.now()->format('MY');
            $preferredTiming = '';
-        }elseif($programId == 1868){
-           $productRows = array(["PRODUCT_ID" => Helper::incubatorCityBitrixId($data->city_id), "PRICE" => $data->totalAmount, "QUANTITY" => $data->subscription_period]);
+        }elseif($programId == 1233){
+           $productRows = array(["PRODUCT_ID" => Helper::CoIncCityBitrixId($data->city_id), "PRICE" => $data->totalAmount, "QUANTITY" => $data->subscription_period]);
            $programTitle = 'Co-Working Space';
            $preferredTiming = '';
            $batch = 'COINC'.now()->format('MY');
