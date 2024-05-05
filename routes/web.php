@@ -32,7 +32,7 @@ Route::prefix('incubator')->group(function (){
 });
 Route::post('coworking/calculate',[IncubatorController::class,'calculateCoworkingSubscription']);
 Route::get('/co-working-space',function(){ return view('incubator/coworking_space');});
-Route::post('/store-coworking-space',[IncubatorController::class,'coworkingSpace']);
+Route::post('/store-coworking-space',[IncubatorController::class,'storeCoworkingSpace']);
 Route::prefix('bitrix')->group(function(){
     Route::any('/deal-created', [BitrixHooksController::class,'dealCreated']);
     Route::any('/incubation-activation', [BitrixHooksController::class,'incubationActivation']);

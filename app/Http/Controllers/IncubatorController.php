@@ -153,7 +153,7 @@ class IncubatorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function coworkingSpace(Request $request)
+    public function storeCoworkingSpace(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'user_name' => 'required|string|max:255',
@@ -186,6 +186,7 @@ class IncubatorController extends Controller
             ],['email'=>$request->email]);
             $currentDate = date('Y-m-d');
             $city = City::where('name',$request->incubator_city)->first();
+            $isExist = IncubateeSubscriptionDetail::where(['incubatee_id'=>$incubateeSubscription->id,'type'=>'coworking'])->first();
             $incubateeSubscriptionDetail = IncubateeSubscriptionDetail::create([
                 'incubatee_code' => $incubateeSubscription->id + 1000,
                 'incubatee_id' => $incubateeSubscription->id,
@@ -203,9 +204,16 @@ class IncubatorController extends Controller
                 'registration_no'=>'COWORKINGSPACE-SUBS-'.$incubateeSubscription->id.'-'.time(),
             ]);
 
-            $lead_id = $this->bitrix->createIncLead($incubateeSubscriptionDetail,$request,1233);
-            $incubateeSubscriptionDetail->b24_lead_id = $lead_id;
-            $incubateeSubscriptionDetail->update();
+            if(!empty($isExist)){
+                $dealId = $this->bitrix->createIncDeal($incubateeSubscriptionDetail,0,'Co-Working Space');
+                $incubateeSubscriptionDetail->b24_deal_id = $dealId;
+                $incubateeSubscriptionDetail->update();
+            }else{
+                $lead_id = $this->bitrix->createIncLead($incubateeSubscriptionDetail,$request,1233);
+                $incubateeSubscriptionDetail->b24_lead_id = $lead_id;
+                $incubateeSubscriptionDetail->update();
+            }
+
 
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
