@@ -176,21 +176,26 @@ class IncubatorController extends Controller
         }
 
         try {
-            $incubateeSubscription = IncubateeSubscription::updateOrCreate([
-                'user_name' => $request->user_name,
-                'email' => $request->email,
-                'cnic_number' => $request->cnic_number,
-                'whatsapp_number' => $request->whatsapp_number,
-                'facebook_profile' => $request->facebook_profile,
-                'gender' => $request->gender,
-            ],['email'=>$request->email]);
+            $isUserExist = IncubateeSubscription::where(['email'=>$request->email])->first();
+            $incubateeId = $isUserExist->id;
+            if (empty($isUserExist)) {
+                $incubateeSubscription = IncubateeSubscription::create([
+                    'user_name' => $request->user_name,
+                    'email' => $request->email,
+                    'cnic_number' => $request->cnic_number,
+                    'whatsapp_number' => $request->whatsapp_number,
+                    'facebook_profile' => $request->facebook_profile,
+                    'gender' => $request->gender,
+                ]);
+            }
+            $incubateeId = $incubateeSubscription->id;
             $currentDate = date('Y-m-d');
             $city = City::where('name',$request->incubator_city)->first();
-            dd($incubateeSubscription->id);
-            $isExist = IncubateeSubscriptionDetail::where(['incubatee_id'=>$incubateeSubscription->id,'type'=>'coworking'])->first();
+
+            $isExist = IncubateeSubscriptionDetail::where(['incubatee_id'=>$incubateeId,'type'=>'coworking'])->first();
             $incubateeSubscriptionDetail = IncubateeSubscriptionDetail::create([
-                'incubatee_code' => $incubateeSubscription->id + 1000,
-                'incubatee_id' => $incubateeSubscription->id,
+                'incubatee_code' => $incubateeId + 1000,
+                'incubatee_id' => $incubateeId,
                 'timings' => $request->timing,
                 'shift' => $request->shift,
                 'city_id' => $city->id,
