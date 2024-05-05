@@ -208,7 +208,7 @@ class IncubatorController extends Controller
                 'subscription_period' => $request->subscription_period.' '.'months',
                 'coupon' => $request->coupon_code,
                 'totalAmount' => $request->totalAmount,
-                'registration_no'=>'COWORKINGSPACE-SUBS-'.$incubateeSubscription->id.'-'.time(),
+                'registration_no'=>'COWORKINGSPACE-SUBS-'.$incubateeId.'-'.time(),
             ]);
 
             if(!empty($isExist)){
