@@ -187,8 +187,9 @@ class IncubatorController extends Controller
                     'facebook_profile' => $request->facebook_profile,
                     'gender' => $request->gender,
                 ]);
+                $incubateeId = $incubateeSubscription->id;
             }
-            $incubateeId = $incubateeSubscription->id;
+
             $currentDate = date('Y-m-d');
             $city = City::where('name',$request->incubator_city)->first();
 
