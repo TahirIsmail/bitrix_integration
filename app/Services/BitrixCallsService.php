@@ -183,7 +183,7 @@ class BitrixCallsService {
         // $fields['UF_CRM_1664375057']    = 28; //country Pakistan only
         $fields['UF_CRM_65CDE15B31D91']    = (($data->incubatee->gender == 'male') ? 565 : 567);
         // $fields['UF_CRM_1664030660']    = $data->incubatee->date_of_birth ?? '';
-        $fields['UF_CRM_65CDE15ADB45B']    = 207; //Incubator Only Program
+        $fields['UF_CRM_65CDE15ADB45B']    = (($type == 'Co-Working Space')?1233:207); //Incubator Only Program
         // $fields['UF_CRM_1663458377297'] = $data->incubatee->facebook_profile;
         $fields['UF_CRM_1707992744'] = $data->incubatee->cnic_number;//done
         $fields['UF_CRM_1675251200'] = $data->coupon;

@@ -156,7 +156,8 @@ class BitrixHooksController extends Controller
             // $inc->incubator->status = 1;
             $inc->push();
 
-            $getData = $this->bitrixCall->sendCurlRequest(['ID' => $leadID],'get','crm.lead');
+            if(!empty($leadID)){
+                $getData = $this->bitrixCall->sendCurlRequest(['ID' => $leadID],'get','crm.lead');
             $result = $getData['result'];
             $data1=[
                     'ID' => $request['deal_id'],
@@ -173,6 +174,8 @@ class BitrixHooksController extends Controller
             $product['id']   = $request['deal_id'];
             $product['rows'] = $products;
             $this->bitrixCall->sendCurlRequest(http_build_query($product),'set','crm.deal.productrows');
+            }
+
           }
          }
          return response()->json(['status'=>200,'success'=>true]);
