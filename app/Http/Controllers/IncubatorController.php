@@ -186,6 +186,7 @@ class IncubatorController extends Controller
             ],['email'=>$request->email]);
             $currentDate = date('Y-m-d');
             $city = City::where('name',$request->incubator_city)->first();
+            dd($incubateeSubscription->id);
             $isExist = IncubateeSubscriptionDetail::where(['incubatee_id'=>$incubateeSubscription->id,'type'=>'coworking'])->first();
             $incubateeSubscriptionDetail = IncubateeSubscriptionDetail::create([
                 'incubatee_code' => $incubateeSubscription->id + 1000,
