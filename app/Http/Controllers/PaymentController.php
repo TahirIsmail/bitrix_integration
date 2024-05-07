@@ -215,6 +215,7 @@ class PaymentController extends Controller
                     Log::info('=========Incubator Payment Data==========='.$payment->registration_id);
                         if ($payment->is_paid != 1) {
                             $incReg = IncubateeSubscriptionDetail::where('registration_no', $payment->registration_id)->first();
+                            Log::channel('bitrix')->debug($incReg);
                             $incReg->update(['status' => 'approved']);
                             $payment->update(['is_paid' => '1','payment_date'=>now()]);
                             if ($incReg->b24_lead_id != '' || $incReg->b24_deal_id != '') {
