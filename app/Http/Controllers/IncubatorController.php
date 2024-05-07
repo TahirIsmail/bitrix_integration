@@ -310,10 +310,8 @@ class IncubatorController extends Controller
                 // Handle default case if subscription period is not within 1 to 7
                 break;
         }
-         Log::channel('bitrix')->debug($city);
         //Lahore Karachi Islamabad-Rawalpindi
-        if(($gender == 'female' || $shift == 'Night') && ($city->name == 'Islamabad-Rawalpindi' || $city->name == 'Karachi' || $city->name == 'Lahore')){
-             Log::channel('bitrix')->debug('here');
+        if(($gender == 'female' || $shift->name == 'Night') && ($city->name == 'Islamabad-Rawalpindi' || $city->name == 'Karachi' || $city->name == 'Lahore')){
             $offpercent = (int)$totalAmount * 0.4;
             $totalAmount = (int)$totalAmount - $offpercent;
 
