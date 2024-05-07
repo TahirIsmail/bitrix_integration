@@ -311,12 +311,7 @@ class IncubatorController extends Controller
                 break;
         }
         //Lahore Karachi Islamabad-Rawalpindi
-        if($gender == 'female' && ($city->name == 'Islamabad-Rawalpindi' || $city->name == 'Karachi' || $city->name == 'Lahore')){
-            $offpercent = (int)$totalAmount * 0.4;
-            $totalAmount = (int)$totalAmount - $offpercent;
-
-        }
-        elseif($shift == 'night' && ($city->name == 'Islamabad-Rawalpindi' || $city->name == 'Karachi' || $city->name == 'Lahore')){
+        if(($gender == 'female' || $shift == 'Night') && ($city->name == 'Islamabad-Rawalpindi' || $city->name == 'Karachi' || $city->name == 'Lahore')){
             $offpercent = (int)$totalAmount * 0.4;
             $totalAmount = (int)$totalAmount - $offpercent;
 
