@@ -314,6 +314,11 @@ class IncubatorController extends Controller
             $totalAmount = (int)$totalAmount - $offpercent;
 
         }
+        elseif($shift == 'Night' && ($city->name == 'Islamabad-Rawalpindi' || $city->name == 'Karachi' || $city->name == 'Lahore')){
+            $offpercent = (int)$totalAmount * 0.4;
+            $totalAmount = (int)$totalAmount - $offpercent;
+
+        }
         elseif($gender == 'female' && $city->name == 'Multan'){
             $offpercent = (int)$totalAmount * 0.3;
             $totalAmount = (int)$totalAmount - $offpercent;
