@@ -209,10 +209,10 @@ class PaymentController extends Controller
             $data = $request->all();
 
             if (!empty($data)) {
-                $payment = PaymentDetails::where('order_id', $data['orderid'])->orWhere('registration_id',$data['orderid'])->first();
+                $payment = PaymentDetails::where('order_id', $data['orderid'])->first();
                 // Log::info('=========Incubator Payment Data==========='.$payment);
                 if (isset($payment)) {
-                    Log::info('=========Incubator Payment Data==========='.$payment->is_paid);
+                    Log::info('=========Incubator Payment Data==========='.$payment->registration_id);
                         if ($payment->is_paid != 1) {
                             $incReg = IncubateeSubscriptionDetail::where('registration_no', $payment->registration_id)->first();
                             $incReg->update(['status' => 'approved']);
