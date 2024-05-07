@@ -271,7 +271,7 @@ class IncubatorController extends Controller
         $shift = $city->shifts->where('name',$data['shift'])->first();
         $timing = Timing::where('shift_id',$shift->id)->first();
         $charge = Charge::where('incubator_timings_id',$timing->id)->first();
-        Log::channel('bitrix')->debug($shift);
+
         $subscription_months = $data['subscription_period'];
         switch ($subscription_months) {
             case 1:
@@ -310,8 +310,10 @@ class IncubatorController extends Controller
                 // Handle default case if subscription period is not within 1 to 7
                 break;
         }
+         Log::channel('bitrix')->debug($city);
         //Lahore Karachi Islamabad-Rawalpindi
         if(($gender == 'female' || $shift == 'Night') && ($city->name == 'Islamabad-Rawalpindi' || $city->name == 'Karachi' || $city->name == 'Lahore')){
+             Log::channel('bitrix')->debug('here');
             $offpercent = (int)$totalAmount * 0.4;
             $totalAmount = (int)$totalAmount - $offpercent;
 
