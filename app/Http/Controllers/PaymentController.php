@@ -58,7 +58,7 @@ class PaymentController extends Controller
             "txn_customer_name" => $invoice->b24lead->name,
             "txn_customer_email" => $invoice->b24lead->email,
             "txn_customer_mobile" => $invoice->b24lead->phone,
-            "txn_gateway_options" => ["kuickpay"],
+            "txn_gateway_options" => ["kuickpay2"],
             "txn_expiry_datetime" => $expiry_date,
             "txn_payment_type" => $txn_desc,
             "txn_customer_bill_order_id" => $invoice->order_id,

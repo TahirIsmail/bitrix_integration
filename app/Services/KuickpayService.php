@@ -24,7 +24,7 @@ class KuickpayService {
             "txn_customer_bill_order_id" => $details->registration_no,
             "txn_description" => "Incubation Subscription - (" . ucfirst($auth_user->name) . " - " . $details->city->name . " - " . $details->payment_mode . " - " . $details->booking_type . ")",
             "installments" => 1,
-            "txn_gateway_options" => ["kuickpay"],
+            "txn_gateway_options" => ["kuickpay2"],
             "txn_currency" => "PKR",
             "txn_currency_rate" => "Dollar_Rates_2",
             "txn_expiry_datetime" => date('Y-m-d', strtotime("+10 days")),
