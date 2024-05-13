@@ -179,7 +179,7 @@ class IncubatorController extends Controller
 
         try {
             $isUserExist = IncubateeSubscription::where(['email'=>$request->email])->first();
-            $incubateeId = $isUserExist->id;
+
             if (empty($isUserExist)) {
                 $incubateeSubscription = IncubateeSubscription::create([
                     'user_name' => $request->user_name,
@@ -190,6 +190,8 @@ class IncubatorController extends Controller
                     'gender' => $request->gender,
                 ]);
                 $incubateeId = $incubateeSubscription->id;
+            }else{
+                $incubateeId = @$isUserExist->id;
             }
 
             $currentDate = date('Y-m-d');
