@@ -189,7 +189,7 @@ class BitrixCallsService {
         $fields['UF_CRM_1675251200'] = $data->coupon;
         $fields['UF_CRM_65CDE15B4C69F'] = Helper::incubatoSubscriptionTypeBitrixId($data->subscription_period);//done
         $fields['UF_CRM_65CDE15AE2C0F'] = (($data->shift == 'day')?1:(($data->shift == 'evening')?3:5));//done
-        // $fields['UF_CRM_6346CD7E3D06C'] = '';
+        $fields['UF_CRM_65CDE15C00795'] = 'Repeat'; //recurring
         // $fields['UF_CRM_1675846599826'] = @$data->city->code.'-'.@$data->incubator->incubatee_code;
         $fields['UF_CRM_65CDE15B5E754'] = '1st Installment Plan';//done
         $fields['UF_CRM_66128DD331D76'] = $invoice_link;//done
