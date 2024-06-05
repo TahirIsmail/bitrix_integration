@@ -360,7 +360,7 @@
                 const totalAmount = $('#totalAmount').text();
                 const purpose = $('#purpose').val();
                 const utm_source = $('#utm_source').val();
-                const utm_medium = $('#utm_medium').text();
+                const utm_medium = $('#utm_medium').val();
                 const utm_campaign = $('#utm_campaign').val();
                 const utm_content = $('#utm_content').val();
                 $.ajax({
