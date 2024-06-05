@@ -1005,6 +1005,9 @@
                 const couponCode = $('#coupon_code').val();
                 const totalAmount = $('#totalAmount').text();
                 const purpose = $('#purpose').val();
+                const utm_source = $('#utm_source').val();
+                const utm_medium = $('#utm_medium').text();
+                const utm_campaign = $('#utm_campaign').val();
 
                 $.ajax({
                     url: '{{ url('incubator/store') }}',
@@ -1022,7 +1025,10 @@
                         subscription_period: subscriptionPeriod,
                         coupon_code: couponCode,
                         purpose: purpose,
-                        totalAmount: totalAmount
+                        totalAmount: totalAmount,
+                        utm_source: utm_source,
+                        utm_medium: utm_medium,
+                        utm_campaign: utm_campaign,
                     },
                     success: function(response) {
                         if (response.error) {
