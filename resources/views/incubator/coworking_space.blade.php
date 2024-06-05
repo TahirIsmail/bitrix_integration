@@ -69,6 +69,9 @@
                             <div class="input-div">
                                 <input type="text" id="whatsapp_number" name="whatsapp_number" maxlength="11"
                                     minlength="11" required>
+                                    <input type="hidden" name="utm_source" value="{{@$_GET['utm_source']}}">
+                                    <input type="hidden" name="utm_medium" value="{{@$_GET['utm_medium']}}">
+                                    <input type="hidden" name="utm_campaign" value="{{@$_GET['utm_campaign']}}">
                                 <span>WhatsApp Number</span>
                             </div>
 
