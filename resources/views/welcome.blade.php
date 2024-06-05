@@ -714,9 +714,10 @@
 
                             <div class="input-div">
                                 <input type="text" id="facebook_profile" name="facebook_profile" required>
-                                <input type="hidden" name="utm_source" value="{{@$_GET['utm_source']}}">
-                                <input type="hidden" name="utm_medium" value="{{@$_GET['utm_medium']}}">
-                                <input type="hidden" name="utm_campaign" value="{{@$_GET['utm_campaign']}}">
+                                <input type="hidden" id="utm_source" value="{{@$_GET['utm_source']}}">
+                                <input type="hidden" id="utm_medium" value="{{@$_GET['utm_medium']}}">
+                                <input type="hidden" id="utm_campaign" value="{{@$_GET['utm_campaign']}}">
+                                <input type="hidden" id="utm_content" value="{{@$_GET['utm_content']}}">
                                 <span>FaceBook Profile </span>
                             </div>
 
@@ -1008,6 +1009,7 @@
                 const utm_source = $('#utm_source').val();
                 const utm_medium = $('#utm_medium').text();
                 const utm_campaign = $('#utm_campaign').val();
+                const utm_content = $('#utm_content').val();
 
                 $.ajax({
                     url: '{{ url('incubator/store') }}',

@@ -140,9 +140,6 @@ class IncubatorController extends Controller
                 'coupon' => $request->coupon_code,
                 'totalAmount' => $request->totalAmount,
                 'registration_no'=>'INC-SUBS-'.$incubateeSubscription->id.'-'.time(),
-                'utm_source' => $request->utm_source,
-                'utm_medium' => $request->utm_medium,
-                'utm_campaign' => $request->utm_campaign,
             ]);
 
             $lead_id = $this->bitrix->createIncLead($incubateeSubscriptionDetail,$request,207);

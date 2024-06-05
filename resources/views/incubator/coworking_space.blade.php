@@ -69,9 +69,10 @@
                             <div class="input-div">
                                 <input type="text" id="whatsapp_number" name="whatsapp_number" maxlength="11"
                                     minlength="11" required>
-                                    <input type="hidden" name="utm_source" value="{{@$_GET['utm_source']}}">
-                                    <input type="hidden" name="utm_medium" value="{{@$_GET['utm_medium']}}">
-                                    <input type="hidden" name="utm_campaign" value="{{@$_GET['utm_campaign']}}">
+                                <input type="hidden" id="utm_source" value="{{@$_GET['utm_source']}}">
+                                <input type="hidden" id="utm_medium" value="{{@$_GET['utm_medium']}}">
+                                <input type="hidden" id="utm_campaign" value="{{@$_GET['utm_campaign']}}">
+                                <input type="hidden" id="utm_content" value="{{@$_GET['utm_content']}}">
                                 <span>WhatsApp Number</span>
                             </div>
 
@@ -361,7 +362,7 @@
                 const utm_source = $('#utm_source').val();
                 const utm_medium = $('#utm_medium').text();
                 const utm_campaign = $('#utm_campaign').val();
-
+                const utm_content = $('#utm_content').val();
                 $.ajax({
                     url: '{{ url("store-coworking-space") }}',
                     type: 'POST',
@@ -379,7 +380,7 @@
                         utm_source: utm_source,
                         utm_medium: utm_medium,
                         utm_campaign: utm_campaign,
-
+                        utm_content: utm_content,
                     },
                     success: function(response) {
                         if (response.error) {
