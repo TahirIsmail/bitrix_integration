@@ -132,9 +132,9 @@ class BitrixCallsService {
         $fields['UF_CRM_1663458377297'] = $data->incubatee->facebook_profile;
         $fields['UF_CRM_1707992707'] = $data->incubatee->cnic_number; //done
         $fields['UF_CRM_1707731613'] = $data->coupon;
-        $fields['UTM_SOURCE']        = $request->utm_source;
-        $fields['UTM_MEDIUM']        =  $request->utm_medium;
-        $fields['UTM_CAMPAIGN']      = $request->utm_campaign;
+        $fields['UTM_SOURCE']        = 'utm_source';
+        $fields['UTM_MEDIUM']        =  'utm_medium';
+        $fields['UTM_CAMPAIGN']      = 'utm_campaign';
         $fields['UF_CRM_1707476450'] = Helper::incubatoSubscriptionTypeBitrixId($data->subscription_period);
         $fields['UF_CRM_1707475905'] = $preferredTiming;
         // $fields['UF_CRM_1664188710'] = $bitrixBcStdId;
