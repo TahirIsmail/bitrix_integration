@@ -162,7 +162,7 @@ class BitrixHooksController extends Controller
             $data1=[
                     'ID' => $request['deal_id'],
                     'FIELDS[CURRENCY_ID]' => 'PKR',
-                    'FIELDS[UF_CRM_65CDE15B27F5D]' => $inc->city_id,
+                    'FIELDS[UF_CRM_65CDE15B27F5D]' => Helper::incubatorCityBitrixId($inc->city_id),
                     // 'FIELDS[UF_CRM_1664375057]' => 28,
                     'FIELDS[OPPORTUNITY]' => $inc->totalAmount, // Payment Link
                   ];
