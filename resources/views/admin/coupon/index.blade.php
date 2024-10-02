@@ -26,6 +26,18 @@
 
                             <div class="col-md-12">
                                 <div class="form-group">
+                                    <label>Coupon type</label>
+                                    <select class="form-control" name="type" id="type">
+                                        <option value="Incubation" >Incubation</option>
+                                        <option value="Digital Incubation">Digital Incubation</option>
+                                        <option value="Community">Community</option>
+                                      </select>
+                                    <small class="error_msg text-danger" id="expiry_msg"></small>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
                                     <label>Discount</label>
                                     <input type="number" name="discount" id="discount" class="form-control"/>
                                     <small class="error_msg text-danger" id="discount_msg"></small>
@@ -70,6 +82,7 @@
                             <table id="datatable" class="table table-hover js-basic-example table_custom border-style spacing5">
                                 <thead>
                                     <tr>
+                                        <th>Coupon Type</th>
                                         <th>Coupon Code</th>
                                         <th>Title</th>
                                         <th>Discount</th>
@@ -223,6 +236,7 @@ function getData(){
               url: "{{ url('admin/coupons') }}"
            },
           columns: [
+             { data: 'type', name: 'type' },
             { data: 'code', name: 'code' },
             { data: 'title', name: 'title' },
             { data: 'discount', name: 'discount' },

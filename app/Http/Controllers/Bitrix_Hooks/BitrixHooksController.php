@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\b24leads;
 use App\Models\b24leadsInvoices;
 use App\Models\IncubateeSubscriptionDetail;
+use App\Models\DigitalIncubationRegistration;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\Controller;
 use App\Services\BitrixCallsService;
@@ -39,7 +40,27 @@ class BitrixHooksController extends Controller
                     $inoviceLink = $getResponse['invoice'];
                 }
                 Log::channel('bitrix')->debug(['payment'=>$inoviceLink]);
+            } elseif($request['program'] == 'Digital Incubator'){
+                $registration = DigitalIncubationRegistration::where('b24_lead_id',$leadID)->first();
+                $invoice = PaymentDetails::Create(
+                    ['user_id' => $registration->id,
+                     'reference_no' => '',
+                     'title' => 'Digital Incubation Subscription',
+                     'ip_address' => '',
+                     'order_id' => $registration->registration_no,
+                     'amount' => $registration->amount,
+                     'type' => 'DINC',
+                     'is_paid' => '0',
+                     'registration_id' => $registration->registration_no,
+                     'name' => $registration->name,
+                     'email' => $registration->email,
+                     'mobile' => $registration->whatsapp_number,
+                     'currency' => 'PKR'
+                    ]);
+                $inoviceLink = env('APP_URL') . 'payment/' . $invoice->id;
+                Log::channel('bitrix')->debug(['payment'=>$inoviceLink]);
             }
+
             elseif($request['program'] == 'Trainings') {
 
                 $getData = $this->bitrixCall->sendCurlRequest(['ID' => $leadID],'get','crm.lead');
@@ -76,12 +97,12 @@ class BitrixHooksController extends Controller
                   'order_id' => $request['program'].'-'.$product_name. '-' . $data->id . '-' . time(),
                 ]);
 
-                $inoviceLink = env('APP_URL') . 'payment/' . $invoice->id;
+                $inoviceLink = env('APP_URL') . 'trainings/payment/' . $invoice->id;
             }
             $data1=[
                 'ID' => $leadID,
                 'FIELDS[UF_CRM_1711712382]' => $inoviceLink, // Payment Link
-                'FIELDS[UF_CRM_1707731587]' => '1st Installment', // Payment Link
+                'FIELDS[UF_CRM_1707731587]' => '1st Installment',
             ];
               $queryData1   = http_build_query($data1);
               $ret =  $this->bitrixCall->sendCurlRequest($queryData1,"update","crm.lead");
@@ -111,6 +132,26 @@ class BitrixHooksController extends Controller
                 if($getResponse['response'] == 'success'){
                     $inoviceLink = $getResponse['invoice'];
                 }
+                Log::channel('bitrix')->debug(['payment'=>$inoviceLink]);
+            }elseif($request['program'] == 1297){
+                //Digital Incubator
+                $registration = DigitalIncubationRegistration::where('b24_deal_id',$dealID)->first();
+                $invoice = PaymentDetails::Create(
+                    ['user_id' => $registration->id,
+                     'reference_no' => '',
+                     'title' => 'Digital Incubation Subscription',
+                     'ip_address' => '',
+                     'order_id' => $registration->registration_no,
+                     'amount' => $registration->amount,
+                     'type' => 'DINC',
+                     'is_paid' => '0',
+                     'registration_id' => $registration->registration_no,
+                     'name' => $registration->name,
+                     'email' => $registration->email,
+                     'mobile' => $registration->whatsapp_number,
+                     'currency' => 'PKR'
+                    ]);
+                $inoviceLink = env('APP_URL') . 'payment/' . $invoice->id;
                 Log::channel('bitrix')->debug(['payment'=>$inoviceLink]);
             }
             $data1=[
@@ -231,6 +272,55 @@ class BitrixHooksController extends Controller
                 //   $registration->snap_form_filled = $snap_form;
                 //   $registration->added_in_whatsApp_groups = $added_whatsapp;
 
+                  $registration->push();
+
+                    $data = [
+                        'ID' => $dealID,
+                        'FIELDS[CLOSEDATE]' => $expiry_date,
+                        'FIELDS[UF_CRM_65CDE15B72DC4]' => $expiry_date,
+                        'FIELDS[UF_CRM_1679135173]' => 'Activated',
+                    ];
+                    $res = $this->bitrixCall->sendCurlRequest(http_build_query($data),"update","crm.deal");
+
+                    Log::channel('bitrix')->debug($data);
+              }
+             }
+             return response()->json(['status'=>200,'success'=>true]);
+
+            } catch (Exception $e) {
+                Log::info($e->getMessage());
+                throw new ApiOperationFailedException($e->getMessage(), $e->getCode());
+            }
+    }
+
+    public function programActivation(Request $request)
+    {
+        try {
+             Log::channel('bitrix')->info('==================Bitrix Program Activation Started=============== ' . Date('Y-m-d H:i:s'));
+             Log::channel('bitrix')->debug(request()->all());
+
+             if (isset($request['auth']) AND $request['auth']['domain'] == 'ice.bitrix24.com') {
+                $dealID = $request['deal_id'];
+                $joining_date = Carbon::createFromFormat('d/m/Y', $request['BEGINDATE'])->toDateString();
+                // $contract = ($request['contract'] == 'Yes')?1:0;
+                // $card_issue = ($request['card_issue'] == 'Yes')?1:0;
+                // $card_no = ($request['card_no'] == 'Yes')?1:0;
+                // $snap_form = ($request['snap_form'] == 'Yes')?1:0;
+                // $added_whatsapp = ($request['added_whatsapp'] == 'Yes')?1:0;
+            if (($request['program'] == 'Digital Incubation' OR $request['program'] == 'Digital Incubation Plus Community' OR $request['program'] == 'Community'))
+            {
+                  $registration = DigitalIncubationRegistration::where([
+                         'b24_deal_id' => $dealID,
+                     ])->first();
+                  if ($registration->status == 'activated') {
+                    Log::channel('bitrix')->info($registration->program.' Already Activated');
+                    return false;
+                  }
+                  $expiry_date = null;
+                  $expiry_date = Carbon::parse($joining_date)->addMonthsNoOverflow(3)->toDateString();
+                  $registration->expiry_date = $expiry_date;
+                  $registration->joining_date = $joining_date;
+                  $registration->status = 'activated';
                   $registration->push();
 
                     $data = [

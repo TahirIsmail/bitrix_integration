@@ -211,5 +211,122 @@ class BitrixCallsService {
 
     }
 
+    public function createDigitalIncLead($data,$request,$programId)
+    {
+        //Check if he is already contact of bitrix
+        $getData = Http::get(env('BITRIX_URL').'crm.contact.list', ['FILTER[EMAIL]' => $data->email]);
+
+        if (!empty(json_decode($getData)->result)) {
+            $fields['CONTACT_ID'] = json_decode($getData)->result[0]->ID;
+        } else {
+            //Create Bitrix contact
+            $fields['NAME'] = $data->candidate->name;
+            $fields['EMAIL'][0]['VALUE'] = $data->candidate->email;
+            $fields['EMAIL'][0]['VALUE_TYPE'] = 'WORK';
+            $fields['PHONE'][0]['VALUE'] = $data->candidate->whatsapp_number;
+            $fields['PHONE'][0]['VALUE_TYPE'] = 'WORK';
+        }
+
+        if ($programId == 1299) {//done
+            $productRows = array();
+
+            if (isset($data->course1Details)) {
+                array_push($productRows, ["PRODUCT_ID" => $data->course1Details->b24_course_id, "PRICE" => 8000, "QUANTITY" => 1]);
+            }
+            if (isset($data->course2Details)) {
+                array_push($productRows,["PRODUCT_ID" => $data->course2Details->b24_course_id, "PRICE" => 8000, "QUANTITY" => 1]);
+            }
+            if (isset($data->course3Details)) {
+                array_push($productRows,["PRODUCT_ID" => $data->course3Details->b24_course_id, "PRICE" => 8000, "QUANTITY" => 1]);
+            }
+           $programTitle = 'Digital Incubator';
+        //    $preferredTiming = (($data->shift == 'day')?1:(($data->shift == 'evening')?2:5)) ;
+           $batch = 'DINC'.now()->format('MY');
+        }
+
+        //Create common fields array for bitirx
+        $fields['TITLE'] = $data->candidate->name.' - '.$programTitle;
+        $fields['STATUS_ID']            = 'NEW';
+        $fields['CURRENCY_ID']          = 'PKR';
+        $fields['OPPORTUNITY']          =  $data->amount;
+        $fields['UF_CRM_1710586705']    =  $data->candidate->city->name;
+        $fields['UF_CRM_1710586724']    =  $data->candidate->country->name;
+        $fields['UF_CRM_1710585498']    =  (($data->candidate->gender == 'male') ? 2521 : 2523); //done
+        $fields['UF_CRM_1707309956']    =  $programId; //Digital Incubator
+        $fields['UF_CRM_1707992707']    =  $data->candidate->cnic_number; //done
+        $fields['UF_CRM_1707731613']    =  $data->coupon;
+        $fields['UTM_SOURCE']           =  $request->utm_source;
+        $fields['UTM_MEDIUM']           =  $request->utm_medium;
+        $fields['UTM_CAMPAIGN']         =  $request->utm_campaign;
+        $fields['UTM_CONTENT']          =  $request->utm_content;
+        $fields['UF_CRM_1710672374']    =  $batch; //Batch
+
+        $fields = ['fields' => $fields];
+        //Bitrix Lead Create Code Start
+        $lead_id = $this->sendRequest($fields,$productRows);
+        return $lead_id;
+    }
+
+    public function createDigitalIncDeal($data,$invoice_link,$programId)
+    {
+        Log::channel('bitrix')->info('==================Bitrix Digital Incubator Deal Create Start=============== ' . Date('Y-m-d H:i:s'));
+        //Check if he is already contact of bitrix
+        $getData = Http::get(env('BITRIX_URL').'crm.contact.list', ['FILTER[EMAIL]' => $data->candidate->email]);
+        if (!empty(json_decode($getData)->result)) {
+            $fields['CONTACT_ID'] = json_decode($getData)->result[0]->ID;
+        } else {
+            //Create Bitrix contact
+            $fields['FIELDS']['NAME'] = $data->candidate->name;
+            $fields['FIELDS']['EMAIL'][0]['VALUE'] = $data->candidate->email;
+            $fields['FIELDS']['EMAIL'][0]['VALUE_TYPE'] = 'WORK';
+            $fields['FIELDS']['PHONE'][0]['VALUE'] = $data->candidate->whatsapp_number;
+            $fields['FIELDS']['PHONE'][0]['VALUE_TYPE'] = 'WORK';
+            $contactId = $this->sendRequest($fields,null,'add','crm.contact');
+            $fields['CONTACT_ID'] = $contactId;
+        }
+        //Create common fields array for bitirx
+        $fields['TITLE'] =  $data->candidate->name.' - Digital Incubator';
+        $fields['STATUS_ID']            = 'C1:NEW';
+        $fields['CURRENCY_ID']          = 'PKR';
+        $fields['OPPORTUNITY']          = $data->amount;
+        $fields['UF_CRM_65CDE15B27F5D']    = $data->candidate->city->name; //done
+        $fields['UF_CRM_66128DD303A78']    = $data->candidate->country->name; //done
+        $fields['UF_CRM_65CDE15B31D91']    = (($data->candidate->gender == 'male') ? 565 : 567);
+        // $fields['UF_CRM_1664030660']    = $data->incubatee->date_of_birth ?? '';
+        $fields['UF_CRM_65CDE15ADB45B']    = 1297; //Digital Incubator Only Program
+        // $fields['UF_CRM_1663458377297'] = $data->incubatee->facebook_profile;
+        $fields['UF_CRM_1707992744'] = $data->candidate->cnic_number;//done
+        $fields['UF_CRM_1675251200'] = $data->coupon;
+        $fields['UF_CRM_65CDE15C00795'] = 'Repeat'; //recurring
+        $fields['UF_CRM_65CDE15B5E754'] = '1st Installment Plan';//done
+        $fields['UF_CRM_66128DD331D76'] = $invoice_link;//done
+        $fields['UF_CRM_66128DD3272B1'] = 'DINC'.now()->format('MY'); //Batch done
+
+        $fields = array('fields'=>$fields);
+        Log::channel('bitrix')->debug($fields);
+        $dealId = $this->sendRequest($fields,null,'add','crm.deal');
+        Log::channel('bitrix')->debug($dealId);
+
+        $products = array();
+
+        if (isset($data->course1Details)) {
+            array_push($products, ["PRODUCT_ID" => $data->course1Details->b24_course_id, "PRICE" => 8000, "QUANTITY" => 1]);
+        }
+        if (isset($data->course2Details)) {
+            array_push($products,["PRODUCT_ID" => $data->course2Details->b24_course_id, "PRICE" => 8000, "QUANTITY" => 1]);
+        }
+        if (isset($data->course3Details)) {
+            array_push($products,["PRODUCT_ID" => $data->course3Details->b24_course_id, "PRICE" => 8000, "QUANTITY" => 1]);
+        }
+
+        $product['id'] = $dealId;
+        $product['rows'] = $products;
+        Log::channel('bitrix')->debug($product);
+        $this->sendCurlRequest(http_build_query($product),'set','crm.deal.productrows');
+        Log::channel('bitrix')->info('==================Bitrix Digital Incubator Deal Create Complete=============== ' . Date('Y-m-d H:i:s'));
+        return $dealId;
+
+    }
+
 }
 ?>

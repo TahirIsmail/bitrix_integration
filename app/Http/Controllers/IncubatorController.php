@@ -413,7 +413,7 @@ class IncubatorController extends Controller
     {
         if (isset(request()->coupon)) {
             request()->validate(['coupon' => 'exists:coupons,code']);
-            return Coupons::CouponExists(request()->coupon);
+            return Coupons::CouponExists($request);
         } else {
             return response()->json(['succss' => 'false', 'message' => 'Coupon Code Required']);
         }

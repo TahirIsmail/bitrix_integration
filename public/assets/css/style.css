@@ -196,7 +196,24 @@
 
 }
 
+.select2-selection {
+    border-radius: 5px !important;
+    border: 1px solid #cbced4 !important;
 
+}
+
+.select2-container .select2-selection--single{
+    width: 100% !important;
+    height: 40px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered{
+    line-height: 38px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    margin-top: 4px !important;
+}
 
 input[type="text"] {
     width: 100%;

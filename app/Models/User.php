@@ -20,6 +20,11 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'whatsapp_number',
+        'cnic_number',
+        'gender',
+        'country_id',
+        'city_id',
         'password',
     ];
 
@@ -42,4 +47,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function city(){
+        return $this->belongsTo(Cities::class, 'city_id');
+    }
+
+    public function country(){
+        return $this->belongsTo(Countries::class, 'country_id');
+    }
 }

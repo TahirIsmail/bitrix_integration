@@ -8,10 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 use App\Models\IncubateeSubscriptionDetail;
+use App\Models\DigitalIncubationRegistration;
 class Coupons extends Model
 {
     protected $table = 'coupons';
-
+    protected $casts = [
+        'code' => 'string',
+        'type' => 'string',
+    ];
     /**
      * @return BelongsTo
      */
@@ -21,19 +25,27 @@ class Coupons extends Model
         return $this->hasOne('App\Models\User','id','created_by');
     }
 
-    static function CouponExists($code)
+    static function CouponExists($request)
     {
-        $coupon = Coupons::where(['code'=>$code])->first();
-        if (Carbon::parse($coupon->expires_at)->toDateString() < Carbon::now()->toDateString()) {
+        $coupon = Coupons::where(['code'=>$request->coupon,'type'=>$request->type])->first();
+        if(!isset($coupon)){
+            return response()->json(['success'=>'false','message'=>'Wrong Coupon Code.']);
+        } else if (isset($coupon) AND Carbon::parse($coupon->expires_at)->toDateString() < Carbon::now()->toDateString()) {
           return response()->json(['success'=>'false','message'=>'Coupon Expired']);
-        }
-        else if(IncubateeSubscriptionDetail::where('coupon',$code)->exists()) {
+        } else if($request->type == 'incubation' AND IncubateeSubscriptionDetail::where('coupon',$request->coupon)->exists()) {
             return response()->json(['success'=>'false','message'=>'Coupon already used.']);
+        } else if($request->type == 'digital-incubation' AND DigitalIncubationRegistration::where('coupon',$request->coupon)->exists()){
+            return response()->json(['success'=>'false','message'=>'Coupon already used.']);
+        } else{
+            $msg = '';
+            if($request->type == 'digital-incubation'){
+            $msg = '<div class="text-success">
+                        <h6 class="my-0">Coupon discount</h6>
+                    </div>
+                    <span class="text-success">'.$coupon->discount_amount.' PKR</span>';
+            }
+            return response()->json(['success'=>'true','data'=>$coupon->discount_amount,'msg'=>$msg]);
         }
-        else{
-        return response()->json(['success'=>'true','data'=>$coupon->discount_amount]);
-        }
-
     }
 
     static function generateUniqueCode()

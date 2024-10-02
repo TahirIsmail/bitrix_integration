@@ -79,6 +79,57 @@ class PaymentController extends Controller
         return view('payments.payment', ["id" => $id, "data" => $ciphertext]);
     }
 
+    public function createPayments(Request $request,$id)
+    {
+        Log::channel('bitrix')->info('==================Get Invoice=============== ' . Date('Y-m-d H:i:s'));
+        Log::channel('bitrix')->debug($id);
+        $invoice = PaymentDetails::where('id',$id)->first();
+        Log::channel('bitrix')->debug($invoice);
+        if (empty($invoice) OR $invoice->is_paid == 1) {
+            return view('payments.transaction_expired');
+        }
+
+        $id = env('EC_PAY_APP_ID');
+        $key = env('EC_PAY_KEY');
+        $cipher = "aes-128-gcm";
+        $iv = env('EC_PAY_IV');
+        $iv = hex2bin($iv);
+
+        // $getewayOptions = (($invoice->b24lead->booking_slot === 'Ask Moiz')?["stripeup"]:["stripem"]); //"kuickpay" stripup for USA, stripem for malaysia,
+        $invoice_total_amount = $invoice->amount;
+        $txn_desc = $invoice->title;
+
+        $invoice_txn_currency = "PKR";
+        $expiry_date = date('Y-m-d', strtotime("+15 days"));
+
+        $data = array(
+            "txn_amount" => $invoice_total_amount,
+            "txn_customer_id" => $invoice->user_id,
+            "txn_customer_name" => $invoice->name,
+            "txn_customer_email" => $invoice->email,
+            "txn_customer_mobile" => $invoice->mobile,
+            "txn_gateway_options" => ["kuickpay"],
+            "txn_expiry_datetime" => $expiry_date,
+            "txn_payment_type" => $txn_desc,
+            "txn_customer_bill_order_id" => $invoice->order_id,
+            "txn_description" => $txn_desc." - " .$invoice->name,
+            "txn_currency" => $invoice_txn_currency,
+            "customer_ip" => $request->ip(),
+            "txn_platform_return_url" => url("transaction-complete"),
+        );
+
+        Log::channel('bitrix')->info('==================Invoice Data=============== ' . Date('Y-m-d H:i:s'));
+        Log::channel('bitrix')->debug($data);
+        $plaintext = http_build_query($data);
+
+        if (in_array($cipher, openssl_get_cipher_methods())) {
+            $ciphertext = openssl_encrypt($plaintext, $cipher, $key, $options = 0, $iv, $tag);
+            $ciphertext = $ciphertext . bin2hex($tag); // tag variable generated from encrypt
+        }
+
+        return view('payments.payment', ["id" => $id, "data" => $ciphertext]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

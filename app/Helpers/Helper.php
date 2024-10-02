@@ -34,6 +34,33 @@ class Helper
         return $bitrixId;
     }
 
+    static function digitalIncubatorCourseBitrixId($cityId) {
+        switch ($cityId) {
+            case '6':
+            $bitrixId = 557;
+            break;
+            case '7':
+            $bitrixId = 555;
+            break;
+            case '8':
+            $bitrixId = 553;
+            break;
+            case '9':
+            $bitrixId = 551;
+            break;
+            case '10':
+            $bitrixId = 559;
+            break;
+            case '11':
+            $bitrixId = 561;
+            break;
+            default:
+            $bitrixId = 553;
+            break;
+        }
+        return $bitrixId;
+    }
+
     static function CoIncCityBitrixId($cityId) {
         switch ($cityId) {
             case '6':

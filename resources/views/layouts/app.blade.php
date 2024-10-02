@@ -38,6 +38,8 @@
                         <li class="nav-item"><a class="nav-link" href="{{ url('admin/home') }}">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url('admin/coupons') }}">Coupons</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url('admin/incubator/search') }}">Voucher Regenerate</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url('admin/courses') }}">Courses</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url('admin/dtc-community-modifications') }}">Digital Incubator / Community</a></li>
                     </ul>
                     @endif
                     <!-- Right Side Of Navbar -->

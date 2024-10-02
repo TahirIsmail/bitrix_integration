@@ -27,6 +27,9 @@ class CouponController extends Controller
         if(request()->ajax()){
             $tbl = Coupons::get();
             return datatables()->of($tbl)
+            ->addColumn('type', function($data){
+                return ucfirst($data->type);
+           })
             ->addColumn('code', function($data){
                  return $data->code;
             })
@@ -57,7 +60,7 @@ class CouponController extends Controller
                 // $select .= '<button type="button" data-id="'.$data->id.'" class="btn btn-danger btn-sm deleted" title="Delete"><i class="fas fa-trash"></i></button>';
                 return $select;
             })
-            ->rawColumns(['code','title','expiry','description','created_by','action'])
+            ->rawColumns(['type','code','title','expiry','description','created_by','action'])
             ->make(true);
         }
         return view('admin.coupon.index');
@@ -84,7 +87,7 @@ class CouponController extends Controller
         $cat->code = $cat->generateUniqueCode();
         $cat->name = $req->title;
         $cat->description = isset($req->description) ? $req->description : '';
-        $cat->type = 'incubation';
+        $cat->type = $req->type;
         $cat->discount_amount = $req->discount;
         $cat->expires_at = $req->expiry;
         $cat->created_by = auth()->id();
