@@ -123,13 +123,26 @@ class DincPlucCommunityController extends Controller
         //     return response()->json(['error' => 'Invalid captcha. Please try again.']);
         // }
 
+        $user = User::where('email',$request->email)->first();
+        if (empty($user)) {
+        $user = User::create([
+                'name' => $request->user_name,
+                'email' => $request->email,
+                'cnic_number' => $request->cnic_number,
+                'whatsapp_number' => $request->whatsapp_number,
+                'gender' => $request->gender,
+                'country_id' => $request->country,
+                'city_id' => $request->city
+            ]);
+        }
+
         // Check if candidate is already enrolled
-        $enrolled = formValidation::checkAlreadyEnrolled($request->email);
+        $enrolled = formValidation::checkAlreadyEnrolled($user->id);
         if (isset($enrolled) AND ($enrolled->status == 'pending' OR $enrolled->status == 'approved')) {
             return response()->json(['error' => 'You are already enrolled for Course.']);
         }
 
-        switch (isset($enrolled) AND $enrolled->course) {
+        switch (isset($enrolled) AND $enrolled->course_batch) {
             case '1st':
                 $course = '2nd';
             break;
@@ -146,27 +159,23 @@ class DincPlucCommunityController extends Controller
 
         try {
             $digitalIncubationSubscription = DigitalIncubationRegistration::create([
-                'name' => $request->user_name,
-                'email' => $request->email,
-                'cnic_number' => $request->cnic_number,
-                'whatsapp_number' => $request->whatsapp_number,
-                'course'=>$course,
-                'gender' => $request->gender,
-                'country_id' => $request->country,
-                'city_id' => $request->city,
+                'user_id' => $user->id,
+                'course_batch'=>$course,
+                'program' => 'Digital Incubation Plus Community',
                 'course1' => (($request->course1 != 'Select Course')?$request->course1:''),
                 'course2' => (($request->course2 != 'Select Course')?$request->course2:''),
                 'course3' => (($request->course3 != 'Select Course')?$request->course3:''),
                 'amount'=>$request->amount,
                 'coupon'=>$request->coupon,
-                'registration_no' => 'DINC-SUBS-'.rand(2,50).'-'.time(),
+                'registration_no' => 'DIPC-SUBS-'.rand(2,50).'-'.time(),
+                'applied_date' => now()
             ]);
 
             if ($course != '1st') {
-                $deal_id = $this->bitrix->createDigitalIncDeal($digitalIncubationSubscription,0,1297);
+                $deal_id = $this->bitrix->createDigitalIncDeal($digitalIncubationSubscription,0,1377);
                 $digitalIncubationSubscription->b24_deal_id = $deal_id;
             }else{
-                $lead_id = $this->bitrix->createDigitalIncLead($digitalIncubationSubscription,$request,1299);
+                $lead_id = $this->bitrix->createDigitalIncLead($digitalIncubationSubscription,$request,1377);
                 $digitalIncubationSubscription->b24_lead_id = $lead_id;
             }
             $digitalIncubationSubscription->update();

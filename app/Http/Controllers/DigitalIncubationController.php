@@ -162,6 +162,7 @@ class DigitalIncubationController extends Controller
             $digitalIncubationSubscription = DigitalIncubationRegistration::create([
                 'user_id' => $user->id,
                 'course_batch'=>$course,
+                'program' => 'Digital Incubation',
                 'course1' => (($request->course1 != 'Select Course')?$request->course1:''),
                 'course2' => (($request->course2 != 'Select Course')?$request->course2:''),
                 'course3' => (($request->course3 != 'Select Course')?$request->course3:''),
@@ -186,38 +187,6 @@ class DigitalIncubationController extends Controller
             return response()->json(['error' => $e->getMessage()]);
             // return response()->json(['error' => 'Something went wrong, Please try again or contact with Skillsrator Team.']);
         }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 
     public function getCourses(Request $request){

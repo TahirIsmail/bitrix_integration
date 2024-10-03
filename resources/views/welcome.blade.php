@@ -1420,7 +1420,7 @@
         var button = $(this);
         button.text('Processing...').prop('disabled',true);
         $.ajax({
-          url: 'incubator/coupon',
+          url: 'incubator/coupon?type=incubation',
           type: 'POST',
           data: {_token: $('meta[name="csrf-token"]').attr('content'),coupon:$('#coupon_code').val()},
         })

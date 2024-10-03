@@ -44,62 +44,6 @@ class CommunityController extends Controller
     }
 
     /**
-     * Show the form for store renewal.
-     */
-    public function store_renewal(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'user_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|exists:incubatee_subscriptions,email',
-            'cnic_number' => 'required|string|max:20',
-            'whatsapp_number' => 'required|string|max:20',
-            'facebook_profile' => 'required|string|max:255',
-            'gender' => 'required|string|max:10',
-            'incubator_city' => 'required|string|max:255',
-            'timing' => 'required|string|max:255',
-            'shift' => 'required|string|max:255',
-            'subscription_period' => 'required|integer|max:12',
-            'totalAmount' => 'required|integer|max:9999999',
-        ],['email.exists'=>'User with entered email is not exist, please apply again https://bitrixlead.skillsrator.com/']);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()->first()]);
-        }
-
-        try {
-            $incubateeSubscription = IncubateeSubscription::where(['email' => $request->email])->first();
-            $currentDate = date('Y-m-d');
-            $city = City::where('name',$request->incubator_city)->first();
-            $incubateeSubscriptionDetail = IncubateeSubscriptionDetail::create([
-                'incubatee_code' => $incubateeSubscription->id + 1000,
-                'incubatee_id' => $incubateeSubscription->id,
-                'timings' => $request->timing,
-                'shift' => $request->shift,
-                'city_id' => $city->id,
-                'purpose' => $request->purpose,
-                'city' => $request->incubator_city,
-                'timing' => $request->timing,
-                'shift' => $request->shift,
-                'subscription_period' => $request->subscription_period.' '.'months',
-                'totalAmount' => $request->totalAmount,
-                'registration_no'=>'INC-SUBS-'.$incubateeSubscription->id.'-'.time(),
-            ]);
-
-                // $getResponse = Helper::generateIncubatorInvoice($incubateeSubscriptionDetail);
-                // if($getResponse['response'] == 'success'){
-                //     $inoviceLink = $getResponse['invoice'];
-
-                // }
-            $dealId = $this->bitrix->createIncDeal($incubateeSubscriptionDetail,0,'Incubator-Only');
-            $incubateeSubscriptionDetail->b24_deal_id = $dealId;
-            $incubateeSubscriptionDetail->update();
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()]);
-        }
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -123,13 +67,26 @@ class CommunityController extends Controller
         //     return response()->json(['error' => 'Invalid captcha. Please try again.']);
         // }
 
+        $user = User::where('email',$request->email)->first();
+        if (empty($user)) {
+        $user = User::create([
+                'name' => $request->user_name,
+                'email' => $request->email,
+                'cnic_number' => $request->cnic_number,
+                'whatsapp_number' => $request->whatsapp_number,
+                'gender' => $request->gender,
+                'country_id' => $request->country,
+                'city_id' => $request->city
+            ]);
+        }
+
         // Check if candidate is already enrolled
-        $enrolled = formValidation::checkAlreadyEnrolled($request->email);
+        $enrolled = formValidation::checkAlreadyEnrolled($user->id);
         if (isset($enrolled) AND ($enrolled->status == 'pending' OR $enrolled->status == 'approved')) {
             return response()->json(['error' => 'You are already enrolled for Course.']);
         }
 
-        switch (isset($enrolled) AND $enrolled->course) {
+        switch (isset($enrolled) AND $enrolled->course_batch) {
             case '1st':
                 $course = '2nd';
             break;
@@ -146,27 +103,23 @@ class CommunityController extends Controller
 
         try {
             $digitalIncubationSubscription = DigitalIncubationRegistration::create([
-                'name' => $request->user_name,
-                'email' => $request->email,
-                'cnic_number' => $request->cnic_number,
-                'whatsapp_number' => $request->whatsapp_number,
-                'course'=>$course,
-                'gender' => $request->gender,
-                'country_id' => $request->country,
-                'city_id' => $request->city,
+                'user_id' => $user->id,
+                'course_batch'=>$course,
+                'program' => 'Community Only',
                 'course1' => (($request->course1 != 'Select Course')?$request->course1:''),
                 'course2' => (($request->course2 != 'Select Course')?$request->course2:''),
                 'course3' => (($request->course3 != 'Select Course')?$request->course3:''),
                 'amount'=>$request->amount,
                 'coupon'=>$request->coupon,
-                'registration_no' => 'DINC-SUBS-'.rand(2,50).'-'.time(),
+                'registration_no' => 'COM-SUBS-'.rand(2,50).'-'.time(),
+                'applied_date' => now()
             ]);
 
             if ($course != '1st') {
                 $deal_id = $this->bitrix->createDigitalIncDeal($digitalIncubationSubscription,0,1297);
                 $digitalIncubationSubscription->b24_deal_id = $deal_id;
             }else{
-                $lead_id = $this->bitrix->createDigitalIncLead($digitalIncubationSubscription,$request,1299);
+                $lead_id = $this->bitrix->createDigitalIncLead($digitalIncubationSubscription,$request,1297);
                 $digitalIncubationSubscription->b24_lead_id = $lead_id;
             }
             $digitalIncubationSubscription->update();
