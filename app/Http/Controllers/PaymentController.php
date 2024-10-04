@@ -81,7 +81,7 @@ class PaymentController extends Controller
 
     public function createPayments(Request $request,$id)
     {
-        Log::channel('bitrix')->info('==================Get Invoice=============== ' . Date('Y-m-d H:i:s'));
+        Log::channel('bitrix')->info('==================Get Invoice for Digital Incubation=============== ' . Date('Y-m-d H:i:s'));
         Log::channel('bitrix')->debug($id);
         $invoice = PaymentDetails::where('id',$id)->first();
         Log::channel('bitrix')->debug($invoice);
@@ -108,7 +108,7 @@ class PaymentController extends Controller
             "txn_customer_name" => $invoice->name,
             "txn_customer_email" => $invoice->email,
             "txn_customer_mobile" => $invoice->mobile,
-            "txn_gateway_options" => ["kuickpay"],
+            "txn_gateway_options" => ["kuickpay",'stripe'],
             "txn_expiry_datetime" => $expiry_date,
             "txn_payment_type" => $txn_desc,
             "txn_customer_bill_order_id" => $invoice->order_id,
