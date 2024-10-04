@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\b24leads;
+use App\Models\PaymentDetails;
 use App\Models\b24leadsInvoices;
 use App\Models\IncubateeSubscriptionDetail;
 use App\Models\DigitalIncubationRegistration;
@@ -145,6 +146,17 @@ class BitrixHooksController extends Controller
                 }
                 Log::channel('bitrix')->debug(['payment'=>$inoviceLink]);
             }elseif($request['program'] == 1297){
+                switch ($request['program']) {
+                    case '1297':
+                       $type = 'DINC';
+                    break;
+                    case '1377':
+                       $type = 'DINCPC';
+                    break;
+                    case '1299':
+                       $type = 'COMONLY';
+                    break;
+                }
                 //Digital Incubator
                 $registration = DigitalIncubationRegistration::where('b24_deal_id',$dealID)->first();
                 $invoice = PaymentDetails::Create(
@@ -154,12 +166,12 @@ class BitrixHooksController extends Controller
                      'ip_address' => '',
                      'order_id' => $registration->registration_no,
                      'amount' => $registration->amount,
-                     'type' => 'DINC',
+                     'type' => @$type,
                      'is_paid' => '0',
                      'registration_id' => $registration->registration_no,
-                     'name' => $registration->name,
-                     'email' => $registration->email,
-                     'mobile' => $registration->whatsapp_number,
+                     'name' => $registration->candidate->name,
+                     'email' => $registration->candidate->email,
+                     'mobile' => $registration->candidate->whatsapp_number,
                      'currency' => 'PKR'
                     ]);
                 $inoviceLink = env('APP_URL') . 'payment/' . $invoice->id;
