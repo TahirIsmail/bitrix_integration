@@ -28,9 +28,9 @@ class BitrixCallsService {
     // }
 
     public function sendCurlRequest($queryData,$action="add",$method="crm.lead"){
-         // if (env('APP_ENV') != 'production') {
-         //    return false;
-         // }
+         if (env('APP_ENV') != 'production') {
+            return false;
+         }
 
          $BITRIX_URL = env('BITRIX_URL');
          $queryUrl              = $BITRIX_URL."$method.$action/";
@@ -51,7 +51,7 @@ class BitrixCallsService {
 
     public function sendRequest($fields,$products = null,$action="add",$method="crm.lead")
     {
-        if (env('APP_ENV') == "local") {
+        if (env('APP_ENV') == "production") {
          $response = Http::get(env('BITRIX_URL').$method.'.'.$action , $fields);
          if (isset($response) and $response->json('result') !== '') {
             if ($products != null) {
