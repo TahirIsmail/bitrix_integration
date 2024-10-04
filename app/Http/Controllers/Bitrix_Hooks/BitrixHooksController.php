@@ -40,12 +40,12 @@ class BitrixHooksController extends Controller
                     $inoviceLink = $getResponse['invoice'];
                 }
                 Log::channel('bitrix')->debug(['payment'=>$inoviceLink]);
-            } elseif($request['program'] == 'Digital Incubator'){
+            } elseif($request['program'] == 'Digital Incubation' OR $request['program'] == 'Digital Incubation Plus Community' OR $request['program'] == 'Community'){
                 $registration = DigitalIncubationRegistration::where('b24_lead_id',$leadID)->first();
                 $invoice = PaymentDetails::Create(
                     ['user_id' => $registration->id,
                      'reference_no' => '',
-                     'title' => 'Digital Incubation Subscription',
+                     'title' => $request['program'].' Subscription',
                      'ip_address' => '',
                      'order_id' => $registration->registration_no,
                      'amount' => $registration->amount,

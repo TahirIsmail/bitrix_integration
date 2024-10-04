@@ -173,10 +173,10 @@ class DigitalIncubationController extends Controller
             ]);
 
             if ($course != '1st') {
-                $deal_id = $this->bitrix->createDigitalIncDeal($digitalIncubationSubscription,0,1299);
+                $deal_id = $this->bitrix->createDigitalIncDeal($digitalIncubationSubscription,0,1297);
                 $digitalIncubationSubscription->b24_deal_id = $deal_id;
             }else{
-                $lead_id = $this->bitrix->createDigitalIncLead($digitalIncubationSubscription,$request,1299);
+                $lead_id = $this->bitrix->createDigitalIncLead($digitalIncubationSubscription,$request,1297);
                 $digitalIncubationSubscription->b24_lead_id = $lead_id;
             }
             $digitalIncubationSubscription->update();

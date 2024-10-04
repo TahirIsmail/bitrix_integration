@@ -116,10 +116,10 @@ class CommunityController extends Controller
             ]);
 
             if ($course != '1st') {
-                $deal_id = $this->bitrix->createDigitalIncDeal($digitalIncubationSubscription,0,1297);
+                $deal_id = $this->bitrix->createDigitalIncDeal($digitalIncubationSubscription,0,1299);
                 $digitalIncubationSubscription->b24_deal_id = $deal_id;
             }else{
-                $lead_id = $this->bitrix->createDigitalIncLead($digitalIncubationSubscription,$request,1297);
+                $lead_id = $this->bitrix->createDigitalIncLead($digitalIncubationSubscription,$request,1299);
                 $digitalIncubationSubscription->b24_lead_id = $lead_id;
             }
             $digitalIncubationSubscription->update();
