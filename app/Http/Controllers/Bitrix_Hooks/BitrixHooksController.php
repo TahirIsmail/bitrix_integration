@@ -42,6 +42,17 @@ class BitrixHooksController extends Controller
                 Log::channel('bitrix')->debug(['payment'=>$inoviceLink]);
             } elseif($request['program'] == 'Digital Incubation' OR $request['program'] == 'Digital Incubation Plus Community' OR $request['program'] == 'Community'){
                 $registration = DigitalIncubationRegistration::where('b24_lead_id',$leadID)->first();
+                switch ($request['program']) {
+                    case 'Digital Incubation':
+                       $type = 'DINC';
+                    break;
+                    case 'Digital Incubation Plus Community':
+                       $type = 'DINCPC';
+                    break;
+                    case 'Community':
+                       $type = 'COMONLY';
+                    break;
+                }
                 $invoice = PaymentDetails::Create(
                     ['user_id' => $registration->id,
                      'reference_no' => '',
@@ -49,12 +60,12 @@ class BitrixHooksController extends Controller
                      'ip_address' => '',
                      'order_id' => $registration->registration_no,
                      'amount' => $registration->amount,
-                     'type' => 'DINC',
+                     'type' => @$type,
                      'is_paid' => '0',
                      'registration_id' => $registration->registration_no,
-                     'name' => $registration->name,
-                     'email' => $registration->email,
-                     'mobile' => $registration->whatsapp_number,
+                     'name' => $registration->candidate->name,
+                     'email' => $registration->candidate->email,
+                     'mobile' => $registration->candidate->whatsapp_number,
                      'currency' => 'PKR'
                     ]);
                 $inoviceLink = env('APP_URL') . 'payment/' . $invoice->id;
