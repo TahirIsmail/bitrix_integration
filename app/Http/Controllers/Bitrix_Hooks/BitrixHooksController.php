@@ -240,6 +240,13 @@ class BitrixHooksController extends Controller
             $this->bitrixCall->sendCurlRequest(http_build_query($product),'set','crm.deal.productrows');
             }
 
+          }elseif (($request['program'] == 'Digital Incubation' OR $request['program'] == 'Digital Incubation Plus Community' OR $request['program'] == 'Community')) {
+            $inc = DigitalIncubationRegistration::where('b24_lead_id',$leadID)->first();
+
+            $inc->b24_deal_id = $request['deal_id'];
+            $inc->candidate->b24_contact_id = $request['contact_id'];
+            // $inc->incubator->status = 1;
+            $inc->push();
           }
          }
          return response()->json(['status'=>200,'success'=>true]);
