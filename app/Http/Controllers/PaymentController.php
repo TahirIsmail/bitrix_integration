@@ -7,6 +7,7 @@ use App\Models\b24leads;
 use App\Models\PaymentDetails;
 use App\Models\b24leadsInvoices;
 use App\Models\IncubateeSubscriptionDetail;
+use App\Models\DigitalIncubationRegistration;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
