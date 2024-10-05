@@ -324,7 +324,7 @@ class BitrixHooksController extends Controller
 
              if (isset($request['auth']) AND $request['auth']['domain'] == 'ice.bitrix24.com') {
                 $dealID = $request['deal_id'];
-                $joining_date = Carbon::createFromFormat('d/m/Y', $request['BEGINDATE'])->toDateString();
+                $joining_date = Carbon::createFromFormat('d/m/Y', $request['joining_date'])->toDateString();
                 // $contract = ($request['contract'] == 'Yes')?1:0;
                 // $card_issue = ($request['card_issue'] == 'Yes')?1:0;
                 // $card_no = ($request['card_no'] == 'Yes')?1:0;
