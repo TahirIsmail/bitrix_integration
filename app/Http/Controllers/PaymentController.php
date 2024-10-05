@@ -115,7 +115,7 @@ class PaymentController extends Controller
             "txn_description" => $txn_desc." - " .$invoice->name,
             "txn_currency" => $invoice_txn_currency,
             "customer_ip" => $request->ip(),
-            "txn_platform_return_url" => url("transaction-complete"),
+            "txn_platform_return_url" => url("payment/thankyou"),
         );
 
         Log::channel('bitrix')->info('==================Invoice Data=============== ' . Date('Y-m-d H:i:s'));
@@ -136,7 +136,7 @@ class PaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function payment_thankyou(Request $request)
+    public function paymentThankyou(Request $request)
     {
         Log::channel('bitrix')->info('==================Invoice Paid Thank you page=============== ' . Date('Y-m-d H:i:s'));
         Log::channel('bitrix')->debug($request->all());
