@@ -21,6 +21,6 @@ class VerifyCsrfToken extends Middleware
         'transaction-complete',
         'incubator-transaction-complete',
         'payment/thankyou',
-        'trainings/payment/thankyou'
+        'trainings-payment/thankyou'
     ];
 }
