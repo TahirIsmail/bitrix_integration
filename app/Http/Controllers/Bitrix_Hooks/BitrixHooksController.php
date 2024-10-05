@@ -349,7 +349,7 @@ class BitrixHooksController extends Controller
                   $expiry_date = null;
                   $expiry_date = Carbon::parse($joining_date)->addMonthsNoOverflow(3)->toDateString();
                   $registration->expiry_date = $expiry_date;
-                  $registration->joining_date = $joining_date;
+                  $registration->start_date = $joining_date;
                   $registration->status = 'activated';
                   $registration->push();
 
