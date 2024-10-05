@@ -16,6 +16,7 @@ class VerifyCsrfToken extends Middleware
         'bitrix/deal-created',
         'bitrix/create-deal-invoice',
         'bitrix/incubation-activation',
+        'bitrix/program-activation',
         'bitrix/chatbothandler',
         'payment',
         'transaction-complete',
