@@ -131,6 +131,47 @@ class PaymentController extends Controller
     }
 
     /**
+     * Digital incubator payment complete
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function payment_thankyou(Request $request)
+    {
+        Log::channel('bitrix')->info('==================DINC Invoice Paid Thank you page=============== ' . Date('Y-m-d H:i:s'));
+        Log::channel('bitrix')->debug($request->all());
+        $payment = PaymentDetails::firstWhere('order_id',$request->orderid);
+        // gateway paid
+        if ($request->status == 'completed' && isset($payment) && $payment->status != 1) {
+                $incReg = DigitalIncubationRegistration::where('registration_no', $payment->registration_id)->first();
+                Log::channel('bitrix')->debug($incReg);
+                $incReg->update(['status' => 'approved','payment_date'=>now()]);
+                $payment->update(['is_paid' => '1','payment_date'=>now()]);
+                if ($incReg->b24_lead_id != '' || $incReg->b24_deal_id != '') {
+                  if($incReg->b24_deal_id != null){
+                    $b24_id = $incReg->b24_deal_id;
+                    $b24_stage_id = 'C1:UC_8PPM9Q';
+                    $b24_action = 'crm.deal';
+                    $field = 'FIELDS[STAGE_ID]';
+                  }else{
+                    $b24_id = $incReg->b24_lead_id;
+                    $b24_stage_id = 'UC_VHVLEM';
+                    $b24_action = 'crm.lead';
+                    $field = 'FIELDS[STATUS_ID]';
+                  }
+
+                   $bitrixObj=[
+                    'ID' => $b24_id,
+                     $field => $b24_stage_id, // Payment Verification
+                     'FIELDS[UF_CRM_1680780128579]' => 'Validate',
+                    ];
+                    $queryFields = http_build_query($bitrixObj);
+                    $this->bitrixCall->sendCurlRequest($queryFields,'update',$b24_action);
+                }
+        }
+        return view('payments.thankyou');
+    }
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
