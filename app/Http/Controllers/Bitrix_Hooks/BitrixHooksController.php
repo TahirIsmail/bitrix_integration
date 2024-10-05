@@ -145,15 +145,15 @@ class BitrixHooksController extends Controller
                     $inoviceLink = $getResponse['invoice'];
                 }
                 Log::channel('bitrix')->debug(['payment'=>$inoviceLink]);
-            }elseif($request['program'] == 1297){
+            }elseif($request['program'] == 'Digital Incubation' OR $request['program'] == 'Digital Incubation Plus Community' OR $request['program'] == 'Community'){
                 switch ($request['program']) {
-                    case '1297':
+                    case 'Digital Incubation':
                        $type = 'DINC';
                     break;
-                    case '1377':
+                    case 'Digital Incubation Plus Community':
                        $type = 'DINCPC';
                     break;
-                    case '1299':
+                    case 'Community':
                        $type = 'COMONLY';
                     break;
                 }
@@ -162,7 +162,7 @@ class BitrixHooksController extends Controller
                 $invoice = PaymentDetails::Create(
                     ['user_id' => $registration->id,
                      'reference_no' => '',
-                     'title' => 'Digital Incubation Subscription',
+                     'title' => $request['program'].' Subscription',
                      'ip_address' => '',
                      'order_id' => $registration->registration_no,
                      'amount' => $registration->amount,
