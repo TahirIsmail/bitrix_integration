@@ -213,7 +213,7 @@
                 contentType: false,
                 cache: false,
                 processData: false,
-                url: "{{url('/store-digital-incubator')}}",
+                url: "{{url('/store-community')}}",
                 method: 'POST',
                 data: formData,
                 beforeSend:function(){

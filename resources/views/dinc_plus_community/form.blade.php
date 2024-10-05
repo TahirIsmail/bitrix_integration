@@ -214,7 +214,7 @@
                 contentType: false,
                 cache: false,
                 processData: false,
-                url: "{{url('/store-digital-incubator')}}",
+                url: "{{url('/store-dinc-plus-community')}}",
                 method: 'POST',
                 data: formData,
                 beforeSend:function(){
