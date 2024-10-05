@@ -151,7 +151,7 @@ class PaymentController extends Controller
                 if ($incReg->b24_lead_id != '' || $incReg->b24_deal_id != '') {
                   if($incReg->b24_deal_id != null){
                     $b24_id = $incReg->b24_deal_id;
-                    $b24_stage_id = 'C1:UC_8PPM9Q';
+                    $b24_stage_id = 'C5:UC_XZCEMD';
                     $b24_action = 'crm.deal';
                     $field = 'FIELDS[STAGE_ID]';
                   }else{
