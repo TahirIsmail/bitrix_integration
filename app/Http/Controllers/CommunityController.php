@@ -82,7 +82,7 @@ class CommunityController extends Controller
 
         // Check if candidate is already enrolled
         $enrolled = formValidation::checkAlreadyEnrolled($user->id);
-        if (isset($enrolled) AND ($enrolled->status == 'pending' OR $enrolled->status == 'approved')) {
+        if (isset($enrolled) AND ($enrolled->program == 'community only' OR $enrolled->program == 'digital incubator plus community') AND ($enrolled->status == 'pending' OR $enrolled->status == 'approved')) {
             return response()->json(['error' => 'You are already enrolled for Course.']);
         }
 
@@ -105,7 +105,7 @@ class CommunityController extends Controller
             $digitalIncubationSubscription = DigitalIncubationRegistration::create([
                 'user_id' => $user->id,
                 'course_batch'=>$course,
-                'program' => 'Community Only',
+                'program' => 'community only',
                 'course1' => (($request->course1 != 'Select Course')?$request->course1:''),
                 'course2' => (($request->course2 != 'Select Course')?$request->course2:''),
                 'course3' => (($request->course3 != 'Select Course')?$request->course3:''),
