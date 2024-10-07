@@ -39,7 +39,7 @@
         <h2>Community form</h2>
         <p class="lead">Skillsrator’s Community Form!</p>
     </div>
-    <form id="formSubmit" action="POST">
+    <form id="formSubmit" action="POST" autocomplete="off">
         @csrf
     <div class="row">
     <div class="col-md-9">
@@ -132,7 +132,7 @@
             </div>
         </div>
         <button type="submit" class="btn btn-primary float-right submit_button ml-3">Submit</button>
-        <button type="button" class="btn btn-danger float-right" >Clear</button>
+        <button type="button" class="btn btn-danger float-right btnclear" >Clear</button>
     </div>
     <div class="col-md-3 mt-5 align-self-center">
           <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -177,6 +177,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script src="{{asset('assets/js/intlTelInput.js')}}"></script>
     <script type="text/javascript">
+        $('.btnclear').on('click',function(){
+            $("#formSubmit").trigger('reset');
+        });
         function reloadCaptcha(){
             $.ajax({
                     type: 'GET',
