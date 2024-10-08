@@ -96,4 +96,6 @@ Route::prefix('admin')->group(function(){
     //Courses
     Route::resource('courses',App\Http\Controllers\Admin\CoursesController::class);
     // Route::get('import_data', [App\Http\Controllers\Admin\AdminController::class, 'import_data']);
+    Route::get('/search/users',[App\Http\Controllers\Admin\UsersController::class,'index']);
+    Route::post('/search/users',[App\Http\Controllers\Admin\UsersController::class,'searchCandidate']);
 });

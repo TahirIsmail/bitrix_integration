@@ -55,4 +55,8 @@ class User extends Authenticatable
     public function country(){
         return $this->belongsTo(Countries::class, 'country_id');
     }
+
+    public function enrollments(){
+        return $this->hasMany(DigitalIncubationRegistration::class, 'user_id');
+    }
 }
