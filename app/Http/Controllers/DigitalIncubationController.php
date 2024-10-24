@@ -113,12 +113,12 @@ class DigitalIncubationController extends Controller
             'gender' => 'required|string|max:10',
             'country' => 'required|string|max:255',
             'city' => 'required|string|max:255',
+            'g-recaptcha-response' => ['required', new capchaRule()]
         ]);
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->first()]);
         }
-
         // Validate the captcha
         // if (!capchaRule::validateCaptcha($request->captcha)) {
         //     return response()->json(['error' => 'Invalid captcha. Please try again.']);

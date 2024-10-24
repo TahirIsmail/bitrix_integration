@@ -1,25 +1,87 @@
 <?php
 
+
+
 namespace App\Rules;
 
-use Closure;
-use Illuminate\Contracts\Validation\ValidationRule;
 
-class capchaRule implements ValidationRule
+
+use Illuminate\Contracts\Validation\Rule;
+
+use Illuminate\Support\Facades\Http;
+
+
+
+class capchaRule implements Rule
+
 {
+
     /**
-     * Run the validation rule.
+
+     * Create a new rule instance.
+
      *
-     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+
+     * @return void
+
      */
-    public function validate(string $attribute, mixed $value, Closure $fail): void
+
+    public function __construct()
+
     {
-        //
-    }
 
 
-    public static function validateCaptcha($captcha)
-    {
-        return captcha_check($captcha);
+
     }
+
+    /**
+
+     * Determine if the validation rule passes.
+
+     *
+
+     * @param  string  $attribute
+
+     * @param  mixed  $value
+
+     * @return bool
+
+     */
+
+    public function passes($attribute, $value)
+
+    {
+
+        $response = Http::get("https://www.google.com/recaptcha/api/siteverify",[
+
+            'secret' => env('GOOGLE_RECAPTCHA_SECRET'),
+
+            'response' => $value
+
+        ]);
+
+
+
+        return $response->json()["success"];
+
+    }
+
+    /**
+
+     * Get the validation error message.
+
+     *
+
+     * @return string
+
+     */
+
+    public function message()
+
+    {
+
+        return 'The google recaptcha is required.';
+
+    }
+
 }

@@ -28,7 +28,7 @@
     }
     .hide{display:none !important;}
     </style>
-    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script src="https://www.google.com/recaptcha/api.js?render={{ env('GOOGLE_RECAPTCHA_KEY') }}"></script>
 </head>
 
 <body class="bg-light">
@@ -176,6 +176,29 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script src="{{asset('assets/js/intlTelInput.js')}}"></script>
+    <script type="text/javascript">
+
+    $('#formSubmit').submit(function(event) {
+
+        event.preventDefault();
+
+
+
+        grecaptcha.ready(function() {
+
+            grecaptcha.execute("{{ env('GOOGLE_RECAPTCHA_KEY') }}", {action: 'subscribe_newsletter'}).then(function(token) {
+
+                $('#formSubmit').prepend('<input type="hidden" name="token" value="' + token + '">');
+
+                $('#formSubmit').unbind('submit').submit();
+
+            });;
+
+        });
+
+    });
+
+</script>
     <script type="text/javascript">
      $('.btnclear').on('click',function(){
             $("#formSubmit").trigger('reset');
