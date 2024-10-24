@@ -28,7 +28,7 @@
     }
     .hide{display:none !important;}
     </style>
-    <script src='https://www.google.com/recaptcha/api.js'></script>
+    {!! RecaptchaV3::initJs() !!}
 </head>
 
 <body class="bg-light">
@@ -119,7 +119,7 @@
                 </select>
             </div>
         </div>
-        <div class="form-group mt-4 mb-4">
+        {{-- <div class="form-group mt-4 mb-4">
                 <div class="captcha">
                     <span>{!! App\Http\Controllers\CaptchaController::generateCaptcha(config('captcha.default.type')) !!}</span>
                     <button type="button" class="btn btn-danger reload" onclick="reloadCaptcha()" id="reload" data-toggle="tooltip" data-placement="top" title="Reload Captcha">↻</button>
@@ -130,8 +130,9 @@
                 <input id="captcha" type="text" class="form-control" placeholder="Enter Captcha" name="captcha">
                 <small class="text-danger captcha_msg"></small>
             </div>
-        </div>
-        <button type="submit" class="btn btn-primary float-right submit_button ml-3">Submit</button>
+        </div> --}}
+        <input type="submit" class="btn btn-primary float-right submit_button ml-3" value="Submit" />
+        {!! RecaptchaV3::field('submit') !!}
         <button type="button" class="btn btn-danger float-right btnclear" >Clear</button>
     </div>
     <div class="col-md-3 mt-5 align-self-center">

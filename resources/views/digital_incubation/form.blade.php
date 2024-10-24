@@ -28,7 +28,7 @@
     }
     .hide{display:none !important;}
     </style>
-    <script src="https://www.google.com/recaptcha/api.js?render={{ env('GOOGLE_RECAPTCHA_KEY') }}"></script>
+    {!! RecaptchaV3::initJs() !!}
 </head>
 
 <body class="bg-light">
@@ -43,7 +43,7 @@
         @csrf
     <div class="row">
     <div class="col-md-9">
-
+        {{-- {!! RecaptchaV3::field($action, $name='g-recaptcha-response') !!} --}}
         <div class="form-row">
             <div class="form-group col-md-6">
             <label for="user_name">Name</label>
@@ -119,7 +119,7 @@
                 </select>
             </div>
         </div>
-        <div class="form-group mt-4 mb-4">
+        {{-- <div class="form-group mt-4 mb-4">
                 <div class="captcha">
                     <span>{!! App\Http\Controllers\CaptchaController::generateCaptcha(config('captcha.default.type')) !!}</span>
                     <button type="button" class="btn btn-danger reload" onclick="reloadCaptcha()" id="reload" data-toggle="tooltip" data-placement="top" title="Reload Captcha">↻</button>
@@ -130,8 +130,9 @@
                 <input id="captcha" type="text" class="form-control" placeholder="Enter Captcha" name="captcha">
                 <small class="text-danger captcha_msg"></small>
             </div>
-        </div>
-        <button type="submit" class="btn btn-primary float-right submit_button ml-3">Submit</button>
+        </div> --}}
+        <input type="submit" class="btn btn-primary float-right submit_button ml-3" value="Submit" />
+        {!! RecaptchaV3::field('submit') !!}
         <button type="button" class="btn btn-danger float-right btnclear" >Clear</button>
     </div>
     <div class="col-md-3 mt-5 align-self-center">
@@ -176,29 +177,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script src="{{asset('assets/js/intlTelInput.js')}}"></script>
-    <script type="text/javascript">
-
-    $('#formSubmit').submit(function(event) {
-
-        event.preventDefault();
-
-
-
-        grecaptcha.ready(function() {
-
-            grecaptcha.execute("{{ env('GOOGLE_RECAPTCHA_KEY') }}", {action: 'subscribe_newsletter'}).then(function(token) {
-
-                $('#formSubmit').prepend('<input type="hidden" name="token" value="' + token + '">');
-
-                $('#formSubmit').unbind('submit').submit();
-
-            });;
-
-        });
-
-    });
-
-</script>
     <script type="text/javascript">
      $('.btnclear').on('click',function(){
             $("#formSubmit").trigger('reset');

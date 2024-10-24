@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Services\BitrixCallsService;
 use App\Services\KuickpayService;
 use Illuminate\Support\Facades\Log;
+use Lunaweb\RecaptchaV3\Facades\RecaptchaV3;
 
 class CommunityController extends Controller
 {
@@ -56,6 +57,11 @@ class CommunityController extends Controller
             'gender' => 'required|string|max:10',
             'country' => 'required|string|max:255',
             'city' => 'required|string|max:255',
+            'g-recaptcha-response' => 'required|recaptchav3:submit,0.5'
+        ], [
+            'g-recaptcha-response' => [
+                'recaptchav3' => 'Captcha expired... Refresh your page',
+            ],
         ]);
 
         if ($validator->fails()) {

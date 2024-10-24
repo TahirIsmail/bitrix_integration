@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Services\BitrixCallsService;
 use App\Services\KuickpayService;
 use Illuminate\Support\Facades\Log;
+use Lunaweb\RecaptchaV3\Facades\RecaptchaV3;
 
 class DigitalIncubationController extends Controller
 {
@@ -113,16 +114,16 @@ class DigitalIncubationController extends Controller
             'gender' => 'required|string|max:10',
             'country' => 'required|string|max:255',
             'city' => 'required|string|max:255',
-            'g-recaptcha-response' => ['required', new capchaRule()]
+            'g-recaptcha-response' => 'required|recaptchav3:submit,0.5'
+        ], [
+            'g-recaptcha-response' => [
+                'recaptchav3' => 'Captcha expired... Refresh your page',
+            ],
         ]);
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->first()]);
         }
-        // Validate the captcha
-        // if (!capchaRule::validateCaptcha($request->captcha)) {
-        //     return response()->json(['error' => 'Invalid captcha. Please try again.']);
-        // }
 
         $user = User::where('email',$request->email)->first();
         if (empty($user)) {
