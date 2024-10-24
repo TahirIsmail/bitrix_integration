@@ -11,10 +11,6 @@ return [
         'math' => false,
         'expire' => 60,
         'encrypt' => false,
-        'bgImage' => false,
-        'bgColor' => 'black',
-        'fontColors' => ['#2c3e50', '#c0392b', '#16a085', '#c0392b', '#8e44ad', '#303f9f', '#f57c00', '#795548'],
-        'contrast' => -5,
     ],
     'math' => [
         'length' => 9,
@@ -48,9 +44,10 @@ return [
         'sensitive' => true,
         'angle' => 12,
         'sharpen' => 10,
-        'blur' => 2,
+        'blur' => 1,
         'invert' => true,
         'contrast' => -5,
+        'bgColor' => '#ecf2f4',
         'fontColors' => ['#2c3e50', '#c0392b', '#16a085', '#c0392b', '#8e44ad', '#303f9f', '#f57c00', '#795548'],
     ]
 ];
