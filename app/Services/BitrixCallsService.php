@@ -227,8 +227,15 @@ class BitrixCallsService {
             $fields['PHONE'][0]['VALUE_TYPE'] = 'WORK';
         }
 
-        if ($programId == 1299) {//done
-            $productRows = array();
+        if ($programId == 1297) {//done
+            $programTitle = 'Digital Incubation';
+        }elseif($programId == 1299){
+            $programTitle = 'Community Only';
+        }elseif($programId == 1299){
+            $programTitle = 'Digital Incubation Plus Community';
+        }
+
+        $productRows = array();
 
             if (isset($data->course1Details)) {
                 array_push($productRows, ["PRODUCT_ID" => $data->course1Details->b24_course_id, "PRICE" => 8000, "QUANTITY" => 1]);
@@ -239,11 +246,9 @@ class BitrixCallsService {
             if (isset($data->course3Details)) {
                 array_push($productRows,["PRODUCT_ID" => $data->course3Details->b24_course_id, "PRICE" => 8000, "QUANTITY" => 1]);
             }
-           $programTitle = 'Digital Incubator';
+
         //    $preferredTiming = (($data->shift == 'day')?1:(($data->shift == 'evening')?2:5)) ;
            $batch = 'DINC'.now()->format('MY');
-        }
-
         //Create common fields array for bitirx
         $fields['TITLE'] = $data->candidate->name.' - '.$programTitle;
         $fields['STATUS_ID']            = 'NEW';
