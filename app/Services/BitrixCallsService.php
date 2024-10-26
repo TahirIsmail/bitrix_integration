@@ -231,7 +231,7 @@ class BitrixCallsService {
             $programTitle = 'Digital Incubation';
         }elseif($programId == 1299){
             $programTitle = 'Community Only';
-        }elseif($programId == 1299){
+        }elseif($programId == 1377){
             $programTitle = 'Digital Incubation Plus Community';
         }
 

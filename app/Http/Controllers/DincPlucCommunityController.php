@@ -7,6 +7,7 @@ use App\Helpers\Helper;
 use App\Models\Charge;
 use App\Models\City;
 use App\Models\Lead;
+use App\Models\User;
 use App\Models\Timing;
 use App\Models\Shift;
 use App\Models\Coupons;
