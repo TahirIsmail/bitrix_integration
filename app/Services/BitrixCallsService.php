@@ -305,7 +305,7 @@ class BitrixCallsService {
         $fields['UF_CRM_66128DD303A78']    = $data->candidate->country->name; //done
         $fields['UF_CRM_65CDE15B31D91']    = (($data->candidate->gender == 'male') ? 565 : 567);
         // $fields['UF_CRM_1664030660']    = $data->incubatee->date_of_birth ?? '';
-        $fields['UF_CRM_65CDE15ADB45B']    = $programTitle; //Digital Incubator Only Program
+        $fields['UF_CRM_65CDE15ADB45B']    = $programId; //Digital Incubator Only Program
         // $fields['UF_CRM_1663458377297'] = $data->incubatee->facebook_profile;
         $fields['UF_CRM_1707992744'] = $data->candidate->cnic_number;//done
         $fields['UF_CRM_1675251200'] = $data->coupon;

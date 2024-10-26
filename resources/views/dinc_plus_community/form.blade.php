@@ -242,8 +242,9 @@
                                         icon: 'success',
                                         confirmButtonColor: '#304767',
                                         confirmButtonText: 'OK',
+                                    }).then(function() {
+                                        location.reload();
                                     });
-                                    location.reload();
                                 }
                     $(".submit_button").prop("disabled", false);
 
