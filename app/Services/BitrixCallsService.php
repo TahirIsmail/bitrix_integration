@@ -289,8 +289,15 @@ class BitrixCallsService {
             $contactId = $this->sendRequest($fields,null,'add','crm.contact');
             $fields['CONTACT_ID'] = $contactId;
         }
+        if ($programId == 1297) {//done
+            $programTitle = 'Digital Incubation';
+        }elseif($programId == 1299){
+            $programTitle = 'Community Only';
+        }elseif($programId == 1377){
+            $programTitle = 'Digital Incubation Plus Community';
+        }
         //Create common fields array for bitirx
-        $fields['TITLE'] =  $data->candidate->name.' - Digital Incubator';
+        $fields['TITLE'] =  $data->candidate->name.' - '.$programTitle;
         $fields['STATUS_ID']            = 'C1:NEW';
         $fields['CURRENCY_ID']          = 'PKR';
         $fields['OPPORTUNITY']          = $data->amount;
@@ -298,7 +305,7 @@ class BitrixCallsService {
         $fields['UF_CRM_66128DD303A78']    = $data->candidate->country->name; //done
         $fields['UF_CRM_65CDE15B31D91']    = (($data->candidate->gender == 'male') ? 565 : 567);
         // $fields['UF_CRM_1664030660']    = $data->incubatee->date_of_birth ?? '';
-        $fields['UF_CRM_65CDE15ADB45B']    = 1297; //Digital Incubator Only Program
+        $fields['UF_CRM_65CDE15ADB45B']    = $programTitle; //Digital Incubator Only Program
         // $fields['UF_CRM_1663458377297'] = $data->incubatee->facebook_profile;
         $fields['UF_CRM_1707992744'] = $data->candidate->cnic_number;//done
         $fields['UF_CRM_1675251200'] = $data->coupon;
