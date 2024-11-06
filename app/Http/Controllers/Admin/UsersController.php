@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\User;
+use App\Models\Courses;
+use App\Models\DigitalIncubationRegistration;
 use Carbon\Carbon;
 
 class UsersController extends Controller
@@ -32,6 +34,15 @@ class UsersController extends Controller
     {
        $data = User::whereEmail($request->email)->first();
        return view('admin.users.search',['data'=>$data]);
+    }
+
+    public function miniDetail(Request $request)
+    {
+        $data = DigitalIncubationRegistration::whereHas('candidate',function($query) use ($request){
+            return $query->where('id','=',$request->id);
+        })->first();
+        $courses = Courses::where('status','active')->get();
+        return view('admin.users.mini_detail',['data'=>$data,'courses'=>$courses]);
     }
 
     public function store(Request $req)

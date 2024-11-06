@@ -98,4 +98,5 @@ Route::prefix('admin')->group(function(){
     // Route::get('import_data', [App\Http\Controllers\Admin\AdminController::class, 'import_data']);
     Route::get('/search/users',[App\Http\Controllers\Admin\UsersController::class,'index']);
     Route::post('/search/users',[App\Http\Controllers\Admin\UsersController::class,'searchCandidate']);
+    Route::get('/user/mini-detail/{id}',[App\Http\Controllers\Admin\UsersController::class,'miniDetail']);
 });
