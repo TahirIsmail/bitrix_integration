@@ -114,6 +114,9 @@ class DigitalIncubationController extends Controller
             'gender' => 'required|string|max:10',
             'country' => 'required|string|max:255',
             'city' => 'required|string|max:255',
+            'course1' => 'required',
+            'course2' => 'required',
+            'course3' => 'required',
             'g-recaptcha-response' => 'required|recaptchav3:submit,0.5'
         ], [
             'g-recaptcha-response' => [
@@ -202,7 +205,7 @@ class DigitalIncubationController extends Controller
             $batch = '1st';
         }
         $courses = Courses::where('batch_month',$batch)->get();
-        $html = '<option>Select Course</option>';
+        $html = '<option selected disabled>Select Course</option>';
         foreach ($courses as $key => $value) {
         $html .= '<option value="'.$value->id.'">'.$value->title.'</option>';
         }

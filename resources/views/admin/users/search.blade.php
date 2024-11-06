@@ -45,7 +45,7 @@
                 @if(!empty($data->enrollments))
                  @foreach ($data->enrollments as $value)
                      <tr>
-                        <td><a class="btn btn-primary btn-sm" href="{{url('mini/candidate/').$value->id}}">View detail</a></td>
+                        <td><a class="btn btn-primary btn-sm" href="{{url('admin/user/mini-detail/').'/'.$value->id}}">View detail</a></td>
                         <td>{{ucwords($value->program)}}</td>
                         <td>{{$value->course1Details->title}}</td>
                         <td>{{$value->course2Details->title}}</td>

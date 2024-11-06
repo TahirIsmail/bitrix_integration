@@ -214,8 +214,7 @@ class BitrixCallsService {
     public function createDigitalIncLead($data,$request,$programId)
     {
         //Check if he is already contact of bitrix
-        $getData = Http::get(env('BITRIX_URL').'crm.contact.list', ['FILTER[EMAIL]' => $data->email]);
-
+        $getData = Http::get(env('BITRIX_URL').'crm.contact.list', ['FILTER[EMAIL]' => $data->candidate->email]);
         if (!empty(json_decode($getData)->result)) {
             $fields['CONTACT_ID'] = json_decode($getData)->result[0]->ID;
         } else {
