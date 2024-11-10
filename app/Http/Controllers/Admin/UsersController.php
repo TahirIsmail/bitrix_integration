@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Courses;
 use App\Models\DigitalIncubationRegistration;
 use Carbon\Carbon;
+use App\Services\BitrixCallsService;
 
 class UsersController extends Controller
 {
@@ -19,9 +20,13 @@ class UsersController extends Controller
      *
      * @return void
      */
+
+    protected $bitrixCall;
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->bitrixCall = new BitrixCallsService();
     }
 
     public function index()
@@ -29,18 +34,18 @@ class UsersController extends Controller
         return view('admin.users.search');
     }
 
-
     public function searchCandidate(Request $request)
     {
        $data = User::whereEmail($request->email)->first();
        return view('admin.users.search',['data'=>$data]);
     }
 
-    public function miniDetail(Request $request)
+    public function show(Request $request)
     {
-        $data = DigitalIncubationRegistration::whereHas('candidate',function($query) use ($request){
-            return $query->where('id','=',$request->id);
-        })->first();
+        // whereHas('candidate',function($query) use ($request){
+        //     return $query->where('id','=',$request->id);
+        // })
+        $data = DigitalIncubationRegistration::where('id',$request->id)->whereIn('status',['pending','approved'])->first();
         $courses = Courses::where('status','active')->get();
         return view('admin.users.mini_detail',['data'=>$data,'courses'=>$courses]);
     }
@@ -73,11 +78,6 @@ class UsersController extends Controller
 
     }
 
-    public function show($id)
-    {
-        //
-    }
-
     public function edit($id)
     {
         $post = Courses::where('id',$id)->first();
@@ -104,6 +104,63 @@ class UsersController extends Controller
         }
         else{
             return response()->json(['msg' => 'error', 'res' => 'Error While Updating Course']);
+        }
+    }
+
+    public function updateCourse(Request $request)
+    {
+        $course1 = (($request->course1 != 0)?$request->course1:'');
+        $course2 = (($request->course2 != 0)?$request->course2:'');
+        $course3 = (($request->course3 != 0)?$request->course3:'');
+
+        $dir = DigitalIncubationRegistration::where('id',$request->id)->first();
+        $dir->course1 = $course1;
+        $dir->course2 = $course2;
+        $dir->course3 = $course3;
+
+        if($dir->save()){
+            if ($dir->b24_deal_id) {
+
+                // $data1=[
+                //     'ID' => $dealID,
+                //     'FIELDS[UF_CRM_6346CD7E3D06C]' => $inoviceLink, // Payment Link
+                //     'FIELDS[UF_CRM_1675176530]' => '2st Installment', // Payment Link
+                // ];
+                //   $queryData1   = http_build_query($data1);
+                //   $ret =  $this->bitrixCall->sendCurlRequest($queryData1,"update","crm.deal");
+                $data = [
+                    'ID' => $dir->b24_deal_id
+                ];
+                $res = $this->bitrixCall->sendCurlRequest(http_build_query($data),"get","crm.deal.productrows");
+
+            }else{
+
+        }
+            $b24_id = (($dir->b24_deal_id)?$dir->b24_deal_id:$dir->b24_lead_id);
+            $b24_method = (($dir->b24_deal_id)?'deal':'lead');
+            $res = $this->bitrixCall->sendCurlRequest(['ID' => $b24_id],"get","crm.".$b24_method.".productrows");
+            if (isset($res['result'])) {
+                foreach ($res['result'] as $key => $value) {
+                $this->bitrixCall->sendCurlRequest(['id' => $value['ID']],"delete","crm.item.productrow");
+                }
+            }
+            $productRows = array();
+            if (isset($dir->course1Details)) {
+                array_push($productRows, ["PRODUCT_ID" => $dir->course1Details->b24_course_id, "PRICE" => 8000, "QUANTITY" => 1]);
+            }
+            if (isset($dir->course2Details)) {
+                array_push($productRows,["PRODUCT_ID" => $dir->course2Details->b24_course_id, "PRICE" => 8000, "QUANTITY" => 1]);
+            }
+            if (isset($dir->course3Details)) {
+                array_push($productRows,["PRODUCT_ID" => $dir->course3Details->b24_course_id, "PRICE" => 8000, "QUANTITY" => 1]);
+            }
+            $product['id']   = $b24_id;
+            $product['rows'] = $productRows;
+            $productresult = $this->bitrixCall->sendCurlRequest(http_build_query($product),'set','crm.'.$b24_method.'.productrows');
+            return response()->json(['msg' => 'success', 'res' => 'User Registration Updated Successfully']);
+        }
+        else{
+            return response()->json(['msg' => 'error', 'res' => 'Error While Updating Details']);
         }
     }
 

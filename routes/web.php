@@ -34,6 +34,7 @@ Route::prefix('incubator')->group(function (){
     Route::post('/store_renewal',[IncubatorController::class,'store_renewal']);
     Route::post('/coupon',[App\Http\Controllers\IncubatorController::class, 'couponDetails']);
 });
+
 Route::post('coworking/calculate',[IncubatorController::class,'calculateCoworkingSubscription']);
 Route::get('/co-working-space',function(){ return view('incubator/coworking_space');});
 Route::post('/store-coworking-space',[IncubatorController::class,'storeCoworkingSpace']);
@@ -56,6 +57,7 @@ Route::prefix('bitrix')->group(function(){
     Route::any('/create-deal-invoice', [BitrixHooksController::class,'createBitrixDealInvoice']);
     Route::any('/chatbothandler',[BitrixChatBotController::class,'handler']);
 });
+
 Route::any('payment/{id}', [PaymentController::class,'createPayments']);
 Route::any('payment/thankyou', [PaymentController::class,'paymentThankyou']);
 Route::any('/trainings/payment/{id}', [PaymentController::class,'show']);
@@ -98,5 +100,6 @@ Route::prefix('admin')->group(function(){
     // Route::get('import_data', [App\Http\Controllers\Admin\AdminController::class, 'import_data']);
     Route::get('/search/users',[App\Http\Controllers\Admin\UsersController::class,'index']);
     Route::post('/search/users',[App\Http\Controllers\Admin\UsersController::class,'searchCandidate']);
-    Route::get('/user/mini-detail/{id}',[App\Http\Controllers\Admin\UsersController::class,'miniDetail']);
+    Route::get('/user/mini-detail/{id}',[App\Http\Controllers\Admin\UsersController::class,'show']);
+    Route::post('/user/update-course',[App\Http\Controllers\Admin\UsersController::class,'updateCourse']);
 });

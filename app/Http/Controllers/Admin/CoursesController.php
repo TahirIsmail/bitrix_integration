@@ -50,12 +50,6 @@ class CoursesController extends Controller
         return view('admin.courses.index');
     }
 
-
-    public function create()
-    {
-        //
-    }
-
     public function store(Request $req)
     {
         $array = [ 'title' => 'required|min:2|max:190'];

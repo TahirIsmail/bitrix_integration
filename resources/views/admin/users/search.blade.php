@@ -18,6 +18,16 @@
                     <input type="email" required value="{{old('email')}}" class="form-control" name="email"/>
                     </div>
                 </div>
+                {{-- <div class="col-md-5">
+                    <div class="form-group">
+                    <label>Program</label>
+                    <Select class="form-control" name="program">
+                    <option value="digital incubation" {{((old('program')=='digital incubation')?'selected':'')}}>Digital Incubation</option>
+                    <option value="community only" {{((old('program')=='community only')?'selected':'')}}>Community Only</option>
+                    <option value="digital incubation plus community" {{((old('program')=='digital incubation plus community')?'selected':'')}}>Digital Incubation Plus Community</option>
+                    </select>
+                    </div>
+                </div> --}}
                 <div class="col-md-2">
                      <br>
                     <button type="submit" class="btn btn-primary" >Search</button>
@@ -47,9 +57,9 @@
                      <tr>
                         <td><a class="btn btn-primary btn-sm" href="{{url('admin/user/mini-detail/').'/'.$value->id}}">View detail</a></td>
                         <td>{{ucwords($value->program)}}</td>
-                        <td>{{$value->course1Details->title}}</td>
-                        <td>{{$value->course2Details->title}}</td>
-                        <td>{{$value->course3Details->title}}</td>
+                        <td>{{@$value->course1Details->title}}</td>
+                        <td>{{@$value->course2Details->title}}</td>
+                        <td>{{@$value->course3Details->title}}</td>
                     </tr>
                  @endforeach
                 @else
