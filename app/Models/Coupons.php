@@ -27,7 +27,7 @@ class Coupons extends Model
 
     static function CouponExists($request)
     {
-        $coupon = Coupons::where(['code'=>$request->coupon,'type'=>$request->type])->first();
+        $coupon = Coupons::where(['code'=>$request->coupon,'type'=>str_replace('-',' ',$request->type)])->first();
         if(!isset($coupon)){
             return response()->json(['success'=>'false','message'=>'Wrong Coupon Code.']);
         } else if (isset($coupon) AND Carbon::parse($coupon->expires_at)->toDateString() < Carbon::now()->toDateString()) {

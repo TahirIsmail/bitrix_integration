@@ -141,7 +141,7 @@ class CouponController extends Controller
         $attributes['code'] = $cat->generateUniqueCode();
         $attributes['name'] = $req->title;
         $attributes['description'] = isset($req->description) ? $req->description : '';
-        $attributes['type'] = 'incubation';
+        $attributes['type'] = $req->type;
         $attributes['discount_amount'] = $req->discount;
         $attributes['expires_at'] = $req->expiry;
         $attributes['created_by'] = auth()->id();

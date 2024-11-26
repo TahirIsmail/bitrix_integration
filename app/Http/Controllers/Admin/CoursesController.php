@@ -33,8 +33,11 @@ class CoursesController extends Controller
             ->addColumn('title', function($data){
                  return $data->title;
             })
-            ->addColumn('batch_month', function($data){
-                return $data->batch_month.' month';
+            ->addColumn('price', function($data){
+                return  $data->price.' PKR';
+            })
+            ->addColumn('duration', function($data){
+                return (($data->duration)? $data->duration.' hours':'-');
             })
             ->addColumn('status', function($data){
                 return ucfirst($data->status);
@@ -44,7 +47,7 @@ class CoursesController extends Controller
                 // $select .= '<button type="button" data-id="'.$data->id.'" class="btn btn-danger btn-sm deleted" title="Delete"><i class="fas fa-trash"></i></button>';
                 return $select;
             })
-            ->rawColumns(['id','title','batch_month','status','action'])
+            ->rawColumns(['id','title','duration','status','action'])
             ->make(true);
         }
         return view('admin.courses.index');
@@ -63,8 +66,10 @@ class CoursesController extends Controller
 
         $cat = new Courses();
         $cat->title = $req->title;
-        $cat->slug = str_slug($req->title);
-        $cat->batch_month = $req->batch_month;
+        $cat->slug = Str::slug($req->title,'-');
+        $cat->price = $req->price;
+        $cat->type = $req->type;
+        $cat->duration = $req->duration;
         $cat->status = $req->status;
 
         if($cat->save()){
@@ -101,7 +106,9 @@ class CoursesController extends Controller
 
         $cat = new Courses();
         $attributes['title'] = $req->title;
-        $attributes['batch_month'] = $req->batch_month;
+        $attributes['price'] = $req->price;
+        $attributes['duration'] = $req->duration;
+        $attributes['type'] = $req->type;
         $attributes['status'] = $req->status;
 
         if(Courses::where('id',$id)->update($attributes)){

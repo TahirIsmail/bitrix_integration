@@ -29,10 +29,10 @@ use Lunaweb\RecaptchaV3\Facades\RecaptchaV3;
 
 class DigitalIncubationController extends Controller
 {
-
+    private $bitrix;
     public function __construct()
     {
-        $this->bitrix = new BitrixCallsService();
+        $this->bitirx = new BitrixCallsService();
     }
 
     /**
@@ -107,6 +107,7 @@ class DigitalIncubationController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            // 'g-recaptcha-response' => 'required|recaptchav3:submit,0.5',
             'user_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'cnic_number' => 'required|string|max:20',
@@ -117,12 +118,13 @@ class DigitalIncubationController extends Controller
             'course1' => 'required',
             'course2' => 'required',
             'course3' => 'required',
-            'g-recaptcha-response' => 'required|recaptchav3:submit,0.5'
-        ], [
-            'g-recaptcha-response' => [
-                'recaptchav3' => 'Captcha expired... Refresh your page',
-            ],
-        ]);
+        ]
+        // , [
+        //     'g-recaptcha-response' => [
+        //         'recaptchav3' => 'Captcha expired... Refresh your page',
+        //     ],
+        // ]
+        );
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->first()]);
@@ -204,10 +206,10 @@ class DigitalIncubationController extends Controller
         } else{
             $batch = '1st';
         }
-        $courses = Courses::where('batch_month',$batch)->get();
+        $courses = Courses::where('type',$batch)->get();
         $html = '<option selected disabled>Select Course</option>';
         foreach ($courses as $key => $value) {
-        $html .= '<option value="'.$value->id.'">'.$value->title.'</option>';
+        $html .= '<option data-ch="'.$value->price.'" value="'.$value->id.'">'.$value->title.'</option>';
         }
         return response()->json(['status'=>200,'data'=>$html]);
     }

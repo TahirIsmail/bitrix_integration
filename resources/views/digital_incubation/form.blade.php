@@ -42,8 +42,8 @@
     <form id="formSubmit" action="POST" autocomplete="off">
         @csrf
     <div class="row">
-    <div class="col-md-9">
-        {{-- {!! RecaptchaV3::field($action, $name='g-recaptcha-response') !!} --}}
+    <div class="col-md-12 align-self-center">
+        {!! RecaptchaV3::field('submit') !!}
         <div class="form-row">
             <div class="form-group col-md-6">
             <label for="user_name">Name</label>
@@ -102,69 +102,45 @@
         <div class="form-row">
             <div class="form-group col-md-4">
                 <label for="course1">Course 1</label>
-                <select id="course1" class="form-control courses" name="course1" required>
+                <select id="course1" onChange="calculate_charges()" class="form-control courses" name="course1">
                             <option value="">Select Course</option>
                 </select>
             </div>
             <div class="form-group col-md-4">
                 <label for="course2">Course 2</label>
-                <select id="course2" class="form-control courses" name="course2" required>
+                <select id="course2" onChange="calculate_charges()" class="form-control courses" name="course2">
                             <option value="">Select Course</option>
                 </select>
             </div>
             <div class="form-group col-md-4">
                 <label for="course3">Course 3</label>
-                <select id="course3" class="form-control courses" name="course3" required>
+                <select id="course3" onChange="calculate_charges()" class="form-control courses" name="course3">
                             <option value="">Select Course</option>
                 </select>
             </div>
         </div>
-        {{-- <div class="form-group mt-4 mb-4">
-                <div class="captcha">
-                    <span>{!! App\Http\Controllers\CaptchaController::generateCaptcha(config('captcha.default.type')) !!}</span>
-                    <button type="button" class="btn btn-danger reload" onclick="reloadCaptcha()" id="reload" data-toggle="tooltip" data-placement="top" title="Reload Captcha">↻</button>
+        <div class="col-md-6 mt-5 align-self-center hide  payment_area">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+              <span class="text-black">Payment Details</span>
+            </h4>
+              <table class="table table-bordered" id="course_charges_detail">
+              </table>
+
+              <div class="input-group">
+                <input type="text" class="form-control" autocomplete="off" id="coupon_code" name="coupon" placeholder="Coupon code">
+                <input type="hidden" id="amount" name="amount" >
+                <div class="input-group-append">
+                  <button type="button" id="couponCode"  class="btn btn-secondary">Apply</button>
                 </div>
-            </div>
-        <div class="form-row">
-            <div class="form-group mb-4 col-md-4">
-                <input id="captcha" type="text" class="form-control" placeholder="Enter Captcha" name="captcha">
-                <small class="text-danger captcha_msg"></small>
-            </div>
-        </div> --}}
+              </div>
+              <small class="text-danger" id="coupon_msg"></small>
+          </div>
+          <br>
         <input type="submit" class="btn btn-primary float-right submit_button ml-3" value="Submit" />
-        {!! RecaptchaV3::field('submit') !!}
+        {{-- {!! RecaptchaV3::field('submit') !!} --}}
         <button type="button" class="btn btn-danger float-right btnclear" >Clear</button>
     </div>
-    <div class="col-md-3 mt-5 align-self-center">
-          <h4 class="d-flex justify-content-between align-items-center mb-3">
-            <span class="text-black">Payment Details</span>
-            {{-- <span class="badge badge-secondary badge-pill">3</span> --}}
-          </h4>
-          <ul class="list-group mb-3">
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-              <div>
-                <h6 class="my-0">Course Amount</h6>
-                {{-- <small class="text-muted">Brief description</small> --}}
-              </div>
-              <span class="text-muted">{{$amount}} PKR</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between bg-light hide" id="coupon-area">
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Total Amount</span>
-              <strong id="totalamount">{{$amount}} PKR</strong>
-            </li>
-          </ul>
 
-            <div class="input-group">
-              <input type="text" class="form-control" id="coupon_code" name="coupon" placeholder="Coupon code">
-              <input type="hidden" id="amount" name="amount" value="{{$amount}}">
-              <div class="input-group-append">
-                <button type="button" id="couponCode"  class="btn btn-secondary">Apply</button>
-              </div>
-            </div>
-            <small class="text-danger" id="coupon_msg"></small>
-        </div>
     </div>
     </form>
 
@@ -178,6 +154,71 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script src="{{asset('assets/js/intlTelInput.js')}}"></script>
     <script type="text/javascript">
+
+     function calculate_charges(){
+        const course1 = $('#course1').find(':selected');
+        const course2 = $('#course2').find(':selected');
+        const course3 = $('#course3').find(':selected');
+
+        var amount = 0;
+        var html = `<thead class="bg-dark text-white">
+                <tr>
+                    <td>Course</td>
+                    <td>Amount</td>
+                </tr>
+            </thead>
+            <tbody>`;
+             if(course1.text() != 'Select Course'){
+             html +=   `<tr>
+                    <td>${course1.text()}</td>
+                    <td>${course1.data('ch')} PKR</td>
+                </tr>`;
+             amount = course1.data('ch');
+            }
+            if(course2.text() != 'Select Course'){
+             html +=   `<tr>
+                    <td>${course2.text()}</td>
+                    <td>${course2.data('ch')} PKR</td>
+                </tr>`;
+            amount += course2.data('ch');
+            }
+            if(course3.text() != 'Select Course'){
+             html +=   `<tr>
+                    <td>${course3.text()}</td>
+                    <td>${course3.data('ch')} PKR</td>
+                </tr>`;
+            amount += course3.data('ch');
+            }
+
+            html +=   `</tbody>
+            <tfoot>
+                <tr>
+                    <td>Discount</td>`;
+                    if((course1.text() !=  'Select Course' && course2.text() !=  'Select Course') || (course2.text() !=  'Select Course' && course3.text() !=  'Select Course') || (course1.text() !=  'Select Course' && course3.text() !=  'Select Course')){
+                        html += `<td>15%</td>`;
+                        amount = amount * 0.85;
+                    }else if(course1.text() !=  'Select Course' && course2.text() !=  'Select Course' && course3.text() !=  'Select Course'){
+                        html += `<td>30%</td>`;
+                        amount = amount * 0.70;
+                    }else{
+                        html += `<td>0</td>`;
+                    }
+
+            html +=`</tr>
+                <tr class="hide coupon_area">
+                    <td>Coupon Discount</td>
+                    <td class="coupon_code"></td>
+                </tr>
+                <tr>
+                    <td>Total Amount</td>
+                    <td class="total_amount">${amount} PKR</td>
+                </tr>
+            </tfoot>`;
+            $('#course_charges_detail').html(html);
+            $('#amount').val(amount);
+            $('.payment_area').removeClass('hide');
+     }
+
      $('.btnclear').on('click',function(){
             $("#formSubmit").trigger('reset');
         });
@@ -201,6 +242,11 @@
 
     $('#formSubmit').on('submit',function(e){
             e.preventDefault()
+            reloadCaptcha();
+            if ($('#course1').find(':selected').val() == 'Select Course' || $('#course2').find(':selected').val() == 'Select Course' || $('#course3').find(':selected').val() == 'Select Course') {
+                alert('Atleast 1 Course must select.');
+                return false;
+            }
             Swal.fire({
                 title: 'Submitting form...',
                 confirmButton: false,
@@ -232,7 +278,7 @@
                                         icon: 'error',
                                         confirmButtonText: 'Ok',
                                     });
-                                reloadCaptcha();
+
                                 } else if (response.success) {
                                     Swal.fire({
                                         title: 'Success!',
@@ -272,11 +318,12 @@
             $('#coupon-area').html('');
             $('#coupon-area').removeClass('hide');
             $('#coupon-area').html(result.msg);
-            $('#coupon_msg').text('');
-            $('#totalamount').text('');
+            $('.coupon_code').text(result.data+' PKR');
+            $('.total_amount').text('');
             var total = ($('#amount').val() - result.data);
-            $('#totalamount').text(total +' PKR');
+            $('.total_amount').text(total +' PKR');
             $('#amount').val(total);
+            $('.coupon_area').removeClass('hide');
           }else{
             button.text('Apply').prop('disabled',false);
             $('#coupon_msg').text(result.message);
@@ -319,7 +366,6 @@
           }
         })
         .fail(function(result) {
-        console.log(result);
         })
     });
     </script>

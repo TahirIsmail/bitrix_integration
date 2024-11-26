@@ -18,7 +18,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Title</label>
-                                    <input type="text" name="title" id="title" class="form-control" placeholder="Coupon Title"/>
+                                    <input type="text" name="title" id="title" class="form-control" placeholder="Course Title"/>
                                     <input type="hidden" name="id" id="id">
                                     <small class="error_msg text-danger" id="title_msg"></small>
                                 </div>
@@ -26,13 +26,29 @@
 
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Batch Month</label>
-                                    <select class="form-control" name="batch_month" id="batch_month">
-                                        <option value="1st">1st Month</option>
-                                        <option value="2nd">2nd Month</option>
-                                        <option value="3rd">3rd Month</option>
+                                    <label>Price</label>
+                                    <input type="text" name="price" id="price" class="form-control" placeholder="Course Price"/>
+                                    <small class="error_msg text-danger" id="price_msg"></small>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Duration</label>
+                                    <input class="form-control" type="number" name="duration" id="duration">
+                                    <small class="error_msg text-danger" id="duration_msg"></small>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Course Selection</label>
+                                    <select class="form-control" name="type" id="type">
+                                        <option value="300">1st</option>
+                                        <option value="350">2nd</option>
+                                        <option value="400">3rd</option>
                                       </select>
-                                    <small class="error_msg text-danger" id="batch_month_msg"></small>
+                                    <small class="error_msg text-danger" id="type_msg"></small>
                                 </div>
                             </div>
 
@@ -72,7 +88,8 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Title</th>
-                                        <th>Batch Month</th>
+                                        <th>Price</th>
+                                        <th>Duration</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -145,7 +162,8 @@ $(document).on('click','.edit',function(e){
         success:function(res){
             if(res.msg == 'success'){
                 $('#title').val(res.post.title)
-                $('#batch_month').val(res.post.batch_month)
+                $('#price').val(res.post.price)
+                $('#duration').val(res.post.duration)
                 $('#status').val(res.post.status)
                 $('#id').val(res.post.id)
                 $('#btnSub').attr('data-type','update')
@@ -222,7 +240,8 @@ function getData(){
           columns: [
             { data: 'id', name: 'id' },
             { data: 'title', name: 'title' },
-            { data: 'batch_month', name: 'batch_month' },
+            { data: 'price', name: 'price' },
+            { data: 'duration', name: 'duration' },
             { data: 'status', name: 'status' },
             { data: 'action', name: 'action', orderable: false },
         ]
