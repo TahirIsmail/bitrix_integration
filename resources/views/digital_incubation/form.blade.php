@@ -243,7 +243,7 @@
     $('#formSubmit').on('submit',function(e){
             e.preventDefault()
             reloadCaptcha();
-            if ($('#course1').find(':selected').val() == 'Select Course' || $('#course2').find(':selected').val() == 'Select Course' || $('#course3').find(':selected').val() == 'Select Course') {
+            if ($('#course1').find(':selected').val() == 'Select Course' && $('#course2').find(':selected').val() == 'Select Course' && $('#course3').find(':selected').val() == 'Select Course') {
                 alert('Atleast 1 Course must select.');
                 return false;
             }
