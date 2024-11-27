@@ -29,10 +29,9 @@ use Lunaweb\RecaptchaV3\Facades\RecaptchaV3;
 
 class DigitalIncubationController extends Controller
 {
-    private $bitrix;
     public function __construct()
     {
-        $this->bitirx = new BitrixCallsService();
+        $this->bitrix = new BitrixCallsService();
     }
 
     /**

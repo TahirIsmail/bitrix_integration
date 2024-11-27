@@ -180,7 +180,7 @@ class CommunityController extends Controller
         } else{
             $batch = '1st';
         }
-        $courses = Courses::where('batch_month',$batch)->get();
+        $courses = Courses::where('type',$batch)->get();
         $html = '<option>Select Course</option>';
         foreach ($courses as $key => $value) {
         $html .= '<option value="'.$value->id.'">'.$value->title.'</option>';
