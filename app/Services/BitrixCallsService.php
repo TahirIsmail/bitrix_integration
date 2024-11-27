@@ -31,7 +31,6 @@ class BitrixCallsService {
          if (env('APP_ENV') != 'production') {
             return false;
          }
-
          $BITRIX_URL = env('BITRIX_URL');
          $queryUrl              = $BITRIX_URL."$method.$action/";
          $curl                  = curl_init();
@@ -103,17 +102,17 @@ class BitrixCallsService {
         }
 
         if ($programId == 207) {//done
-           $productRows = array(["PRODUCT_ID" => Helper::incubatorCityBitrixId($data->city_id), "PRICE" => $data->totalAmount, "QUANTITY" => 1]);
+           $productRows = array(["PRODUCT_ID" => Helper::incubatorCityBitrixId($data->city_id), "QUANTITY" => 1]);
            $programTitle = 'Incubator Only';
            $preferredTiming = (($data->shift == 'day')?1:(($data->shift == 'evening')?2:5)) ;
            $batch = 'INC'.now()->format('MY');
         }elseif($programId == 209){//done
-           $productRows = array(["PRODUCT_ID" => Helper::incubatorCityBitrixId($data->city_id), "PRICE" => $data->totalAmount, "QUANTITY" => 1]);
+           $productRows = array(["PRODUCT_ID" => Helper::incubatorCityBitrixId($data->city_id), "QUANTITY" => 1]);
            $programTitle = 'Incubation Online';
            $batch = 'INCO'.now()->format('MY');
            $preferredTiming = '';
         }elseif($programId == 1233){
-           $productRows = array(["PRODUCT_ID" => Helper::CoIncCityBitrixId($data->city_id), "PRICE" => $data->totalAmount, "QUANTITY" => $data->subscription_period]);
+           $productRows = array(["PRODUCT_ID" => Helper::CoIncCityBitrixId($data->city_id), "QUANTITY" => $data->subscription_period]);
            $programTitle = 'Co-Working Space';
            $preferredTiming = '';
            $batch = 'COINC'.now()->format('MY');
@@ -237,13 +236,13 @@ class BitrixCallsService {
         $productRows = array();
 
             if (isset($data->course1Details)) {
-                array_push($productRows, ["PRODUCT_ID" => $data->course1Details->b24_course_id, "PRICE" => 8000, "QUANTITY" => 1]);
+                array_push($productRows, ["PRODUCT_ID" => $data->course1Details->b24_course_id, "QUANTITY" => 1]);
             }
             if (isset($data->course2Details)) {
-                array_push($productRows,["PRODUCT_ID" => $data->course2Details->b24_course_id, "PRICE" => 8000, "QUANTITY" => 1]);
+                array_push($productRows,["PRODUCT_ID" => $data->course2Details->b24_course_id, "QUANTITY" => 1]);
             }
             if (isset($data->course3Details)) {
-                array_push($productRows,["PRODUCT_ID" => $data->course3Details->b24_course_id, "PRICE" => 8000, "QUANTITY" => 1]);
+                array_push($productRows,["PRODUCT_ID" => $data->course3Details->b24_course_id, "QUANTITY" => 1]);
             }
 
         //    $preferredTiming = (($data->shift == 'day')?1:(($data->shift == 'evening')?2:5)) ;
@@ -321,13 +320,13 @@ class BitrixCallsService {
         $products = array();
 
         if (isset($data->course1Details)) {
-            array_push($products, ["PRODUCT_ID" => $data->course1Details->b24_course_id, "PRICE" => 8000, "QUANTITY" => 1]);
+            array_push($products, ["PRODUCT_ID" => $data->course1Details->b24_course_id, "QUANTITY" => 1]);
         }
         if (isset($data->course2Details)) {
-            array_push($products,["PRODUCT_ID" => $data->course2Details->b24_course_id, "PRICE" => 8000, "QUANTITY" => 1]);
+            array_push($products,["PRODUCT_ID" => $data->course2Details->b24_course_id, "QUANTITY" => 1]);
         }
         if (isset($data->course3Details)) {
-            array_push($products,["PRODUCT_ID" => $data->course3Details->b24_course_id, "PRICE" => 8000, "QUANTITY" => 1]);
+            array_push($products,["PRODUCT_ID" => $data->course3Details->b24_course_id, "QUANTITY" => 1]);
         }
 
         $product['id'] = $dealId;

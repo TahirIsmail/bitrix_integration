@@ -117,6 +117,7 @@ class UsersController extends Controller
         $dir->course1 = $course1;
         $dir->course2 = $course2;
         $dir->course3 = $course3;
+        $dir->amount = $request->charges;
 
         if($dir->save()){
             if ($dir->b24_deal_id) {
@@ -135,9 +136,16 @@ class UsersController extends Controller
 
             }else{
 
-        }
+            }
             $b24_id = (($dir->b24_deal_id)?$dir->b24_deal_id:$dir->b24_lead_id);
             $b24_method = (($dir->b24_deal_id)?'deal':'lead');
+
+            $bitrixObj=[
+                    'ID' => $b24_id,
+                    'FIELDS[OPPORTUNITY]' => $dir->amount,
+                    ];
+            $this->bitrixCall->sendCurlRequest(http_build_query($bitrixObj),"update","crm.".$b24_method);
+
             $res = $this->bitrixCall->sendCurlRequest(['ID' => $b24_id],"get","crm.".$b24_method.".productrows");
             if (isset($res['result'])) {
                 foreach ($res['result'] as $key => $value) {
@@ -146,13 +154,13 @@ class UsersController extends Controller
             }
             $productRows = array();
             if (isset($dir->course1Details)) {
-                array_push($productRows, ["PRODUCT_ID" => $dir->course1Details->b24_course_id, "PRICE" => 8000, "QUANTITY" => 1]);
+                array_push($productRows, ["PRODUCT_ID" => $dir->course1Details->b24_course_id, "QUANTITY" => 1]);
             }
             if (isset($dir->course2Details)) {
-                array_push($productRows,["PRODUCT_ID" => $dir->course2Details->b24_course_id, "PRICE" => 8000, "QUANTITY" => 1]);
+                array_push($productRows,["PRODUCT_ID" => $dir->course2Details->b24_course_id, "QUANTITY" => 1]);
             }
             if (isset($dir->course3Details)) {
-                array_push($productRows,["PRODUCT_ID" => $dir->course3Details->b24_course_id, "PRICE" => 8000, "QUANTITY" => 1]);
+                array_push($productRows,["PRODUCT_ID" => $dir->course3Details->b24_course_id, "QUANTITY" => 1]);
             }
             $product['id']   = $b24_id;
             $product['rows'] = $productRows;

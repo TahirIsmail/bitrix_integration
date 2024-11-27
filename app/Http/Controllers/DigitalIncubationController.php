@@ -115,9 +115,9 @@ class DigitalIncubationController extends Controller
             'gender' => 'required|string|max:10',
             'country' => 'required|string|max:255',
             'city' => 'required|string|max:255',
-            'course1' => 'required',
-            'course2' => 'required',
-            'course3' => 'required',
+            // 'course1' => 'required',
+            // 'course2' => 'required',
+            // 'course3' => 'required',
         ]
         // , [
         //     'g-recaptcha-response' => [

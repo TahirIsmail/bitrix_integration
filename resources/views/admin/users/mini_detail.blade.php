@@ -19,6 +19,12 @@
             @method('post')
             <div class="row">
                 <div class="col-md-3">
+                <div class="form-group">
+                    <label for="charges">Charges</label>
+                    <input type="text" class="form-control" name="charges" value="{{$data->amount}}">
+                </div>
+                </div>
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="course1">Course1</label>
                         <select id="course1" class="form-control select2" name="course1">
