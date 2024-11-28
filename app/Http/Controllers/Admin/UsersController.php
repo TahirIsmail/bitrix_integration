@@ -175,7 +175,7 @@ class UsersController extends Controller
                     return $item;
                 })->toArray();
             }
-            dd($productRows);
+            Log::channel('bitrix')->debug($productRows);
             $product['id']   = $b24_id;
             $product['rows'] = $productRows;
             $productresult = $this->bitrixCall->sendCurlRequest(http_build_query($product),'set','crm.'.$b24_method.'.productrows');
