@@ -157,21 +157,21 @@ class UsersController extends Controller
             $productRows = array();
             $course_count = 0;
             if (isset($dir->course1Details)) {
-                array_push($productRows, ["PRODUCT_ID" => $dir->course1Details->b24_course_id,"PRICE" => $dir->course1Details->price,'DISCOUNT_PRICE'=>0, "QUANTITY" => 1]);
+                array_push($productRows, ["PRODUCT_ID" => $dir->course1Details->b24_course_id,"PRICE" => $dir->course1Details->price,'DISCOUNT_RATE'=>0, "QUANTITY" => 1]);
                 $course_count++;
             }
             if (isset($dir->course2Details)) {
-                array_push($productRows,["PRODUCT_ID" => $dir->course2Details->b24_course_id,"PRICE" => $dir->course2Details->price,'DISCOUNT_PRICE'=>0, "QUANTITY" => 1]);
+                array_push($productRows,["PRODUCT_ID" => $dir->course2Details->b24_course_id,"PRICE" => $dir->course2Details->price,'DISCOUNT_RATE'=>0, "QUANTITY" => 1]);
                 $course_count++;
             }
             if (isset($dir->course3Details)) {
-                array_push($productRows,["PRODUCT_ID" => $dir->course3Details->b24_course_id,"PRICE" => $dir->course3Details->price,'DISCOUNT_PRICE'=>0, "QUANTITY" => 1]);
+                array_push($productRows,["PRODUCT_ID" => $dir->course3Details->b24_course_id,"PRICE" => $dir->course3Details->price,'DISCOUNT_RATE'=>0, "QUANTITY" => 1]);
                 $course_count++;
             }
             if ($course_count == 2 || $course_count == 3) {
                 $collection = collect($productRows);
                 $productRows = $collection->map(function ($item) use ($course_count) {
-                    $item['discountRate'] = (($course_count == 2)?Courses::two_courses_discount:Courses::three_courses_discount);
+                    $item['DISCOUNT_RATE'] = (($course_count == 2)?Courses::two_courses_discount:Courses::three_courses_discount);
                     return $item;
                 })->toArray();
             }
