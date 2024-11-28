@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
+use Log;
+
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Courses;
-use App\Models\DigitalIncubationRegistration;
-use Carbon\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Services\BitrixCallsService;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use App\Models\DigitalIncubationRegistration;
 
 class UsersController extends Controller
 {
@@ -173,6 +175,7 @@ class UsersController extends Controller
                     return $item;
                 })->toArray();
             }
+            Log::channel('bitrix')->debug($productRows);
             $product['id']   = $b24_id;
             $product['rows'] = $productRows;
             $productresult = $this->bitrixCall->sendCurlRequest(http_build_query($product),'set','crm.'.$b24_method.'.productrows');
