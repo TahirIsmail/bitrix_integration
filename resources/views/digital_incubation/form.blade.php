@@ -197,7 +197,8 @@
                     if((course1.text() !=  'Select Course' && course2.text() !=  'Select Course') || (course2.text() !=  'Select Course' && course3.text() !=  'Select Course') || (course1.text() !=  'Select Course' && course3.text() !=  'Select Course')){
                         html += `<td>15%</td>`;
                         amount = amount * 0.85;
-                    }else if(course1.text() !=  'Select Course' && course2.text() !=  'Select Course' && course3.text() !=  'Select Course'){
+                    }
+                    if(course1.text() !=  'Select Course' && course2.text() !=  'Select Course' && course3.text() !=  'Select Course'){
                         html += `<td>30%</td>`;
                         amount = amount * 0.70;
                     }else{
