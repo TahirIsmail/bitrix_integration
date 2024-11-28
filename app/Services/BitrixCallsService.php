@@ -1,12 +1,13 @@
 <?php
-
 namespace App\Services;
+
+use DB;
 use Log;
+use App\Models\Courses;
+use App\Helpers\Helper;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use DB;
-use App\Helpers\Helper;
 
 class BitrixCallsService {
 
@@ -213,8 +214,8 @@ class BitrixCallsService {
     public function createDigitalIncLead($data,$request,$programId)
     {
         //Check if he is already contact of bitrix
-        $getData = Http::get(env('BITRIX_URL').'crm.contact.list', ['FILTER[EMAIL]' => $data->candidate->email]);
-        if (!empty(json_decode($getData)->result)) {
+        // $getData = Http::get(env('BITRIX_URL').'crm.contact.list', ['FILTER[EMAIL]' => $data->candidate->email]);
+        if (isset($getData) AND !empty(json_decode($getData)->result)) {
             $fields['CONTACT_ID'] = json_decode($getData)->result[0]->ID;
         } else {
             //Create Bitrix contact
@@ -234,18 +235,26 @@ class BitrixCallsService {
         }
 
         $productRows = array();
-
+            $course_count = 0;
             if (isset($data->course1Details)) {
-                array_push($productRows, ["PRODUCT_ID" => $data->course1Details->b24_course_id, "QUANTITY" => 1]);
+                array_push($productRows, ["PRODUCT_ID" => $data->course1Details->b24_course_id,"PRICE"=>$data->course1Details->price,"DISCOUNT_PRICE"=>0, "QUANTITY" => 1]);
+                $course_count++;
             }
             if (isset($data->course2Details)) {
-                array_push($productRows,["PRODUCT_ID" => $data->course2Details->b24_course_id, "QUANTITY" => 1]);
+                array_push($productRows,["PRODUCT_ID" => $data->course2Details->b24_course_id,"PRICE"=>$data->course2Details->price,"DISCOUNT_PRICE"=>0, "QUANTITY" => 1]);
+                $course_count++;
             }
             if (isset($data->course3Details)) {
-                array_push($productRows,["PRODUCT_ID" => $data->course3Details->b24_course_id, "QUANTITY" => 1]);
+                array_push($productRows,["PRODUCT_ID" => $data->course3Details->b24_course_id,"PRICE"=>$data->course3Details->price,"DISCOUNT_PRICE"=>0, "QUANTITY" => 1]);
+                $course_count++;
             }
-
-        //    $preferredTiming = (($data->shift == 'day')?1:(($data->shift == 'evening')?2:5)) ;
+            if ($course_count == 2 || $course_count == 3) {
+                $collection = collect($productRows);
+                $productRows = $collection->map(function ($item) use ($course_count) {
+                    $item['DISCOUNT_PRICE'] = (($course_count == 2)?Courses::two_courses_discount:Courses::three_courses_discount);
+                    return $item;
+                })->toArray();
+            }
            $batch = 'DINC'.now()->format('MY');
         //Create common fields array for bitirx
         $fields['TITLE'] = $data->candidate->name.' - '.$programTitle;
