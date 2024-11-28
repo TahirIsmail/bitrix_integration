@@ -255,6 +255,7 @@ class BitrixCallsService {
                     return $item;
                 })->toArray();
             }
+
            $batch = 'DINC'.now()->format('MY');
         //Create common fields array for bitirx
         $fields['TITLE'] = $data->candidate->name.' - '.$programTitle;
@@ -274,6 +275,7 @@ class BitrixCallsService {
         $fields['UF_CRM_1710672374']    =  $batch; //Batch
 
         $fields = ['fields' => $fields];
+        Log::channel('bitrix')->debug($productRows);
         //Bitrix Lead Create Code Start
         $lead_id = $this->sendRequest($fields,$productRows);
         return $lead_id;
@@ -322,10 +324,8 @@ class BitrixCallsService {
         $fields['UF_CRM_66128DD3272B1'] = 'DINC'.now()->format('MY'); //Batch done
 
         $fields = array('fields'=>$fields);
-        Log::channel('bitrix')->debug($fields);
-        $dealId = $this->sendRequest($fields,null,'add','crm.deal');
-        Log::channel('bitrix')->debug($dealId);
 
+        $dealId = $this->sendRequest($fields,null,'add','crm.deal');
         $products = array();
 
         if (isset($data->course1Details)) {
