@@ -237,21 +237,21 @@ class BitrixCallsService {
         $productRows = array();
             $course_count = 0;
             if (isset($data->course1Details)) {
-                array_push($productRows, ["PRODUCT_ID" => $data->course1Details->b24_course_id,"PRICE"=>$data->course1Details->price,"DISCOUNT_PRICE"=>0, "QUANTITY" => 1]);
+                array_push($productRows, ["PRODUCT_ID" => $data->course1Details->b24_course_id,"PRICE"=>$data->course1Details->price,"DISCOUNT_RATE"=>0, "QUANTITY" => 1]);
                 $course_count++;
             }
             if (isset($data->course2Details)) {
-                array_push($productRows,["PRODUCT_ID" => $data->course2Details->b24_course_id,"PRICE"=>$data->course2Details->price,"DISCOUNT_PRICE"=>0, "QUANTITY" => 1]);
+                array_push($productRows,["PRODUCT_ID" => $data->course2Details->b24_course_id,"PRICE"=>$data->course2Details->price,"DISCOUNT_RATE"=>0, "QUANTITY" => 1]);
                 $course_count++;
             }
             if (isset($data->course3Details)) {
-                array_push($productRows,["PRODUCT_ID" => $data->course3Details->b24_course_id,"PRICE"=>$data->course3Details->price,"DISCOUNT_PRICE"=>0, "QUANTITY" => 1]);
+                array_push($productRows,["PRODUCT_ID" => $data->course3Details->b24_course_id,"PRICE"=>$data->course3Details->price,"DISCOUNT_RATE"=>0, "QUANTITY" => 1]);
                 $course_count++;
             }
             if ($course_count == 2 || $course_count == 3) {
                 $collection = collect($productRows);
                 $productRows = $collection->map(function ($item) use ($course_count) {
-                    $item['DISCOUNTRATE'] = (($course_count == 2)?Courses::two_courses_discount:Courses::three_courses_discount);
+                    $item['DISCOUNT_RATE'] = (($course_count == 2)?Courses::two_courses_discount:Courses::three_courses_discount);
                     return $item;
                 })->toArray();
             }
@@ -343,7 +343,7 @@ class BitrixCallsService {
         if ($course_count == 2 || $course_count == 3) {
             $collection = collect($productRows);
             $products = $collection->map(function ($item) use ($course_count) {
-                $item['DISCOUNTRATE'] = (($course_count == 2)?Courses::two_courses_discount:Courses::three_courses_discount);
+                $item['DISCOUNT_RATE'] = (($course_count == 2)?Courses::two_courses_discount:Courses::three_courses_discount);
                 return $item;
             })->toArray();
         }
