@@ -171,7 +171,7 @@ class UsersController extends Controller
             if ($course_count == 2 || $course_count == 3) {
                 $collection = collect($productRows);
                 $productRows = $collection->map(function ($item) use ($course_count) {
-                    $item['DISCOUNTRATE'] = (($course_count == 2)?Courses::two_courses_discount:Courses::three_courses_discount);
+                    $item['discountRate'] = (($course_count == 2)?Courses::two_courses_discount:Courses::three_courses_discount);
                     return $item;
                 })->toArray();
             }
