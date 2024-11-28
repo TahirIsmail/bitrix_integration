@@ -179,6 +179,7 @@ class UsersController extends Controller
             $product['id']   = $b24_id;
             $product['rows'] = $productRows;
             $productresult = $this->bitrixCall->sendCurlRequest(http_build_query($product),'set','crm.'.$b24_method.'.productrows');
+            Log::channel('bitrix')->debug($productresult);
             return response()->json(['msg' => 'success', 'res' => 'User Registration Updated Successfully']);
         }
         else{
