@@ -251,7 +251,7 @@ class BitrixCallsService {
             if ($course_count == 2 || $course_count == 3) {
                 $collection = collect($productRows);
                 $productRows = $collection->map(function ($item) use ($course_count) {
-                    $item['DISCOUNT_PRICE'] = (($course_count == 2)?Courses::two_courses_discount:Courses::three_courses_discount);
+                    $item['DISCOUNTRATE'] = (($course_count == 2)?Courses::two_courses_discount:Courses::three_courses_discount);
                     return $item;
                 })->toArray();
             }
@@ -327,17 +327,26 @@ class BitrixCallsService {
 
         $dealId = $this->sendRequest($fields,null,'add','crm.deal');
         $products = array();
-
+        $course_count = 0;
         if (isset($data->course1Details)) {
             array_push($products, ["PRODUCT_ID" => $data->course1Details->b24_course_id, "QUANTITY" => 1]);
+            $course_count++;
         }
         if (isset($data->course2Details)) {
             array_push($products,["PRODUCT_ID" => $data->course2Details->b24_course_id, "QUANTITY" => 1]);
+            $course_count++;
         }
         if (isset($data->course3Details)) {
             array_push($products,["PRODUCT_ID" => $data->course3Details->b24_course_id, "QUANTITY" => 1]);
+            $course_count++;
         }
-
+        if ($course_count == 2 || $course_count == 3) {
+            $collection = collect($productRows);
+            $products = $collection->map(function ($item) use ($course_count) {
+                $item['DISCOUNTRATE'] = (($course_count == 2)?Courses::two_courses_discount:Courses::three_courses_discount);
+                return $item;
+            })->toArray();
+        }
         $product['id'] = $dealId;
         $product['rows'] = $products;
         Log::channel('bitrix')->debug($product);
