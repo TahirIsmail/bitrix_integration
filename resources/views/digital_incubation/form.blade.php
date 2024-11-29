@@ -57,7 +57,7 @@
         <div class="form-row">
             <div class="form-group col-md-6">
             <label for="cnic_number">CNIC Number</label>
-            <input type="text" id="cnic_number" class="form-control" name="cnic_number" maxlength="15" minlength="15" required>
+            <input type="text" id="cnic_number" class="form-control" name="cnic_number" maxlength="16" minlength="16" required>
             </div>
             <div class="form-group col-md-6">
             <p style="margin-bottom:7px;">WhatsApp Number</p>
