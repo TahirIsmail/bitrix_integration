@@ -103,17 +103,17 @@ class BitrixCallsService {
         }
 
         if ($programId == 207) {//done
-           $productRows = array(["PRODUCT_ID" => Helper::incubatorCityBitrixId($data->city_id), "QUANTITY" => 1]);
+           $productRows = array(["PRODUCT_ID" => Helper::incubatorCityBitrixId($data->city_id),"PRICE"=>$data->totalAmount, "QUANTITY" => 1]);
            $programTitle = 'Incubator Only';
            $preferredTiming = (($data->shift == 'day')?1:(($data->shift == 'evening')?2:5)) ;
            $batch = 'INC'.now()->format('MY');
         }elseif($programId == 209){//done
-           $productRows = array(["PRODUCT_ID" => Helper::incubatorCityBitrixId($data->city_id), "QUANTITY" => 1]);
+           $productRows = array(["PRODUCT_ID" => Helper::incubatorCityBitrixId($data->city_id),"PRICE"=>$data->totalAmount, "QUANTITY" => 1]);
            $programTitle = 'Incubation Online';
            $batch = 'INCO'.now()->format('MY');
            $preferredTiming = '';
         }elseif($programId == 1233){
-           $productRows = array(["PRODUCT_ID" => Helper::CoIncCityBitrixId($data->city_id), "QUANTITY" => $data->subscription_period]);
+           $productRows = array(["PRODUCT_ID" => Helper::CoIncCityBitrixId($data->city_id),"PRICE"=>$data->totalAmount, "QUANTITY" => $data->subscription_period]);
            $programTitle = 'Co-Working Space';
            $preferredTiming = '';
            $batch = 'COINC'.now()->format('MY');
