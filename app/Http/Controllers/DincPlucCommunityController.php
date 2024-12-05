@@ -236,7 +236,7 @@ class DincPlucCommunityController extends Controller
         } else{
             $batch = '1st';
         }
-        $courses = Courses::where('type',$batch)->get();
+        $courses = Courses::where('type',$batch)->where('status','active')->get();
         $html = '<option>Select Course</option>';
         foreach ($courses as $key => $value) {
         $html .= '<option value="'.$value->id.'">'.$value->title.'</option>';
