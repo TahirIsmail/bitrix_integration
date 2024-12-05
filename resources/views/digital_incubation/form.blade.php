@@ -189,7 +189,7 @@
                 </tr>`;
             amount += course3.data('ch');
             }
-
+            html += `<tr><td>Course Duration</td><td>${course3.data('du')} Month</td></tr>`;
             html +=   `</tbody>
             <tfoot>
                 <tr>

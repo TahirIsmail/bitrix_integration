@@ -208,7 +208,7 @@ class DigitalIncubationController extends Controller
         $courses = Courses::where('type',$batch)->where('status','active')->get();
         $html = '<option selected disabled>Select Course</option>';
         foreach ($courses as $key => $value) {
-        $html .= '<option data-ch="'.$value->price.'" value="'.$value->id.'">'.$value->title.'</option>';
+        $html .= '<option data-ch="'.$value->price.'" data-du="'.$value->duration.'" value="'.$value->id.'">'.$value->title.'</option>';
         }
         return response()->json(['status'=>200,'data'=>$html]);
     }
