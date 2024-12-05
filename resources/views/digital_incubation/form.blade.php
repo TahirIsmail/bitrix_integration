@@ -172,7 +172,7 @@
              if(course1.text() != 'Select Course'){
              html +=   `<tr>
                     <td>${course1.text()}</td>
-                    <td>${course1.data('du')} Month</td>
+                    <td>${course1.data('du')} Hours</td>
                     <td>${course1.data('ch')} PKR</td>
                 </tr>`;
              amount = course1.data('ch');
@@ -180,7 +180,7 @@
             if(course2.text() != 'Select Course'){
              html +=   `<tr>
                     <td>${course2.text()}</td>
-                    <td>${course2.data('du')} Month</td>
+                    <td>${course2.data('du')} Hours</td>
                     <td>${course2.data('ch')} PKR</td>
                 </tr>`;
             amount += course2.data('ch');
@@ -188,7 +188,7 @@
             if(course3.text() != 'Select Course'){
              html +=   `<tr>
                     <td>${course3.text()}</td>
-                    <td>${course3.data('du')} Month</td>
+                    <td>${course3.data('du')} Hours</td>
                     <td>${course3.data('ch')} PKR</td>
                 </tr>`;
             amount += course3.data('ch');
