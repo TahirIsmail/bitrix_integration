@@ -44,9 +44,9 @@
                                 <div class="form-group">
                                     <label>Course Selection</label>
                                     <select class="form-control" name="type" id="type">
-                                        <option value="300">1st</option>
-                                        <option value="350">2nd</option>
-                                        <option value="400">3rd</option>
+                                        <option value="1st">1st</option>
+                                        <option value="2nd">2nd</option>
+                                        <option value="3rd">3rd</option>
                                       </select>
                                     <small class="error_msg text-danger" id="type_msg"></small>
                                 </div>
