@@ -196,7 +196,8 @@
             html +=   `</tbody>
             <tfoot>
                 <tr>
-                    <td>Discount</td>`;
+                    <td>Discount</td>
+                    <td></td>`;
                     if(course1.text() !=  'Select Course' && course2.text() !=  'Select Course' && course3.text() !=  'Select Course'){
                         html += `<td>30%</td>`;
                         amount = amount * 0.70;
@@ -211,10 +212,12 @@
             html +=`</tr>
                 <tr class="hide coupon_area">
                     <td>Coupon Discount</td>
+                    <td></td>
                     <td class="coupon_code"></td>
                 </tr>
                 <tr>
                     <td>Total Amount</td>
+                    <td></td>
                     <td class="total_amount">${amount} PKR</td>
                 </tr>
             </tfoot>`;
