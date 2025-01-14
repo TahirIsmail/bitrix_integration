@@ -109,7 +109,7 @@ public function transferChat($chatId,$botId,$clientId,$transferQueue,$dialogId,$
 
         Thank you for your interest in Skillsrator Incubator.
 
-    Our agents are currently at capacity and will reach out to you in next 48 to 72 hours.';
+    Our agents are currently at capacity and will reach out to you in next 12 to 24 hours.';
 
     $this->sendCustomMessage($botId,$dialogId,$message,$clientId);
 
