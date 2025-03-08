@@ -73,7 +73,7 @@ class BitrixHooksController extends Controller
                 Log::channel('bitrix')->debug(['payment'=>$inoviceLink]);
             }
 
-            elseif($request['program'] == 'Trainings') {
+            elseif($request['program'] == 'Trainings' OR $request['program'] == 'Agency' OR $request['program'] == 'Manage Services') {
 
                 $getData = $this->bitrixCall->sendCurlRequest(['ID' => $leadID],'get','crm.lead');
                 Log::channel('bitrix')->debug($getData);
@@ -109,7 +109,7 @@ class BitrixHooksController extends Controller
                   'order_id' => $request['program'].'-'.$product_name. '-' . $data->id . '-' . time(),
                 ]);
 
-                $inoviceLink = env('APP_URL') . 'trainings/payment/' . $invoice->id;
+                $inoviceLink = env('APP_URL') . (($request['program']=='Trainings')?'trainings/payment/':'invoice-payment/') . $invoice->id;
             }
             $data1=[
                 'ID' => $leadID,
