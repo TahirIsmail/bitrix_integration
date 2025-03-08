@@ -177,7 +177,7 @@ class BitrixHooksController extends Controller
                     ]);
                 $inoviceLink = env('APP_URL') . 'payment/' . $invoice->id;
                 Log::channel('bitrix')->debug(['payment'=>$inoviceLink]);
-            } elseif ($request['program'] == 'Managed Services' OR $request['product'] == '211') {
+            } elseif ($request['program'] == 'Managed Services' OR $request['program'] == '211') {
                 $contact = $this->bitrixCall->sendCurlRequest(['ID'=>$request['contact_id']],'get','crm.contact');
                     $contact = $contact['result'];
                    $data = b24leads::create([
