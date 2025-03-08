@@ -193,7 +193,7 @@ class BitrixHooksController extends Controller
                     ]);
 
                     $invoice = b24leadsInvoices::create([
-                    'deal_id' => $data->id,
+                    'lead_id' => $data->id,
                     'invoice_no' => 1,
                     'amount' => $data->amount,
                     'order_id' => $request['program'].'-'. $data->id . '-' . time(),
