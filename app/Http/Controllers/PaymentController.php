@@ -48,7 +48,8 @@ class PaymentController extends Controller
 
         // $getewayOptions = (($invoice->b24lead->booking_slot === 'Ask Moiz')?["stripeup"]:["stripem"]); //"kuickpay" stripup for USA, stripem for malaysia,
         $invoice_total_amount = $invoice->amount;
-        $txn_desc = $invoice->b24lead->product_title.' Payment';
+        $patt = '/-/i';
+        $txn_desc = ucwords(preg_replace($patt, ' ', $invoice->b24lead->product_title)).' Payment';
 
         $invoice_txn_currency = "PKR";
         $expiry_date = date('Y-m-d', strtotime("+15 days"));

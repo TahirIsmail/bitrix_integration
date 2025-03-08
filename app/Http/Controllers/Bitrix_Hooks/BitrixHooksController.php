@@ -84,7 +84,7 @@ class BitrixHooksController extends Controller
                 $price = 0;
                 $quantity = 0;
                 $product_name = '';
-                if (isset($product_result) AND $request['program'] == 'Agency') {
+                if (isset($product_result) AND $request['program'] != 'Agency') {
                     $product_name = $product_result[0]['PRODUCT_NAME'];
                 }else{
                     $product_name = $request['program'];
