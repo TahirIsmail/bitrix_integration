@@ -84,9 +84,10 @@ class BitrixHooksController extends Controller
                 $price = 0;
                 $quantity = 0;
                 $product_name = '';
-                if (isset($product_result)) {
+                if (isset($product_result) AND $request['program'] == 'Agency') {
                     $product_name = $product_result[0]['PRODUCT_NAME'];
-                    $price = $product_result[0]['PRICE'];
+                }else{
+                    $product_name = $request['program'];
                 }
                 $product_name = Str::slug($product_name);
                 Log::channel('bitrix')->debug($product_name.' ===> '.$price);
@@ -176,7 +177,29 @@ class BitrixHooksController extends Controller
                     ]);
                 $inoviceLink = env('APP_URL') . 'payment/' . $invoice->id;
                 Log::channel('bitrix')->debug(['payment'=>$inoviceLink]);
-            }
+            } elseif ($request['program'] == 'Managed Services' OR $request['product'] == 'Agency') {
+                $contact = $this->bitrixCall->sendCurlRequest(['ID'=>$request['contact_id']],'get','crm.contact');
+                    $contact = $contact['result'];
+                   $data = b24leads::create([
+                        'name'=>@$contact['NAME'],
+                        'email'=>@$contact['EMAIL'][0]['VALUE'],
+                        'phone'=>@$contact['PHONE'][0]['VALUE'],
+                        'program_title'=>$request['program'],
+                        'product_title'=>$product_name,
+                        'amount'=>$request['amount'],
+                        'status'=>'selected',
+                        'message'=>$product_name.' Payment',
+                        'b24_deal_id'=>$dealID,
+                    ]);
+
+                    $invoice = b24leadsInvoices::create([
+                    'deal_id' => $data->id,
+                    'invoice_no' => 1,
+                    'amount' => $data->amount,
+                    'order_id' => $request['program'].'-'.$product_name. '-' . $data->id . '-' . time(),
+                    ]);
+                  $inoviceLink = env('APP_URL') . 'invoice-payment/' . $invoice->id;
+              }
             $data1=[
                 'ID' => $dealID,
                 'FIELDS[UF_CRM_66128DD331D76]' => $inoviceLink, // Payment Link
