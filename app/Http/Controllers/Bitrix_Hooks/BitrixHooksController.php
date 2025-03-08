@@ -196,7 +196,7 @@ class BitrixHooksController extends Controller
                     'deal_id' => $data->id,
                     'invoice_no' => 1,
                     'amount' => $data->amount,
-                    'order_id' => $request['program'].'-'.$product_name. '-' . $data->id . '-' . time(),
+                    'order_id' => $request['program'].'-'. $data->id . '-' . time(),
                     ]);
                   $inoviceLink = env('APP_URL') . 'invoice-payment/' . $invoice->id;
               }
