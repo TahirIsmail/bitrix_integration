@@ -177,7 +177,7 @@ class BitrixHooksController extends Controller
                     ]);
                 $inoviceLink = env('APP_URL') . 'payment/' . $invoice->id;
                 Log::channel('bitrix')->debug(['payment'=>$inoviceLink]);
-            } elseif ($request['program'] == 'Managed Services' OR $request['product'] == 'Agency') {
+            } elseif ($request['program'] == 'Managed Services' OR $request['product'] == '211') {
                 $contact = $this->bitrixCall->sendCurlRequest(['ID'=>$request['contact_id']],'get','crm.contact');
                     $contact = $contact['result'];
                    $data = b24leads::create([
@@ -185,7 +185,7 @@ class BitrixHooksController extends Controller
                         'email'=>@$contact['EMAIL'][0]['VALUE'],
                         'phone'=>@$contact['PHONE'][0]['VALUE'],
                         'program_title'=>$request['program'],
-                        'product_title'=>$product_name,
+                        'product_title'=>(($request['program']=='211')?'Agency Rental':'Services'),
                         'amount'=>$request['amount'],
                         'status'=>'selected',
                         'message'=>$product_name.' Payment',
