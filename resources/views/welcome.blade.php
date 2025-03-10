@@ -832,8 +832,8 @@
                                 </div>
                             </div>
 
-                            <h5>Coupon</h5>
-                            <div class="input-text">
+                            <h5 style="display:none">Coupon</h5>
+                            <div class="input-text" style="display:none">
                                 <div class="input-div">
                                     <input type="text" name="coupon_code" id="coupon_code">
                                     <span>Enter Coupon Code </span>
