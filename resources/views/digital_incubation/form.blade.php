@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-    <title>Digital Incubation</title>
+    <title>Online Training Form</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -36,8 +36,8 @@
     <div class="container mb-5">
     <div class="py-5 text-center ">
         <img class="d-block mx-auto mb-4" src="{{asset('assets/img/skillsrator_logo.png')}}" alt="" width="20%" height="72">
-        <h2>Digital Incubator form</h2>
-        <p class="lead">Unlock Your Financial Freedom with Skillsrator’s Digital Incubator!</p>
+        <h2>Online Training Form</h2>
+        <p class="lead">Unlock Your Financial Freedom with Skillsrator's Online Training!</p>
     </div>
     <form id="formSubmit" action="POST" autocomplete="off">
         @csrf
