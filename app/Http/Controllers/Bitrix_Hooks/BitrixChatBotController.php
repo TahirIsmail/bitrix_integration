@@ -26,8 +26,8 @@ class BitrixChatBotController extends Controller
 
     public function handler(Request $request)
     {
-    Log::channel('chatBot')->info('----------------Chat Bot Handler running--------------');
-    Log::channel('chatBot')->debug(request()->all());
+        Log::channel('chatBot')->info('----------------Chat Bot Handler running--------------');
+        Log::channel('chatBot')->debug(request()->all());
 
             $botId = 137;
             $clientId = $request['CLIENT_ID'];
@@ -111,17 +111,17 @@ public function transferChat($chatId,$botId,$clientId,$transferQueue,$dialogId,$
 
     Our agents are currently at capacity and will reach out to you in next 12 to 24 hours.';
 
-    $this->sendCustomMessage($botId,$dialogId,$message,$clientId);
+    // $this->sendCustomMessage($botId,$dialogId,$message,$clientId);
 
-    $data = array("CHAT_ID"=>$chatId,"USERS"=>array(1),"BOT_ID"=>$botId,'CLIENT_ID' =>$clientId);
-    $queryData      = http_build_query($data);
-    $result_data= $this->bitrixCall->sendImbotCurlRequest($queryData,"add","im.chat.user");
-    $data2=array(
-        "CHAT_ID"=>$chatId,
-        "TRANSFER_ID"=>$transferQueue,
-        );
-    $queryData      = http_build_query($data2);
-    $result_data= $this->bitrixCall->sendImbotCurlRequest($queryData,"transfer","imopenlines.operator");
+    // $data = array("CHAT_ID"=>$chatId,"USERS"=>array(1),"BOT_ID"=>$botId,'CLIENT_ID' =>$clientId);
+    // $queryData      = http_build_query($data);
+    // $result_data= $this->bitrixCall->sendImbotCurlRequest($queryData,"add","im.chat.user");
+    // $data2=array(
+    //     "CHAT_ID"=>$chatId,
+    //     "TRANSFER_ID"=>$transferQueue,
+    //     );
+    // $queryData      = http_build_query($data2);
+    // $result_data= $this->bitrixCall->sendImbotCurlRequest($queryData,"transfer","imopenlines.operator");
     print_r($result_data);
     die();
 }
