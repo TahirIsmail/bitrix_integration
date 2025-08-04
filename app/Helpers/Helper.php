@@ -180,12 +180,12 @@ class Helper
                   $data = array(
                       "txn_amount" => $details->totalAmount,
                       "txn_customer_id" => $auth_user->id, //customer id
-                      "txn_customer_name" => $auth_user->user_name, //customer name
+                      "txn_customer_name" => str_replace(" ", "-", ucfirst($auth_user->user_name)), //customer name
                       "txn_customer_email" => $auth_user->email, //customer email
                       "txn_customer_mobile" => $auth_user->whatsapp_number, // customer mobile
                       "txn_payment_type" => 'Incubation Subscription',
                       "txn_customer_bill_order_id" => 'INC-SUBS-' . $auth_user->id . '-' . time(),
-                      "txn_description" => "Incubation Subscription - (" . ucfirst($auth_user->user_name) . " - " . $details->city . " - " . $details->subscription_period . " - " . $details->shift . ")",
+                      "txn_description" => "Incubation Subscription - (" . str_replace(" ", "-", ucfirst($auth_user->user_name)) . " - " . $details->city . " - " . $details->subscription_period . " - " . $details->shift . ")",
                       "installments" => 1,
                       "txn_gateway_options" => ["kuickpay"],
                       "txn_currency" => "PKR",
